@@ -1350,7 +1350,7 @@ urlpatterns = [
 - [x] Add is_email_verified field
 - [x] Add timestamps (created_at, updated_at)
 - [x] Add last_login_ip field
-- [ ] Create and run migrations
+- [x] Create and run migrations
 - [x] **Unit Testing:**
   - [x] Test user creation
   - [x] Test field validations
@@ -1455,110 +1455,110 @@ urlpatterns = [
 ### Phase 3: Projects Module
 
 #### 3.1 Project Model
-- [ ] Create Project model
-- [ ] Add UUID primary key
-- [ ] Add name field
-- [ ] Add description field
-- [ ] Add project_type field (personal/business/team)
-- [ ] Add owner ForeignKey
-- [ ] Add currency field
-- [ ] Add budget field
-- [ ] Add start_date and end_date fields
-- [ ] Add is_active and is_archived fields
-- [ ] Add timestamps
-- [ ] Create indexes (owner, project_type)
-- [ ] Create and run migrations
-- [ ] **Unit Testing:**
-  - [ ] Test project creation
-  - [ ] Test field validations
-  - [ ] Test owner relationship
-  - [ ] Test default values
-  - [ ] Test string representation
-  - [ ] Coverage: >80%
+- [x] Create Project model
+- [x] Add UUID primary key
+- [x] Add name field
+- [x] Add description field
+- [x] Add project_type field (personal/business/team)
+- [x] Add owner ForeignKey
+- [x] Add currency field
+- [x] Add budget field
+- [x] Add start_date and end_date fields
+- [x] Add is_active and is_archived fields
+- [x] Add timestamps
+- [x] Create indexes (owner, project_type)
+- [x] Create and run migrations
+- [x] **Unit Testing:**
+  - [x] Test project creation
+  - [x] Test field validations
+  - [x] Test owner relationship
+  - [x] Test default values
+  - [x] Test string representation
+  - [x] Coverage: >80%
 
 #### 3.2 Project CRUD Endpoints
-- [ ] Create ProjectSerializer
-- [ ] Create list projects endpoint (GET /api/v1/projects/)
-- [ ] Create create project endpoint (POST /api/v1/projects/)
-- [ ] Create get project endpoint (GET /api/v1/projects/{id}/)
-- [ ] Create update project endpoint (PATCH /api/v1/projects/{id}/)
-- [ ] Create delete project endpoint (DELETE /api/v1/projects/{id}/)
-- [ ] Create archive project endpoint (POST /api/v1/projects/{id}/archive/)
-- [ ] Implement pagination
-- [ ] Implement filtering (project_type, is_active)
-- [ ] **Unit Testing:**
-  - [ ] Test serializer validations
-  - [ ] Test budget validation (positive number)
-  - [ ] Test date validations
-  - [ ] Coverage: >80%
-- [ ] **API Testing:**
-  - [ ] Test create project (authenticated user)
-  - [ ] Test create project (unauthenticated - expect 401)
-  - [ ] Test list user's projects
-  - [ ] Test get project details (owner)
-  - [ ] Test get project details (non-member - expect 403)
-  - [ ] Test update project (owner)
-  - [ ] Test update project (non-owner - expect 403)
-  - [ ] Test delete project (owner)
-  - [ ] Test delete project (non-owner - expect 403)
-  - [ ] Test archive project
-  - [ ] Test project filtering
-  - [ ] Test pagination
+- [x] Create ProjectSerializer
+- [x] Create list projects endpoint (GET /api/v1/projects/)
+- [x] Create create project endpoint (POST /api/v1/projects/)
+- [x] Create get project endpoint (GET /api/v1/projects/{id}/)
+- [x] Create update project endpoint (PATCH /api/v1/projects/{id}/)
+- [x] Create delete project endpoint (DELETE /api/v1/projects/{id}/)
+- [x] Create archive project endpoint (POST /api/v1/projects/{id}/archive/)
+- [x] Implement pagination
+- [x] Implement filtering (project_type, is_active)
+- [x] **Unit Testing:**
+  - [x] Test serializer validations
+  - [x] Test budget validation (positive number)
+  - [x] Test date validations
+  - [x] Coverage: >80%
+- [x] **API Testing:**
+  - [x] Test create project (authenticated user)
+  - [x] Test create project (unauthenticated - expect 401)
+  - [x] Test list user's projects
+  - [x] Test get project details (owner)
+  - [x] Test get project details (non-member - expect 403)
+  - [x] Test update project (owner)
+  - [x] Test update project (non-owner - expect 403)
+  - [x] Test delete project (owner)
+  - [x] Test delete project (non-owner - expect 403)
+  - [x] Test archive project
+  - [x] Test project filtering
+  - [x] Test pagination
   - [ ] **Edge Cases:**
-    - [ ] Test create project with empty name
+    - [x] Test create project with empty name
     - [ ] Test create project with extremely long name (>255 chars)
-    - [ ] Test create project with negative budget
-    - [ ] Test create project with end_date before start_date
+    - [x] Test create project with negative budget
+    - [x] Test create project with end_date before start_date
     - [ ] Test create project with invalid currency code
     - [ ] Test create project with SQL injection in fields
     - [ ] Test update archived project
     - [ ] Test delete project with active members (should cascade or prevent?)
     - [ ] Test delete project with transactions (should prevent or cascade?)
-    - [ ] Test accessing deleted/non-existent project (expect 404)
+    - [x] Test accessing deleted/non-existent project (expect 404)
     - [ ] Test list projects with invalid pagination params
     - [ ] Test filter with invalid project_type
     - [ ] Test concurrent project updates (race condition)
     - [ ] Test creating 100+ projects (performance)
-  - [ ] Coverage: >80%
+  - [x] Coverage: >80%
 
 #### 3.3 Project Members & Permissions
-- [ ] Create ProjectMember model
-- [ ] Add role field (owner/admin/member/viewer)
-- [ ] Add permission fields (can_create_transactions, etc.)
-- [ ] Add invited_by field
-- [ ] Add unique constraint (project, user)
-- [ ] Create and run migrations
-- [ ] Create custom permission classes
-- [ ] **Unit Testing:**
-  - [ ] Test member creation
-  - [ ] Test unique constraint
-  - [ ] Test role validation
-  - [ ] Test permission defaults
-  - [ ] Coverage: >80%
+- [x] Create ProjectMember model
+- [x] Add role field (owner/admin/member/viewer)
+- [x] Add permission fields (can_create_transactions, etc.)
+- [x] Add invited_by field
+- [x] Add unique constraint (project, user)
+- [x] Create and run migrations
+- [x] Create custom permission classes
+- [x] **Unit Testing:**
+  - [x] Test member creation
+  - [x] Test unique constraint
+  - [x] Test role validation
+  - [x] Test permission defaults
+  - [x] Coverage: >80%
 
 #### 3.4 Project Member Management Endpoints
-- [ ] Create ProjectMemberSerializer
-- [ ] Create list members endpoint (GET /api/v1/projects/{id}/members/)
-- [ ] Create update member role endpoint (PATCH /api/v1/projects/{id}/members/{member_id}/)
-- [ ] Create remove member endpoint (DELETE /api/v1/projects/{id}/members/{member_id}/)
-- [ ] Create leave project endpoint (POST /api/v1/projects/{id}/members/leave/)
-- [ ] Implement permission checks
-- [ ] **Unit Testing:**
-  - [ ] Test permission check functions
-  - [ ] Test role validation
-  - [ ] Coverage: >80%
-- [ ] **API Testing:**
-  - [ ] Test list members (project member)
-  - [ ] Test list members (non-member - expect 403)
-  - [ ] Test update member role (admin/owner only)
-  - [ ] Test update member role (member - expect 403)
-  - [ ] Test remove member (admin/owner only)
-  - [ ] Test leave project
-  - [ ] Test owner cannot leave project (expect 400)
+- [x] Create ProjectMemberSerializer
+- [x] Create list members endpoint (GET /api/v1/projects/{id}/members/)
+- [x] Create update member role endpoint (PATCH /api/v1/projects/{id}/members/{member_id}/)
+- [x] Create remove member endpoint (DELETE /api/v1/projects/{id}/members/{member_id}/)
+- [x] Create leave project endpoint (POST /api/v1/projects/{id}/members/leave/)
+- [x] Implement permission checks
+- [x] **Unit Testing:**
+  - [x] Test permission check functions
+  - [x] Test role validation
+  - [x] Coverage: >80%
+- [x] **API Testing:**
+  - [x] Test list members (project member)
+  - [x] Test list members (non-member - expect 403)
+  - [x] Test update member role (admin/owner only)
+  - [x] Test update member role (member - expect 403)
+  - [x] Test remove member (admin/owner only)
+  - [x] Test leave project
+  - [x] Test owner cannot leave project (expect 400)
   - [ ] **Edge Cases:**
-    - [ ] Test update non-existent member (expect 404)
+    - [x] Test update non-existent member (expect 404)
     - [ ] Test update member with invalid role
-    - [ ] Test remove project owner (should fail)
+    - [x] Test remove project owner (should fail)
     - [ ] Test remove last admin (should warn or prevent?)
     - [ ] Test member leaving project with pending transactions
     - [ ] Test concurrent member updates
@@ -1566,65 +1566,65 @@ urlpatterns = [
     - [ ] Test updating member to same role (idempotent)
     - [ ] Test removing already removed member
     - [ ] Test member with UUID that's not a valid user
-  - [ ] Coverage: >80%
+  - [x] Coverage: >80%
 
 ---
 
 ### Phase 4: Invitations Module
 
 #### 4.1 Invitation Model
-- [ ] Create Invitation model
-- [ ] Add project ForeignKey
-- [ ] Add email field
-- [ ] Add role field
-- [ ] Add invited_by ForeignKey
-- [ ] Add token field (unique)
-- [ ] Add status field (pending/accepted/declined/expired)
-- [ ] Add expires_at field
-- [ ] Add unique constraint (project, email, status)
-- [ ] Create and run migrations
-- [ ] **Unit Testing:**
-  - [ ] Test invitation creation
-  - [ ] Test token generation
-  - [ ] Test expiration logic
-  - [ ] Coverage: >80%
+- [x] Create Invitation model
+- [x] Add project ForeignKey
+- [x] Add email field
+- [x] Add role field
+- [x] Add invited_by ForeignKey
+- [x] Add token field (unique)
+- [x] Add status field (pending/accepted/declined/expired)
+- [x] Add expires_at field
+- [x] Add unique constraint (project, email, status)
+- [x] Create and run migrations
+- [x] **Unit Testing:**
+  - [x] Test invitation creation
+  - [x] Test token generation
+  - [x] Test expiration logic
+  - [x] Coverage: >80%
 
 #### 4.2 Invitation Endpoints
-- [ ] Create InvitationSerializer
-- [ ] Create invite member endpoint (POST /api/v1/projects/{id}/members/invite/)
-- [ ] Create list user invitations endpoint (GET /api/v1/invitations/)
-- [ ] Create accept invitation endpoint (POST /api/v1/invitations/{token}/accept/)
-- [ ] Create decline invitation endpoint (POST /api/v1/invitations/{token}/decline/)
-- [ ] Send invitation email
-- [ ] Implement token expiration check (7 days)
+- [x] Create InvitationSerializer
+- [x] Create invite member endpoint (POST /api/v1/projects/{id}/members/invite/)
+- [x] Create list user invitations endpoint (GET /api/v1/invitations/)
+- [x] Create accept invitation endpoint (POST /api/v1/invitations/{token}/accept/)
+- [x] Create decline invitation endpoint (POST /api/v1/invitations/{token}/decline/)
+- [x] Send invitation email
+- [x] Implement token expiration check (7 days)
 - [ ] **Unit Testing:**
   - [ ] Test invitation email sending
   - [ ] Test token validation
   - [ ] Coverage: >80%
-- [ ] **API Testing:**
-  - [ ] Test send invitation (admin/owner)
-  - [ ] Test send invitation (member - expect 403)
+- [x] **API Testing:**
+  - [x] Test send invitation (admin/owner)
+  - [x] Test send invitation (member - expect 403)
   - [ ] Test duplicate invitation (expect 400)
-  - [ ] Test list user invitations
-  - [ ] Test accept invitation (creates ProjectMember)
-  - [ ] Test accept expired invitation (expect 400)
-  - [ ] Test decline invitation
-  - [ ] Test invalid token (expect 404)
+  - [x] Test list user invitations
+  - [x] Test accept invitation (creates ProjectMember)
+  - [x] Test accept expired invitation (expect 400)
+  - [x] Test decline invitation
+  - [x] Test invalid token (expect 404)
   - [ ] **Edge Cases:**
-    - [ ] Test invite existing project member
-    - [ ] Test invite with invalid email format
-    - [ ] Test invite user who's already in the project
-    - [ ] Test accept invitation when already a member
+    - [x] Test invite existing project member
+    - [x] Test invite with invalid email format
+    - [x] Test invite user who's already in the project
+    - [x] Test accept invitation when already a member
     - [ ] Test accept invitation for deleted project
     - [ ] Test accept invitation after being removed from project
-    - [ ] Test multiple pending invitations to same email
+    - [x] Test multiple pending invitations to same email
     - [ ] Test invitation token collision (extremely rare)
-    - [ ] Test accepting invitation while unauthenticated
+    - [x] Test accepting invitation while unauthenticated
     - [ ] Test inviting 100+ users at once (performance)
     - [ ] Test invitation expiration boundary (exactly 7 days)
-    - [ ] Test resend invitation (should invalidate old token)
+    - [x] Test resend invitation (should invalidate old token)
     - [ ] Test invitation to non-registered email
-  - [ ] Coverage: >80%
+  - [x] Coverage: >80%
 
 ---
 
