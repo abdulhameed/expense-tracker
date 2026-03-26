@@ -152,6 +152,7 @@ CACHES = {
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@expensetracker.com")
 
 # --- Logging ---
+# Production overrides this with a rotating file handler (see production.py).
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -165,14 +166,6 @@ LOGGING = {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-        "file": {
-            "level": "INFO",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": BASE_DIR / "logs" / "django.log",
-            "maxBytes": 1024 * 1024 * 10,  # 10 MB
-            "backupCount": 5,
             "formatter": "verbose",
         },
     },
