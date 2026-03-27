@@ -24,6 +24,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
     "corsheaders",
     "django_filters",
     "django_celery_beat",
@@ -121,6 +122,52 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 50,
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# --- drf-spectacular ---
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Expense Tracker API",
+    "DESCRIPTION": "A comprehensive expense tracking system with project management, budgets, reports, and team collaboration.",
+    "VERSION": "1.0.0",
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+    "AUTHENTICATION_WHITELIST": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "SCHEMA_PATH_PREFIX": "/api/v1",
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorizationData": True,
+        "displayOperationId": True,
+    },
+    "CONTACT": {
+        "name": "API Support",
+        "email": "support@expensetracker.com",
+    },
+    "LICENSE": {
+        "name": "MIT",
+    },
+    "SERVERS": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Development server",
+        },
+        {
+            "url": "https://api.expensetracker.com",
+            "description": "Production server",
+        },
+    ],
+    "COMPONENTS": {
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "JWT token authentication",
+            }
+        }
+    },
+    "SECURITY": [{"Bearer": []}],
 }
 
 # --- JWT ---
