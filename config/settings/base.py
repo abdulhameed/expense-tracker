@@ -38,6 +38,8 @@ LOCAL_APPS = [
     "apps.budgets",
     "apps.reports",
     "apps.activity",
+    "apps.security",
+    "apps.health",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -51,6 +53,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "apps.security.middleware.SecurityHeadersMiddleware",
+    "apps.security.middleware.RateLimitHeadersMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -131,6 +135,18 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 50,
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # Rate limiting and throttling
+    "DEFAULT_THROTTLE_CLASSES": (
+        "apps.security.throttling.UserGeneralThrottle",
+        "apps.security.throttling.AnonGeneralThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "user_auth": "5/min",
+        "user_general": "100/hour",
+        "anon_general": "20/hour",
+        "burst": "10/minute",
+        "sustained": "1000/day",
+    },
 }
 
 # --- drf-spectacular ---
@@ -261,3 +277,65 @@ ALLOWED_DOCUMENT_TYPES = [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "text/csv",
 ]
+
+# --- Security Configuration ---
+# CORS Settings
+CORS_ALLOWED_ORIGINS = config(
+    "CORS_ALLOWED_ORIGINS",
+    default="http://localhost:3000,http://localhost:8080",
+    cast=lambda x: [item.strip() for item in x.split(",")],
+)
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "x-api-key",
+]
+
+# Security Headers
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_SECURITY_POLICY = {
+    "default-src": ("'self'",),
+    "script-src": ("'self'",),
+    "style-src": ("'self'", "'unsafe-inline'"),
+    "img-src": ("'self'", "data:", "https:"),
+    "font-src": ("'self'", "data:"),
+    "connect-src": ("'self'", "https:"),
+    "frame-ancestors": ("'none'",),
+    "base-uri": ("'self'",),
+    "form-action": ("'self'",),
+}
+
+# Session Security
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_AGE = 3600  # 1 hour
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# CSRF Protection
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = "Strict"
+
+# Password Validation
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 12},
+    },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+
+# Brute force protection
+FAILED_LOGIN_ATTEMPTS_LIMIT = 5
+FAILED_LOGIN_LOCKOUT_DURATION = 15 * 60  # 15 minutes

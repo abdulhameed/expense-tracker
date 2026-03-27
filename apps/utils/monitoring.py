@@ -7,7 +7,6 @@ from functools import wraps
 from typing import Callable
 
 from django.db import connection
-from django.db.utils import DEFAULT_DB_ALIAS
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ class QueryCounterContext:
         self.start_queries = len(connection.queries)
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, _exc_type, _exc_val, _exc_tb):  # noqa: F841
         self.time = (time.time() - self.start_time) * 1000  # Convert to ms
         self.count = len(connection.queries) - self.start_queries
 
@@ -101,7 +100,7 @@ class PerformanceTimer:
         self.start_time = time.time()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, _exc_type, _exc_val, _exc_tb):  # noqa: F841
         self.elapsed_ms = (time.time() - self.start_time) * 1000
 
         if self.name:
