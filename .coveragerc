@@ -1,0 +1,33 @@
+# Coverage configuration for pytest-cov
+[run]
+source = apps
+omit =
+    */tests/*
+    */migrations/*
+    */management/*
+    */__pycache__/*
+    */venv/*
+
+[report]
+# Ignore certain lines
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+    if 0:
+    if False:
+    if not TYPE_CHECKING:
+
+# Set minimum coverage percentage
+fail_under = 80
+
+# Precision of coverage percentages
+precision = 2
+
+[html]
+directory = htmlcov

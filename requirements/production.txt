@@ -1,3 +1,21 @@
 -r base.txt
 
+# Application server
+gunicorn==23.0.0
+whitenoise==6.7.0
+
+# Monitoring and error tracking
 sentry-sdk==2.20.0
+
+# Database
+psycopg2-binary==2.9.10
+
+# Production utilities
+django-cors-headers==4.4.0
+django-health-check==3.17.0
+
+# Security
+django-csp==3.8.0
+
+# Performance
+django-redis==5.4.0
