@@ -47,9 +47,9 @@ CELERY_RESULT_BACKEND = "cache+memory://"
 
 # --- API DOCUMENTATION ---
 # Allow unauthenticated access to Swagger UI in development
-SPECTACULAR_SETTINGS = {  # noqa: F405
+SPECTACULAR_SETTINGS.update({  # noqa: F405
     "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
-}
+})
 
 # --- RATE LIMITING ---
 # Disable rate limiting in development for easier testing
