@@ -80,7 +80,7 @@ A comprehensive, production-ready REST API for personal and team expense trackin
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/expense-tracker.git
+git clone https://github.com/abdulhameed/expense-tracker.git
 cd expense-tracker
 
 # Create virtual environment
@@ -527,8 +527,8 @@ See [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md) for more troubleshooting.
 ## Support
 
 - 📖 [Documentation](docs/)
-- 🐛 [Bug Reports](https://github.com/yourusername/expense-tracker/issues)
-- 💬 [Discussions](https://github.com/yourusername/expense-tracker/discussions)
+- 🐛 [Bug Reports](https://github.com/abdulhameed/expense-tracker/issues)
+- 💬 [Discussions](https://github.com/abdulhameed/expense-tracker/discussions)
 - 📧 Email: support@expensetracker.com
 
 ## License
