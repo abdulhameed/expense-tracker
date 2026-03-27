@@ -28,49 +28,49 @@
 
 ### ✅ Get Project Details
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ List Project Members
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/members/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/members/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ Get Project Stats
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/stats/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/stats/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ Get Project Activity
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/activity/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/activity/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ List Categories
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/categories/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/categories/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ List Transactions
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/transactions/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/transactions/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ List Budgets
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/budgets/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/budgets/`
 **Status:** ✅ Working (HTTP 200)
 
 
 ### ✅ Get Trends Report
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/reports/trends/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/reports/trends/`
 **Status:** ✅ Working (HTTP 200)
 
 
@@ -86,26 +86,21 @@
 **Status:** ✅ Working (HTTP 201)
 
 
-### ❌ Create Transaction
+### ✅ Create Transaction
 
-**Endpoint:** `POST /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/transactions/`
-**Status:** ❌ Failed (HTTP 500)
-
-**Error Response:**
-```json
-
-```
+**Endpoint:** `POST /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/transactions/`
+**Status:** ✅ Working (HTTP 201)
 
 
 ### ✅ Create Category
 
-**Endpoint:** `POST /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/categories/`
+**Endpoint:** `POST /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/categories/`
 **Status:** ✅ Working (HTTP 201)
 
 
 ### ❌ Create Budget
 
-**Endpoint:** `POST /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/budgets/`
+**Endpoint:** `POST /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/budgets/`
 **Status:** ❌ Failed (HTTP 400)
 
 **Error Response:**
@@ -116,35 +111,25 @@
 
 ### ✅ Get Transaction Details
 
-**Endpoint:** `GET /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/transactions/f9ef8973-ace7-4307-89be-257bb3845a63/`
+**Endpoint:** `GET /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/transactions/ddc40d7d-e434-4319-84a2-2fe015291465/`
 **Status:** ✅ Working (HTTP 200)
 
 
-### ❌ Update Transaction
+### ✅ Update Transaction
 
-**Endpoint:** `PATCH /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/transactions/f9ef8973-ace7-4307-89be-257bb3845a63/`
-**Status:** ❌ Failed (HTTP 500)
-
-**Error Response:**
-```json
-
-```
+**Endpoint:** `PATCH /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/transactions/ddc40d7d-e434-4319-84a2-2fe015291465/`
+**Status:** ✅ Working (HTTP 200)
 
 
-### ❌ Delete Transaction
+### ✅ Delete Transaction
 
-**Endpoint:** `DELETE /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/transactions/f9ef8973-ace7-4307-89be-257bb3845a63/`
-**Status:** ❌ Failed (HTTP 403)
-
-**Error Response:**
-```json
-
-```
+**Endpoint:** `DELETE /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/transactions/ddc40d7d-e434-4319-84a2-2fe015291465/`
+**Status:** ✅ Working (HTTP 204)
 
 
 ### ✅ Update Project
 
-**Endpoint:** `PATCH /projects/be0a2b91-fbd3-4fab-ac64-1cfd9ff2d2c2/`
+**Endpoint:** `PATCH /projects/298e500c-b7e2-45f6-b5ae-330bfac0ec9a/`
 **Status:** ✅ Working (HTTP 200)
 
 
@@ -155,11 +140,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Endpoints Tested** | 20 |
-| **Passed** | 16 |
-| **Failed** | 4 |
-| **Success Rate** | 80% |
+| **Passed** | 19 |
+| **Failed** | 1 |
+| **Success Rate** | 95% |
 
 ---
 
-**Testing completed on:** Fri Mar 27 17:43:44 WAT 2026
+**Testing completed on:** Fri Mar 27 18:03:23 WAT 2026
 

@@ -22,10 +22,10 @@ def log_transaction(sender, instance, created, update_fields=None, **kwargs):
     """Log transaction creation or update."""
     if created:
         action = ActivityLog.ActionType.CREATE
-        description = f"Created transaction '{instance.title}' for {instance.amount} {instance.currency}"
+        description = f"Created transaction '{instance.description}' for {instance.amount} {instance.currency}"
     else:
         action = ActivityLog.ActionType.UPDATE
-        description = f"Updated transaction '{instance.title}'"
+        description = f"Updated transaction '{instance.description}'"
 
     ActivityLog.objects.create(
         user=instance.created_by,
@@ -51,7 +51,7 @@ def log_transaction_delete(sender, instance, **kwargs):
         action=ActivityLog.ActionType.DELETE,
         content_type="transaction",
         object_id=instance.id,
-        description=f"Deleted transaction '{instance.title}'",
+        description=f"Deleted transaction '{instance.description}'",
         metadata={
             "transaction_type": instance.transaction_type,
             "amount": str(instance.amount),
