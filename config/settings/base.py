@@ -81,6 +81,14 @@ DATABASES = {
         "PASSWORD": config("DB_PASSWORD"),
         "HOST": config("DB_HOST", default="localhost"),
         "PORT": config("DB_PORT", default="5432"),
+        # Connection pooling for production
+        "CONN_MAX_AGE": 600,  # Close connections after 10 minutes
+        "ATOMIC_REQUESTS": False,
+        # Options for better performance
+        "OPTIONS": {
+            "connect_timeout": 10,
+            "options": "-c statement_timeout=30000",  # 30 second query timeout
+        },
     }
 }
 
