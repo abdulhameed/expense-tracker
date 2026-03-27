@@ -213,14 +213,18 @@ CELERY_TIMEZONE = "UTC"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 # Celery Beat schedule for periodic tasks
-from celery.schedules import crontab  # noqa: E402
+try:
+    from celery.schedules import crontab  # noqa: E402
 
-CELERY_BEAT_SCHEDULE = {
-    "check-budget-alerts": {
-        "task": "apps.budgets.tasks.check_budget_alerts",
-        "schedule": crontab(hour=9, minute=0),  # Run daily at 9:00 AM UTC
-    },
-}
+    CELERY_BEAT_SCHEDULE = {
+        "check-budget-alerts": {
+            "task": "apps.budgets.tasks.check_budget_alerts",
+            "schedule": crontab(hour=9, minute=0),  # Run daily at 9:00 AM UTC
+        },
+    }
+except ImportError:
+    # Celery not installed - running in local development mode
+    CELERY_BEAT_SCHEDULE = {}
 
 # --- Cache ---
 CACHES = {
