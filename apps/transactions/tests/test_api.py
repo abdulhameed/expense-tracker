@@ -39,11 +39,13 @@ class TestCategoryListCreateView:
         return reverse("category-list-create", kwargs={"project_id": project.pk})
 
     def test_list_categories_for_member(self, auth_client, project):
+        before_count = auth_client.get(self.url(project)).data["count"]
         CategoryFactory(project=project)
         DefaultCategoryFactory()
         response = auth_client.get(self.url(project))
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 2
+        # 1 project-specific + 1 new default added above + existing defaults
+        assert response.data["count"] == before_count + 2
 
     def test_list_requires_auth(self, project):
         c = APIClient()
@@ -126,11 +128,13 @@ class TestDefaultCategoryListView:
     url = reverse("category-defaults")
 
     def test_returns_only_defaults(self, auth_client):
+        before_count = auth_client.get(self.url).data["count"]
         DefaultCategoryFactory.create_batch(3)
         CategoryFactory()  # project-specific, should NOT appear
         response = auth_client.get(self.url)
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 3
+        # Only 3 new defaults added; project-specific category must not appear
+        assert response.data["count"] == before_count + 3
 
     def test_requires_auth(self):
         c = APIClient()
@@ -306,13 +310,13 @@ class TestTransactionExportView:
 
     def test_export_csv(self, auth_client, project, user):
         TransactionFactory.create_batch(3, project=project, created_by=user)
-        response = auth_client.get(self.url(project), {"format": "csv"})
+        response = auth_client.get(self.url(project), {"export_format": "csv"})
         assert response.status_code == status.HTTP_200_OK
         assert "text/csv" in response["Content-Type"]
 
     def test_export_xlsx(self, auth_client, project, user):
         TransactionFactory.create_batch(2, project=project, created_by=user)
-        response = auth_client.get(self.url(project), {"format": "xlsx"})
+        response = auth_client.get(self.url(project), {"export_format": "xlsx"})
         assert response.status_code == status.HTTP_200_OK
         assert (
             "spreadsheetml" in response["Content-Type"]

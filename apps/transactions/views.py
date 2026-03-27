@@ -185,7 +185,7 @@ class TransactionExportView(APIView):
 
     def get(self, request, project_id):
         project, _ = _get_project_member(project_id, request.user)
-        fmt = request.query_params.get("format", "csv").lower()
+        fmt = request.query_params.get("export_format", "csv").lower()
 
         qs = Transaction.objects.filter(project=project).select_related(
             "category", "created_by"

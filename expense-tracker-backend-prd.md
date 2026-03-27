@@ -1631,42 +1631,42 @@ urlpatterns = [
 ### Phase 5: Categories Module
 
 #### 5.1 Category Model
-- [ ] Create Category model
-- [ ] Add name field
-- [ ] Add category_type field (income/expense)
-- [ ] Add icon field
-- [ ] Add color field
-- [ ] Add project ForeignKey (nullable for defaults)
-- [ ] Add is_default field
-- [ ] Create indexes
-- [ ] Create and run migrations
-- [ ] Create default categories migration
-- [ ] **Unit Testing:**
-  - [ ] Test category creation
-  - [ ] Test category_type validation
-  - [ ] Test default categories
-  - [ ] Coverage: >80%
+- [x] Create Category model
+- [x] Add name field
+- [x] Add category_type field (income/expense)
+- [x] Add icon field
+- [x] Add color field
+- [x] Add project ForeignKey (nullable for defaults)
+- [x] Add is_default field
+- [x] Create indexes
+- [x] Create and run migrations
+- [x] Create default categories migration
+- [x] **Unit Testing:**
+  - [x] Test category creation
+  - [x] Test category_type validation
+  - [x] Test default categories
+  - [x] Coverage: >80%
 
 #### 5.2 Category Endpoints
-- [ ] Create CategorySerializer
-- [ ] Create list categories endpoint (GET /api/v1/projects/{id}/categories/)
-- [ ] Create create category endpoint (POST /api/v1/projects/{id}/categories/)
-- [ ] Create update category endpoint (PATCH /api/v1/projects/{id}/categories/{cat_id}/)
-- [ ] Create delete category endpoint (DELETE /api/v1/projects/{id}/categories/{cat_id}/)
-- [ ] Create get default categories endpoint (GET /api/v1/categories/defaults/)
+- [x] Create CategorySerializer
+- [x] Create list categories endpoint (GET /api/v1/projects/{id}/categories/)
+- [x] Create create category endpoint (POST /api/v1/projects/{id}/categories/)
+- [x] Create update category endpoint (PATCH /api/v1/projects/{id}/categories/{cat_id}/)
+- [x] Create delete category endpoint (DELETE /api/v1/projects/{id}/categories/{cat_id}/)
+- [x] Create get default categories endpoint (GET /api/v1/categories/defaults/)
 - [ ] Prevent deletion of categories with transactions
-- [ ] **Unit Testing:**
-  - [ ] Test serializer validations
+- [x] **Unit Testing:**
+  - [x] Test serializer validations
   - [ ] Test color format validation
-  - [ ] Coverage: >80%
-- [ ] **API Testing:**
-  - [ ] Test list project categories
-  - [ ] Test create category (project member)
-  - [ ] Test create category (non-member - expect 403)
-  - [ ] Test update category
-  - [ ] Test delete category (no transactions)
+  - [x] Coverage: >80%
+- [x] **API Testing:**
+  - [x] Test list project categories
+  - [x] Test create category (project member)
+  - [x] Test create category (non-member - expect 403)
+  - [x] Test update category
+  - [x] Test delete category (no transactions)
   - [ ] Test delete category with transactions (expect 400)
-  - [ ] Test get default categories
+  - [x] Test get default categories
   - [ ] **Edge Cases:**
     - [ ] Test create category with empty name
     - [ ] Test create category with duplicate name in same project
@@ -1686,65 +1686,65 @@ urlpatterns = [
 ### Phase 6: Transactions Module
 
 #### 6.1 Transaction Model
-- [ ] Create Transaction model
-- [ ] Add UUID primary key
-- [ ] Add project ForeignKey
-- [ ] Add transaction_type field (income/expense)
-- [ ] Add amount field (DecimalField)
-- [ ] Add currency field
-- [ ] Add category ForeignKey
-- [ ] Add title and description fields
-- [ ] Add payment_method field
-- [ ] Add transaction_date field
-- [ ] Add created_by ForeignKey
-- [ ] Add tags field (JSONField)
-- [ ] Add is_recurring and recurring_frequency fields
-- [ ] Add timestamps
-- [ ] Create indexes
-- [ ] Create and run migrations
-- [ ] **Unit Testing:**
-  - [ ] Test transaction creation
+- [x] Create Transaction model
+- [x] Add UUID primary key
+- [x] Add project ForeignKey
+- [x] Add transaction_type field (income/expense)
+- [x] Add amount field (DecimalField)
+- [x] Add currency field
+- [x] Add category ForeignKey
+- [x] Add title and description fields
+- [x] Add payment_method field
+- [x] Add transaction_date field
+- [x] Add created_by ForeignKey
+- [x] Add tags field (JSONField)
+- [x] Add is_recurring and recurring_frequency fields
+- [x] Add timestamps
+- [x] Create indexes
+- [x] Create and run migrations
+- [x] **Unit Testing:**
+  - [x] Test transaction creation
   - [ ] Test amount validation (positive)
   - [ ] Test decimal places (2)
-  - [ ] Test field validations
-  - [ ] Coverage: >80%
+  - [x] Test field validations
+  - [x] Coverage: >80%
 
 #### 6.2 Transaction CRUD Endpoints
-- [ ] Create TransactionSerializer
-- [ ] Create list transactions endpoint (GET /api/v1/projects/{id}/transactions/)
-- [ ] Create create transaction endpoint (POST /api/v1/projects/{id}/transactions/)
-- [ ] Create get transaction endpoint (GET /api/v1/projects/{id}/transactions/{txn_id}/)
-- [ ] Create update transaction endpoint (PATCH /api/v1/projects/{id}/transactions/{txn_id}/)
-- [ ] Create delete transaction endpoint (DELETE /api/v1/projects/{id}/transactions/{txn_id}/)
-- [ ] Implement pagination
-- [ ] Implement filtering (date range, category, type, payment_method)
-- [ ] Implement search (title, description)
-- [ ] Implement sorting (date, amount)
-- [ ] **Unit Testing:**
-  - [ ] Test serializer validations
+- [x] Create TransactionSerializer
+- [x] Create list transactions endpoint (GET /api/v1/projects/{id}/transactions/)
+- [x] Create create transaction endpoint (POST /api/v1/projects/{id}/transactions/)
+- [x] Create get transaction endpoint (GET /api/v1/projects/{id}/transactions/{txn_id}/)
+- [x] Create update transaction endpoint (PATCH /api/v1/projects/{id}/transactions/{txn_id}/)
+- [x] Create delete transaction endpoint (DELETE /api/v1/projects/{id}/transactions/{txn_id}/)
+- [x] Implement pagination
+- [x] Implement filtering (date range, category, type, payment_method)
+- [x] Implement search (title, description)
+- [x] Implement sorting (date, amount)
+- [x] **Unit Testing:**
+  - [x] Test serializer validations
   - [ ] Test amount validation
   - [ ] Test date validation
-  - [ ] Test category relationship
-  - [ ] Coverage: >80%
-- [ ] **API Testing:**
-  - [ ] Test create transaction (authorized member)
-  - [ ] Test create transaction (viewer - expect 403)
-  - [ ] Test create transaction (non-member - expect 403)
+  - [x] Test category relationship
+  - [x] Coverage: >80%
+- [x] **API Testing:**
+  - [x] Test create transaction (authorized member)
+  - [x] Test create transaction (viewer - expect 403)
+  - [x] Test create transaction (non-member - expect 403)
   - [ ] Test create with invalid amount (expect 400)
   - [ ] Test create with future date (allow or reject based on requirements)
-  - [ ] Test list transactions (project member)
-  - [ ] Test list transactions (non-member - expect 403)
-  - [ ] Test get transaction details
-  - [ ] Test update transaction (owner of transaction)
+  - [x] Test list transactions (project member)
+  - [x] Test list transactions (non-member - expect 403)
+  - [x] Test get transaction details
+  - [x] Test update transaction (owner of transaction)
   - [ ] Test update transaction (different user - check permissions)
-  - [ ] Test delete transaction (owner/admin)
-  - [ ] Test delete transaction (member - expect 403)
-  - [ ] Test filtering by date range
+  - [x] Test delete transaction (owner/admin)
+  - [x] Test delete transaction (member - expect 403)
+  - [x] Test filtering by date range
   - [ ] Test filtering by category
-  - [ ] Test filtering by transaction type
-  - [ ] Test search functionality
+  - [x] Test filtering by transaction type
+  - [x] Test search functionality
   - [ ] Test sorting
-  - [ ] Test pagination
+  - [x] Test pagination
   - [ ] **Edge Cases:**
     - [ ] Test create transaction with zero amount (should fail?)
     - [ ] Test create transaction with negative amount (should fail)
@@ -1779,23 +1779,23 @@ urlpatterns = [
   - [ ] Coverage: >80%
 
 #### 6.3 Transaction Import/Export
-- [ ] Create export endpoint (GET /api/v1/projects/{id}/transactions/export/)
-- [ ] Support CSV format
-- [ ] Support Excel format
-- [ ] Create bulk import endpoint (POST /api/v1/projects/{id}/transactions/bulk-create/)
-- [ ] Validate import data
-- [ ] Handle import errors gracefully
-- [ ] **Unit Testing:**
-  - [ ] Test CSV generation
-  - [ ] Test Excel generation
+- [x] Create export endpoint (GET /api/v1/projects/{id}/transactions/export/)
+- [x] Support CSV format
+- [x] Support Excel format
+- [x] Create bulk import endpoint (POST /api/v1/projects/{id}/transactions/bulk-create/)
+- [x] Validate import data
+- [x] Handle import errors gracefully
+- [x] **Unit Testing:**
+  - [x] Test CSV generation
+  - [x] Test Excel generation
   - [ ] Test import validation
-  - [ ] Coverage: >80%
-- [ ] **API Testing:**
-  - [ ] Test export to CSV
-  - [ ] Test export to Excel
+  - [x] Coverage: >80%
+- [x] **API Testing:**
+  - [x] Test export to CSV
+  - [x] Test export to Excel
   - [ ] Test export with filters
-  - [ ] Test bulk import (valid data)
-  - [ ] Test bulk import (invalid data - expect partial success or rollback)
+  - [x] Test bulk import (valid data)
+  - [x] Test bulk import (invalid data - expect partial success or rollback)
   - [ ] **Edge Cases:**
     - [ ] Test export with zero transactions
     - [ ] Test export with 10,000+ transactions (performance)
