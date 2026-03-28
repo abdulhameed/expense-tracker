@@ -5,6 +5,9 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Login } from '@/pages/Login';
 import { Register } from '@/pages/Register';
 import { Dashboard } from '@/pages/Dashboard';
+import { VerifyEmail } from '@/pages/VerifyEmail';
+import { ForgotPassword } from '@/pages/ForgotPassword';
+import { ResetPassword } from '@/pages/ResetPassword';
 
 export default function App() {
   const { isAuthenticated, getCurrentUser } = useAuthStore();
@@ -19,8 +22,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* Protected Pages */}
         <Route
           path="/dashboard"
           element={
@@ -29,6 +38,8 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Root redirect */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
