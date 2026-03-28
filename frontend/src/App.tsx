@@ -5,6 +5,13 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Login } from '@/pages/Login';
 import { Register } from '@/pages/Register';
 import { Dashboard } from '@/pages/Dashboard';
+import { Transactions } from '@/pages/Transactions';
+import { TransactionCreate } from '@/pages/TransactionCreate';
+import { TransactionEdit } from '@/pages/TransactionEdit';
+import { TransactionDetail } from '@/pages/TransactionDetail';
+import { Categories } from '@/pages/Categories';
+import { Reports } from '@/pages/Reports';
+import { Analytics } from '@/pages/Analytics';
 import { VerifyEmail } from '@/pages/VerifyEmail';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { ResetPassword } from '@/pages/ResetPassword';
@@ -35,6 +42,68 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Transaction Pages */}
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute>
+              <Transactions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions/new"
+          element={
+            <ProtectedRoute>
+              <TransactionCreate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions/:id/edit"
+          element={
+            <ProtectedRoute>
+              <TransactionEdit />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions/:id"
+          element={
+            <ProtectedRoute>
+              <TransactionDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Category Pages */}
+        <Route
+          path="/categories"
+          element={
+            <ProtectedRoute>
+              <Categories />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Reports & Analytics Pages */}
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics />
             </ProtectedRoute>
           }
         />

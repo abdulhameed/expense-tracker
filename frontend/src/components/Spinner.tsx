@@ -18,6 +18,7 @@ export function Spinner({ size = 'medium', color = 'text-primary-600' }: Spinner
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
+      role="status"
     >
       <circle
         className="opacity-25"

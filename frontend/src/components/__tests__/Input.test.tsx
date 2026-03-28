@@ -70,7 +70,8 @@ describe('Input Component', () => {
 
   it('renders password variant with show/hide button', () => {
     render(<Input id="test-input" variant="password" />);
-    expect(screen.getByRole('textbox')).toHaveAttribute('type', 'password');
+    const input = document.querySelector('#test-input') as HTMLInputElement;
+    expect(input).toHaveAttribute('type', 'password');
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
@@ -78,7 +79,7 @@ describe('Input Component', () => {
     const user = userEvent.setup();
     render(<Input id="test-input" variant="password" />);
 
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = document.querySelector('#test-input') as HTMLInputElement;
     const button = screen.getByRole('button');
 
     expect(input.type).toBe('password');
@@ -103,14 +104,14 @@ describe('Input Component', () => {
 
   it('applies error styling to border', () => {
     render(<Input id="test-input" error="Error" />);
-    const wrapper = screen.getByRole('textbox').parentElement;
-    expect(wrapper).toHaveClass('border-error-300');
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveClass('border-error-300');
   });
 
   it('applies normal border styling without error', () => {
     render(<Input id="test-input" />);
-    const wrapper = screen.getByRole('textbox').parentElement;
-    expect(wrapper).toHaveClass('border-neutral-300');
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveClass('border-neutral-300');
   });
 
   it('renders with custom className', () => {

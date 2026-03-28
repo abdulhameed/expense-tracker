@@ -21,5 +21,13 @@ export type { BreadcrumbItem } from './Breadcrumb';
 // Layout Components
 export { MainLayout } from './MainLayout';
 
+// Chart Components
+export { LineChart } from './charts/LineChart';
+export { BarChart } from './charts/BarChart';
+export { PieChart } from './charts/PieChart';
+
+// Form Components
+export { TransactionModal } from './TransactionModal';
+
 // Route Components
 export { ProtectedRoute } from './ProtectedRoute';

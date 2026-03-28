@@ -63,7 +63,7 @@ export function Alert({
   const styles = variantStyles[variant];
 
   return (
-    <div className={`${styles.bg} ${styles.border} p-4 rounded-md`}>
+    <div className={`${styles.bg} ${styles.border} p-4 rounded-md`} role="alert">
       <div className="flex items-start">
         <svg
           className={`w-5 h-5 ${styles.icon} mt-0.5 flex-shrink-0`}
@@ -79,6 +79,7 @@ export function Alert({
         {closeable && (
           <button
             onClick={handleClose}
+            aria-label="Close notification"
             className={`ml-3 inline-flex ${styles.icon} hover:opacity-70 focus:outline-none`}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

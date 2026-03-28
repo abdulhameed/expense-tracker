@@ -100,32 +100,32 @@ describe('Modal Component', () => {
   });
 
   it('renders with small size', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true} onClose={vi.fn()} size="small">
         <p>Modal content</p>
       </Modal>
     );
-    const modal = container.querySelector('[role="dialog"]');
+    const modal = screen.getByRole('dialog');
     expect(modal).toHaveClass('max-w-sm');
   });
 
   it('renders with medium size by default', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true} onClose={vi.fn()}>
         <p>Modal content</p>
       </Modal>
     );
-    const modal = container.querySelector('[role="dialog"]');
+    const modal = screen.getByRole('dialog');
     expect(modal).toHaveClass('max-w-md');
   });
 
   it('renders with large size', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true} onClose={vi.fn()} size="large">
         <p>Modal content</p>
       </Modal>
     );
-    const modal = container.querySelector('[role="dialog"]');
+    const modal = screen.getByRole('dialog');
     expect(modal).toHaveClass('max-w-lg');
   });
 
