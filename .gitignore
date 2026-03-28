@@ -28,10 +28,11 @@ logs/
 .env.local
 .env.*.local
 
-# pytest
+# pytest & coverage
 .pytest_cache/
+coverage/
 .coverage
-htmlcov/
+*.coverage
 coverage.xml
 
 # IDE
@@ -40,9 +41,38 @@ coverage.xml
 *.swp
 *.swo
 .DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Editor backups
+*~
+.#*
+\#*#
 
 # Docker
 .dockerignore
+
+# OS
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Reports & Artifacts
+reports/
+debug-summary.json
+detailed-frontend-report.json
+final_exploration.js
+explore_all_pages.js
+explore_frontend.js
+frontend-exploration-report.json
+login-page.html
+rendered-page.html
+*.html
+!docs/**/*.html
+
+# Node modules
+node_modules/
+package-lock.json
 
 # Migrations (keep these in version control)
 # !apps/*/migrations/

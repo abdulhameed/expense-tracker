@@ -39,3 +39,8 @@ coverage
 # OS
 .DS_Store
 Thumbs.db
+
+# Debug scripts
+debug/
+*.debug.js
+*.debug.ts

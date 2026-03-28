@@ -78,7 +78,10 @@ apiClient.interceptors.response.use(
       _retry?: boolean;
     };
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Don't redirect on 401 for auth/me endpoint - let authStore handle it gracefully
+    const isAuthMeEndpoint = originalRequest.url?.includes('/auth/me/');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthMeEndpoint) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });

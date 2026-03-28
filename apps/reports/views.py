@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.cache import cache
 from django.utils import timezone
 from rest_framework import permissions, status
@@ -69,13 +69,27 @@ class SummaryReportView(ReportBaseView):
         if cached:
             return Response(cached)
 
-        # Calculate summary
+        # Calculate summary and category breakdown
         summary = ReportCalculator.get_summary(project, start_date, end_date)
+        breakdown = ReportCalculator.get_category_breakdown(project, start_date, end_date)
+
+        # Structure the response to match the serializer
+        report_data = {
+            "period": summary["period"],
+            "summary": {
+                "period": summary["period"],
+                "total_income": summary["total_income"],
+                "total_expenses": summary["total_expenses"],
+                "net": summary["net"],
+                "transaction_count": summary["transaction_count"],
+            },
+            "by_category": breakdown,
+        }
 
         # Cache for 1 hour
-        cache.set(cache_key, summary, 3600)
+        cache.set(cache_key, report_data, 3600)
 
-        serializer = ReportSummarySerializer(summary)
+        serializer = ReportSummarySerializer(report_data)
         return Response(serializer.data)
 
 
@@ -143,7 +157,21 @@ class TrendsReportView(ReportBaseView):
             project, start_date, end_date, granularity
         )
 
-        return Response({"trends": trends})
+        # Add period information
+        if not start_date:
+            start_date = timezone.now().date() - timedelta(days=30)
+        if not end_date:
+            end_date = timezone.now().date()
+
+        response_data = {
+            "period": {
+                "start": start_date.isoformat() if start_date else None,
+                "end": end_date.isoformat() if end_date else None,
+            },
+            "trends": trends,
+        }
+
+        return Response(response_data)
 
 
 class MonthlyReportView(ReportBaseView):
@@ -162,8 +190,20 @@ class MonthlyReportView(ReportBaseView):
         except (NotFound, PermissionDenied) as e:
             raise e
 
-        year = request.query_params.get("year", type=int)
-        month = request.query_params.get("month", type=int)
+        year = request.query_params.get("year")
+        month = request.query_params.get("month")
+
+        # Convert to integers
+        if year:
+            try:
+                year = int(year)
+            except (ValueError, TypeError):
+                raise ValidationError("Year must be an integer")
+        if month:
+            try:
+                month = int(month)
+            except (ValueError, TypeError):
+                raise ValidationError("Month must be an integer")
 
         if year is None:
             year = timezone.now().year
@@ -257,7 +297,11 @@ class PeriodComparisonView(ReportBaseView):
         except (NotFound, PermissionDenied) as e:
             raise e
 
-        days = request.query_params.get("days", 30, int)
+        days = request.query_params.get("days", "30")
+        try:
+            days = int(days)
+        except (ValueError, TypeError):
+            raise ValidationError("Days must be an integer")
 
         if days < 1 or days > 365:
             raise ValidationError("Days must be between 1 and 365")

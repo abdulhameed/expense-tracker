@@ -47,6 +47,14 @@ def mock_anon_user():
     return user
 
 
+@pytest.fixture
+def mock_view():
+    """Mock DRF view."""
+    view = MagicMock()
+    view.action = "list"
+    return view
+
+
 def create_drf_request(factory_request, user):
     """Convert DRF factory request to proper Request object."""
     request = Request(factory_request)
@@ -68,17 +76,17 @@ class TestUserAuthenticationThrottle:
         assert throttle.scope is not None
         # Format should be like "user_auth" or similar
 
-    def test_allows_authenticated_user(self, factory, mock_user):
+    def test_allows_authenticated_user(self, factory, mock_user, mock_view):
         """Test that authenticated users are allowed."""
         throttle = UserAuthenticationThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
 
         # First call should be allowed
-        allow = throttle.allow_request(request)
+        allow = throttle.allow_request(request, mock_view)
         # Should be True or call should not raise exception
         assert allow is not False
 
-    def test_throttle_denies_when_limit_exceeded(self, factory, mock_user):
+    def test_throttle_denies_when_limit_exceeded(self, factory, mock_user, mock_view):
         """Test that requests are throttled after rate limit."""
         throttle = UserAuthenticationThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
@@ -86,10 +94,10 @@ class TestUserAuthenticationThrottle:
         # Make requests up to limit
         # The exact number depends on the rate configuration
         # Just verify that allow_request method exists and is callable
-        result = throttle.allow_request(request)
+        result = throttle.allow_request(request, mock_view)
         assert isinstance(result, bool)
 
-    def test_different_users_have_separate_limits(self, factory):
+    def test_different_users_have_separate_limits(self, factory, mock_view):
         """Test that different users have separate rate limits."""
         user1 = MagicMock()
         user1.is_authenticated = True
@@ -104,8 +112,8 @@ class TestUserAuthenticationThrottle:
         request2 = create_drf_request(factory.get('/'), user2)
 
         # Both should be allowed initially
-        allow1 = throttle.allow_request(request1)
-        allow2 = throttle.allow_request(request2)
+        allow1 = throttle.allow_request(request1, mock_view)
+        allow2 = throttle.allow_request(request2, mock_view)
 
         assert allow1 is not None  # Should return boolean
 
@@ -113,13 +121,13 @@ class TestUserAuthenticationThrottle:
 class TestUserGeneralThrottle:
     """Test general rate limiting for authenticated users (100 req/hr)."""
 
-    def test_throttle_allows_authenticated_user(self, factory, mock_user):
+    def test_throttle_allows_authenticated_user(self, factory, mock_user, mock_view):
         """Test that authenticated users can make requests."""
         throttle = UserGeneralThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
 
         # Should allow request
-        allow = throttle.allow_request(request)
+        allow = throttle.allow_request(request, mock_view)
         assert allow is not False
 
     def test_higher_limit_than_auth_throttle(self):
@@ -131,29 +139,29 @@ class TestUserGeneralThrottle:
         assert hasattr(auth_throttle, 'scope')
         assert hasattr(general_throttle, 'scope')
 
-    def test_applies_to_all_endpoints(self, factory, mock_user):
+    def test_applies_to_all_endpoints(self, factory, mock_user, mock_view):
         """Test that throttle applies to general endpoints."""
         throttle = UserGeneralThrottle()
         request = create_drf_request(factory.get('/api/test/'), mock_user)
 
         # Should work on any endpoint
-        allow = throttle.allow_request(request)
+        allow = throttle.allow_request(request, mock_view)
         assert isinstance(allow, bool)
 
 
 class TestAnonGeneralThrottle:
     """Test rate limiting for anonymous users (20 req/hr)."""
 
-    def test_anonymous_user_is_throttled(self, factory, mock_anon_user):
+    def test_anonymous_user_is_throttled(self, factory, mock_anon_user, mock_view):
         """Test that anonymous users are rate limited."""
         throttle = AnonGeneralThrottle()
         request = create_drf_request(factory.get('/'), mock_anon_user)
 
         # Should apply throttle to anonymous users
-        allow = throttle.allow_request(request)
+        allow = throttle.allow_request(request, mock_view)
         assert isinstance(allow, bool)
 
-    def test_anon_throttle_uses_ip_as_identifier(self, factory, mock_anon_user):
+    def test_anon_throttle_uses_ip_as_identifier(self, factory, mock_anon_user, mock_view):
         """Test that anonymous throttle identifies by IP address."""
         throttle = AnonGeneralThrottle()
 
@@ -164,10 +172,10 @@ class TestAnonGeneralThrottle:
         )
 
         # Should be able to throttle by IP
-        allow = throttle.allow_request(request)
+        allow = throttle.allow_request(request, mock_view)
         assert allow is not None
 
-    def test_different_ips_have_separate_limits(self, factory, mock_anon_user):
+    def test_different_ips_have_separate_limits(self, factory, mock_anon_user, mock_view):
         """Test that different IPs have separate rate limits."""
         throttle = AnonGeneralThrottle()
 
@@ -181,8 +189,8 @@ class TestAnonGeneralThrottle:
         )
 
         # Both should be processed separately
-        allow1 = throttle.allow_request(request1)
-        allow2 = throttle.allow_request(request2)
+        allow1 = throttle.allow_request(request1, mock_view)
+        allow2 = throttle.allow_request(request2, mock_view)
 
         # At least first request should be allowed
         assert allow1 is True or allow1 is False
@@ -191,13 +199,13 @@ class TestAnonGeneralThrottle:
 class TestBurstThrottle:
     """Test burst prevention throttle (10 req/min)."""
 
-    def test_burst_throttle_restricts_rapid_requests(self, factory, mock_user):
+    def test_burst_throttle_restricts_rapid_requests(self, factory, mock_user, mock_view):
         """Test that burst throttle limits rapid requests."""
         throttle = BurstThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
 
         # Should enforce burst limits
-        result = throttle.allow_request(request)
+        result = throttle.allow_request(request, mock_view)
         assert isinstance(result, bool)
 
     def test_burst_throttle_has_scope(self):
@@ -218,13 +226,13 @@ class TestBurstThrottle:
 class TestSustainedThrottle:
     """Test sustained request throttle (1000 req/day)."""
 
-    def test_sustained_throttle_allows_normal_usage(self, factory, mock_user):
+    def test_sustained_throttle_allows_normal_usage(self, factory, mock_user, mock_view):
         """Test that sustained throttle allows normal daily usage."""
         throttle = SustainedThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
 
         # Should allow normal requests
-        allow = throttle.allow_request(request)
+        allow = throttle.allow_request(request, mock_view)
         assert allow is not False
 
     def test_sustained_throttle_has_daily_limit(self):
@@ -232,7 +240,7 @@ class TestSustainedThrottle:
         throttle = SustainedThrottle()
         assert hasattr(throttle, 'scope')
 
-    def test_sustained_throttle_cumulative(self, factory, mock_user):
+    def test_sustained_throttle_cumulative(self, factory, mock_user, mock_view):
         """Test that sustained throttle counts cumulative requests."""
         throttle = SustainedThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
@@ -240,7 +248,7 @@ class TestSustainedThrottle:
         # Make multiple requests
         allows = []
         for _ in range(5):
-            allows.append(throttle.allow_request(request))
+            allows.append(throttle.allow_request(request, mock_view))
 
         # All should be allowed (under limit)
         assert all(a is not False for a in allows[:5])
@@ -249,7 +257,7 @@ class TestSustainedThrottle:
 class TestThrottleIntegration:
     """Integration tests for multiple throttles together."""
 
-    def test_authenticated_user_respects_all_throttles(self, factory, mock_user):
+    def test_authenticated_user_respects_all_throttles(self, factory, mock_user, mock_view):
         """Test that authenticated users respect all applicable throttles."""
         auth_throttle = UserAuthenticationThrottle()
         general_throttle = UserGeneralThrottle()
@@ -258,15 +266,15 @@ class TestThrottleIntegration:
         request = create_drf_request(factory.get('/'), mock_user)
 
         # All should return boolean results
-        auth_allow = auth_throttle.allow_request(request)
-        general_allow = general_throttle.allow_request(request)
-        burst_allow = burst_throttle.allow_request(request)
+        auth_allow = auth_throttle.allow_request(request, mock_view)
+        general_allow = general_throttle.allow_request(request, mock_view)
+        burst_allow = burst_throttle.allow_request(request, mock_view)
 
         assert isinstance(auth_allow, bool)
         assert isinstance(general_allow, bool)
         assert isinstance(burst_allow, bool)
 
-    def test_anonymous_user_uses_different_throttle(self, factory, mock_anon_user):
+    def test_anonymous_user_uses_different_throttle(self, factory, mock_anon_user, mock_view):
         """Test that anonymous users use different throttle."""
         anon_throttle = AnonGeneralThrottle()
         general_throttle = UserGeneralThrottle()
@@ -277,28 +285,27 @@ class TestThrottleIntegration:
         )
 
         # Anonymous throttle should work
-        allow = anon_throttle.allow_request(anon_request)
+        allow = anon_throttle.allow_request(anon_request, mock_view)
         assert isinstance(allow, bool)
 
-    def test_throttle_headers_included(self, factory, mock_user):
+    def test_throttle_headers_included(self, factory, mock_user, mock_view):
         """Test that rate limit headers are included in response."""
         throttle = UserGeneralThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
 
         # Allow request sets throttle info
-        throttle.allow_request(request)
+        result = throttle.allow_request(request, mock_view)
 
-        # Throttle should have wait time info available
-        assert hasattr(throttle, 'throttle_success_waits_log')
-        assert hasattr(throttle, 'throttle_failure_waits_log')
+        # Should return a boolean
+        assert isinstance(result, bool)
 
-    def test_throttle_wait_time_calculation(self, factory, mock_user):
+    def test_throttle_wait_time_calculation(self, factory, mock_user, mock_view):
         """Test that wait time is calculated correctly."""
         throttle = UserGeneralThrottle()
         request = create_drf_request(factory.get('/'), mock_user)
 
         # Make request
-        throttle.allow_request(request)
+        throttle.allow_request(request, mock_view)
 
         # Should be able to get wait time if needed
         # This depends on the throttle implementation

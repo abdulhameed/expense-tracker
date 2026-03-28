@@ -79,14 +79,9 @@ def invalidate_cache(key_prefix: str, *args, **kwargs):
         *args: Arguments for specific key (if provided, only that key is invalidated)
         **kwargs: Keyword arguments for specific key
     """
-    if args or kwargs:
-        # Invalidate specific key
-        cache_key = make_cache_key(key_prefix, *args, **kwargs)
-        cache.delete(cache_key)
-    else:
-        # Would need to store all keys with prefix to invalidate all
-        # For now, just document this limitation
-        pass
+    # Always invalidate the specific cache key created with the given arguments
+    cache_key = make_cache_key(key_prefix, *args, **kwargs)
+    cache.delete(cache_key)
 
 
 class CacheMixin:
