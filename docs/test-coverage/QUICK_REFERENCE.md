@@ -133,4 +133,3 @@ apps/authentication/tests/
 3. Caching/monitoring (utils) - 388 LOC, 0 tests
 4. Health checks (health) - 194 LOC, 0 tests
 5. Celery tasks (multiple) - 202 LOC, 15 tests
-
