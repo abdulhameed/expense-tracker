@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTransactionStore } from '@/store/transactionStore';
-import { MainLayout, Card, Breadcrumb, Input, Select, Button, Spinner, Modal } from '@/components';
+import { MainLayout, Card, Breadcrumb, Input, Select, Button, Spinner, Modal, FilterModal } from '@/components';
 import { formatCurrency, formatDate } from '@/utils/formatters';
+import { FilterCriteria } from '@/types/api';
 
 export function Transactions() {
-  const { transactions, categories, fetchTransactions, fetchCategories, deleteTransaction, isLoading, error } =
-    useTransactionStore();
+  const {
+    transactions,
+    categories,
+    filterPresets,
+    fetchTransactions,
+    fetchCategories,
+    deleteTransaction,
+    applyFilters,
+    saveFilterPreset,
+    deleteFilterPreset,
+    isLoading,
+    error,
+  } = useTransactionStore();
 
   // Filters
   const [type, setType] = useState<'all' | 'income' | 'expense'>('all');
@@ -15,6 +27,12 @@ export function Transactions() {
   const [sortBy, setSortBy] = useState<'date' | 'amount'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(1);
+
+  // Advanced Filters & Presets
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState<string>('');
+  const [presetName, setPresetName] = useState('');
+  const [showPresetModal, setShowPresetModal] = useState(false);
 
   // UI State
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -74,6 +92,62 @@ export function Transactions() {
     }
   };
 
+  const handleApplyFilters = async (filters: FilterCriteria) => {
+    try {
+      await applyFilters(filters);
+      setShowFilterModal(false);
+      setPage(1);
+    } catch (err) {
+      console.error('Failed to apply filters:', err);
+    }
+  };
+
+  const handleSavePreset = async () => {
+    if (!presetName.trim()) {
+      alert('Please enter a preset name');
+      return;
+    }
+
+    try {
+      const currentFilters: FilterCriteria = {
+        searchQuery: search,
+        transactionType: type === 'all' ? undefined : (type as any),
+        categories: categoryId ? [parseInt(categoryId)] : undefined,
+      };
+
+      await saveFilterPreset(presetName, currentFilters);
+      setPresetName('');
+      setShowPresetModal(false);
+    } catch (err) {
+      console.error('Failed to save preset:', err);
+    }
+  };
+
+  const handleLoadPreset = async (presetId: string) => {
+    const preset = filterPresets.find((p) => p.id.toString() === presetId);
+    if (preset) {
+      try {
+        await applyFilters(preset.criteria);
+        setSelectedPreset(presetId);
+      } catch (err) {
+        console.error('Failed to load preset:', err);
+      }
+    }
+  };
+
+  const handleDeletePreset = async (presetId: string) => {
+    if (confirm('Are you sure you want to delete this preset?')) {
+      try {
+        await deleteFilterPreset(parseInt(presetId));
+        if (selectedPreset === presetId) {
+          setSelectedPreset('');
+        }
+      } catch (err) {
+        console.error('Failed to delete preset:', err);
+      }
+    }
+  };
+
   const categoryMap = categories.reduce(
     (acc, cat) => {
       acc[cat.id] = cat.name;
@@ -101,6 +175,46 @@ export function Transactions() {
         <Link to="/transactions/new">
           <Button>+ Add Transaction</Button>
         </Link>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="mb-8 flex gap-3 flex-wrap">
+        <Button onClick={() => setShowFilterModal(true)} className="bg-secondary-600 hover:bg-secondary-700 text-white">
+          ⚙️ Advanced Filters
+        </Button>
+        {filterPresets.length > 0 && (
+          <div className="flex gap-2 items-center">
+            <Select
+              value={selectedPreset}
+              onChange={(e) => {
+                if (e.target.value) {
+                  handleLoadPreset(e.target.value);
+                }
+              }}
+              options={[
+                { value: '', label: 'Load Preset...' },
+                ...filterPresets.map((preset) => ({
+                  value: preset.id.toString(),
+                  label: preset.name,
+                })),
+              ]}
+            />
+            {selectedPreset && (
+              <Button
+                onClick={() => handleDeletePreset(selectedPreset)}
+                className="px-3 py-2 bg-error-100 text-error-600 hover:bg-error-200 text-sm"
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+        )}
+        <Button
+          onClick={() => setShowPresetModal(true)}
+          className="px-4 py-2 bg-primary-100 text-primary-600 hover:bg-primary-200 text-sm"
+        >
+          💾 Save Preset
+        </Button>
       </div>
 
       {/* Filters */}
@@ -314,6 +428,47 @@ export function Transactions() {
         <p className="text-neutral-700">
           Are you sure you want to delete this transaction? This action cannot be undone.
         </p>
+      </Modal>
+
+      {/* Advanced Filter Modal */}
+      <FilterModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        onApply={handleApplyFilters}
+        categories={categories}
+      />
+
+      {/* Save Preset Modal */}
+      <Modal
+        isOpen={showPresetModal}
+        onClose={() => setShowPresetModal(false)}
+        title="Save Filter Preset"
+      >
+        <div className="space-y-4">
+          <Input
+            label="Preset Name"
+            placeholder="e.g., Groceries Expenses"
+            value={presetName}
+            onChange={(e) => setPresetName(e.target.value)}
+            autoFocus
+          />
+          <div className="flex gap-3 justify-end pt-4 border-t border-neutral-200">
+            <Button
+              type="button"
+              onClick={() => setShowPresetModal(false)}
+              className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleSavePreset}
+              className="px-4 py-2 bg-primary-600 text-white hover:bg-primary-700 rounded-lg"
+            >
+              Save Preset
+            </Button>
+          </div>
+        </div>
       </Modal>
 
       {error && (

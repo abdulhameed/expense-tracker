@@ -28,6 +28,7 @@ export { PieChart } from './charts/PieChart';
 
 // Form Components
 export { TransactionModal } from './TransactionModal';
+export { FilterModal } from './FilterModal';
 
 // Route Components
 export { ProtectedRoute } from './ProtectedRoute';

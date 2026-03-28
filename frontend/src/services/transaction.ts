@@ -10,6 +10,14 @@ import {
   DashboardStats,
   ReportData,
   AnalyticsData,
+  Budget,
+  BudgetProgress,
+  ExportRequest,
+  ExportResponse,
+  FilterPreset,
+  FilterCriteria,
+  SearchResult,
+  RecurringTransactionPrediction,
 } from '@/types/api';
 
 /**
@@ -203,5 +211,163 @@ export const categoryService = {
    */
   async deleteCategory(id: number): Promise<void> {
     await apiClient.delete(`/categories/${id}/`);
+  },
+
+  // ========== Budget Management ==========
+
+  /**
+   * Get all budgets for the user
+   */
+  async getBudgets(): Promise<Budget[]> {
+    const response = await apiClient.get<Budget[]>('/budgets/');
+    return response.data;
+  },
+
+  /**
+   * Get budget progress for all active budgets
+   */
+  async getBudgetProgress(): Promise<BudgetProgress[]> {
+    const response = await apiClient.get<BudgetProgress[]>('/budgets/progress/');
+    return response.data;
+  },
+
+  /**
+   * Create a new budget
+   */
+  async createBudget(data: Omit<Budget, 'id' | 'created_at' | 'updated_at'>): Promise<Budget> {
+    const response = await apiClient.post<Budget>('/budgets/', data);
+    return response.data;
+  },
+
+  /**
+   * Update an existing budget
+   */
+  async updateBudget(id: number, data: Partial<Omit<Budget, 'id' | 'created_at' | 'updated_at'>>): Promise<Budget> {
+    const response = await apiClient.patch<Budget>(`/budgets/${id}/`, data);
+    return response.data;
+  },
+
+  /**
+   * Delete a budget
+   */
+  async deleteBudget(id: number): Promise<void> {
+    await apiClient.delete(`/budgets/${id}/`);
+  },
+
+  // ========== Data Export ==========
+
+  /**
+   * Export data to PDF, CSV, or XLSX format
+   */
+  async exportData(request: ExportRequest): Promise<ExportResponse> {
+    const response = await apiClient.post<ExportResponse>('/export/', request);
+    return response.data;
+  },
+
+  /**
+   * Get list of previously generated exports
+   */
+  async getExports(): Promise<ExportResponse[]> {
+    const response = await apiClient.get<ExportResponse[]>('/export/history/');
+    return response.data;
+  },
+
+  /**
+   * Delete an export file
+   */
+  async deleteExport(fileUrl: string): Promise<void> {
+    await apiClient.delete(`/export/${encodeURIComponent(fileUrl)}/`);
+  },
+
+  // ========== Advanced Filtering & Search ==========
+
+  /**
+   * Search transactions with full-text search
+   */
+  async searchTransactions(query: string): Promise<SearchResult[]> {
+    const response = await apiClient.get<SearchResult[]>(`/search/transactions/?q=${encodeURIComponent(query)}`);
+    return response.data;
+  },
+
+  /**
+   * Get all saved filter presets
+   */
+  async getFilterPresets(): Promise<FilterPreset[]> {
+    const response = await apiClient.get<FilterPreset[]>('/filters/presets/');
+    return response.data;
+  },
+
+  /**
+   * Save a new filter preset
+   */
+  async saveFilterPreset(name: string, filters: FilterCriteria): Promise<FilterPreset> {
+    const response = await apiClient.post<FilterPreset>('/filters/presets/', {
+      name,
+      filters,
+    });
+    return response.data;
+  },
+
+  /**
+   * Update a filter preset
+   */
+  async updateFilterPreset(id: number, data: Partial<FilterPreset>): Promise<FilterPreset> {
+    const response = await apiClient.patch<FilterPreset>(`/filters/presets/${id}/`, data);
+    return response.data;
+  },
+
+  /**
+   * Delete a filter preset
+   */
+  async deleteFilterPreset(id: number): Promise<void> {
+    await apiClient.delete(`/filters/presets/${id}/`);
+  },
+
+  /**
+   * Apply advanced filters to transactions
+   */
+  async applyFilters(filters: FilterCriteria): Promise<TransactionListResponse> {
+    const response = await apiClient.post<TransactionListResponse>('/transactions/filter/', filters);
+    return response.data;
+  },
+
+  // ========== Recurring Transactions Enhancement ==========
+
+  /**
+   * Get recurring transaction predictions
+   */
+  async getRecurringPredictions(): Promise<RecurringTransactionPrediction[]> {
+    const response = await apiClient.get<RecurringTransactionPrediction[]>('/transactions/recurring/predictions/');
+    return response.data;
+  },
+
+  /**
+   * Auto-create upcoming recurring transactions
+   */
+  async autoCreateRecurringTransactions(): Promise<Transaction[]> {
+    const response = await apiClient.post<Transaction[]>('/transactions/recurring/auto-create/', {});
+    return response.data;
+  },
+
+  /**
+   * Get recurring transactions with enhanced details
+   */
+  async getRecurringTransactions(): Promise<Transaction[]> {
+    const response = await apiClient.get<Transaction[]>('/transactions/recurring/');
+    return response.data;
+  },
+
+  /**
+   * Update recurrence pattern for a transaction
+   */
+  async updateRecurrencePattern(
+    transactionId: number,
+    pattern: any
+  ): Promise<Transaction> {
+    const response = await apiClient.patch<Transaction>(
+      `/transactions/${transactionId}/recurrence/`,
+      { recurrence_pattern: pattern }
+    );
+    return response.data;
   },
 };

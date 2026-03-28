@@ -231,3 +231,115 @@ export interface AnalyticsData {
     average_daily_income: number;
   };
 }
+
+// Budget types
+export interface Budget {
+  id: number;
+  category_id: number;
+  category: Category;
+  limit_amount: number;
+  period: 'monthly' | 'quarterly' | 'yearly' | 'custom';
+  start_date: string;
+  end_date?: string;
+  alert_threshold: number; // percentage (e.g., 80 for 80%)
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BudgetProgress {
+  budget_id: number;
+  category_name: string;
+  limit_amount: number;
+  spent_amount: number;
+  remaining_amount: number;
+  percentage_used: number;
+  is_exceeded: boolean;
+  alert_triggered: boolean;
+}
+
+// Export types
+export interface ExportRequest {
+  format: 'pdf' | 'csv' | 'xlsx';
+  data_type: 'transactions' | 'report' | 'analytics';
+  start_date?: string;
+  end_date?: string;
+  filters?: Record<string, any>;
+}
+
+export interface ExportResponse {
+  file_url: string;
+  file_name: string;
+  format: string;
+  created_at: string;
+}
+
+// Search and filter types
+export interface FilterPreset {
+  id: number;
+  name: string;
+  filters: FilterCriteria;
+  is_default: boolean;
+  created_at: string;
+}
+
+export interface FilterCriteria {
+  dateRange?: {
+    start_date: string;
+    end_date: string;
+  };
+  categories?: number[];
+  transactionType?: 'income' | 'expense';
+  amountRange?: {
+    min: number;
+    max: number;
+  };
+  searchQuery?: string;
+  tags?: string[];
+  paymentMethods?: string[];
+}
+
+export interface SearchResult {
+  id: number;
+  title: string;
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  date: string;
+  category_name: string;
+  relevance_score: number;
+}
+
+// Enhanced recurrence types
+export type RecurrenceFrequency =
+  | 'daily'
+  | 'weekly'
+  | 'bi_weekly'
+  | 'monthly'
+  | 'bi_monthly'
+  | 'quarterly'
+  | 'semi_annual'
+  | 'yearly';
+
+export interface RecurrencePattern {
+  frequency: RecurrenceFrequency;
+  interval: number; // every N periods
+  end_date?: string;
+  max_occurrences?: number;
+  on_day?: number; // for monthly/yearly (1-31)
+  on_month?: number; // for yearly (1-12)
+}
+
+export interface RecurringTransactionPrediction {
+  transaction_id: number;
+  next_occurrence_date: string;
+  estimated_amount: number;
+  frequency: RecurrenceFrequency;
+  last_occurrence: string;
+}
+
+export interface RecurringTransactionFull extends Transaction {
+  recurrence_pattern: RecurrencePattern;
+  next_auto_occurrence: string;
+  total_occurrences: number;
+}

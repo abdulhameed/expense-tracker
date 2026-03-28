@@ -55,13 +55,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: mockTransactions,
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -80,13 +87,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: mockTransactions,
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -107,13 +121,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: [],
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: true,
       error: null,
     });
@@ -131,13 +152,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: [],
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -155,14 +183,21 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
     const user = userEvent.setup();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: mockTransactions,
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -185,13 +220,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: mockTransactions,
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -211,13 +253,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: mockTransactions,
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -237,13 +286,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: [],
       categories: [],
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });
@@ -261,13 +317,20 @@ describe('Transactions Page', () => {
     const mockFetchTransactions = vi.fn();
     const mockFetchCategories = vi.fn();
     const mockDeleteTransaction = vi.fn();
+    const mockApplyFilters = vi.fn();
+    const mockSaveFilterPreset = vi.fn();
+    const mockDeleteFilterPreset = vi.fn();
 
     (useTransactionStore as any).mockReturnValue({
       transactions: mockTransactions,
       categories: mockCategories,
+      filterPresets: [],
       fetchTransactions: mockFetchTransactions,
       fetchCategories: mockFetchCategories,
       deleteTransaction: mockDeleteTransaction,
+      applyFilters: mockApplyFilters,
+      saveFilterPreset: mockSaveFilterPreset,
+      deleteFilterPreset: mockDeleteFilterPreset,
       isLoading: false,
       error: null,
     });

@@ -12,6 +12,8 @@ import { TransactionDetail } from '@/pages/TransactionDetail';
 import { Categories } from '@/pages/Categories';
 import { Reports } from '@/pages/Reports';
 import { Analytics } from '@/pages/Analytics';
+import { Budgets } from '@/pages/Budgets';
+import { Export } from '@/pages/Export';
 import { VerifyEmail } from '@/pages/VerifyEmail';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { ResetPassword } from '@/pages/ResetPassword';
@@ -104,6 +106,26 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Analytics />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Budget Management Page */}
+        <Route
+          path="/budgets"
+          element={
+            <ProtectedRoute>
+              <Budgets />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Data Export Page */}
+        <Route
+          path="/export"
+          element={
+            <ProtectedRoute>
+              <Export />
             </ProtectedRoute>
           }
         />
