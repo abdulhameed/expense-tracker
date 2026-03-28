@@ -1,0 +1,211 @@
+================================================================================
+COMPLETE FILE STRUCTURE & TEST STATUS MAP
+================================================================================
+
+SECURITY APP (970 LOC) - CRITICAL GAPS
+├── configuration.py (333 LOC, 8 methods)
+│   └── ✓ TESTED: test_security.py (27 tests total)
+├── authentication.py (236 LOC, 10 methods) ❌ UNTESTED
+├── validators.py (182 LOC, 10 methods) ❌ UNTESTED
+├── middleware.py (130 LOC, 5 methods) ❌ UNTESTED
+├── throttling.py (69 LOC, 3 methods) ❌ UNTESTED
+└── tests/
+    └── test_security.py (379 LOC, 27 tests)
+
+ACTION: Create test_authentication.py, test_validators.py, 
+        test_middleware.py, test_throttling.py
+
+================================================================================
+
+ACTIVITY APP (652 LOC) - SIGNALS UNTESTED
+├── signals.py (274 LOC, 8+ handlers) ❌ UNTESTED (CRITICAL)
+│   - log_transaction
+│   - log_transaction_delete
+│   - log_category
+│   - log_budget
+│   - log_document
+│   - log_project
+│   - log_member
+│   - log_invitation
+├── admin.py (105 LOC) ❌ UNTESTED
+├── models.py (87 LOC) ✓ TESTED
+├── views.py (81 LOC, 3 methods) ✓ TESTED
+├── serializers.py (53 LOC) ✓ TESTED
+├── utils.py (28 LOC) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (323 LOC, 18 tests)
+    └── test_models.py (287 LOC, 15 tests)
+
+ACTION: Create test_signals.py (HIGH PRIORITY)
+
+================================================================================
+
+REPORTS APP (686 LOC) - UTILITIES & SERIALIZERS UNTESTED
+├── views.py (280 LOC, 9 methods) ✓ TESTED via test_api.py
+├── utils.py (298 LOC, 7 methods) ✓ TESTED via test_utils.py
+├── serializers.py (82 LOC, 4 classes) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (465 LOC, 21 tests)
+    └── test_utils.py (561 LOC, 19 tests)
+
+ACTION: Create test_serializers.py
+
+================================================================================
+
+PROJECTS APP (613 LOC) - GOOD COVERAGE WITH GAPS
+├── views.py (301 LOC, 14 methods) ✓ TESTED (52 tests)
+├── models.py (119 LOC) ✓ TESTED (24 tests)
+├── serializers.py (69 LOC, 4 classes) ❌ UNTESTED
+├── tasks.py (28 LOC) ❌ UNTESTED (send_invitation_email)
+├── admin.py (28 LOC) ❌ UNTESTED
+├── permissions.py (26 LOC) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (429 LOC, 52 tests)
+    └── test_models.py (148 LOC, 24 tests)
+
+ACTION: Create test_tasks.py, test_serializers.py, test_permissions.py
+
+================================================================================
+
+BUDGETS APP (580 LOC) - TASKS WEAK, SERIALIZERS MISSING
+├── views.py (227 LOC, 8 methods) ✓ TESTED
+├── tasks.py (110 LOC) ⚠️ UNDERTESTED (15 tests for 110 LOC)
+│   - check_budget_alerts()
+│   - send_budget_alert()
+│   - _calculate_spent()
+├── serializers.py (97 LOC, 3 classes) ❌ UNTESTED
+├── models.py (60 LOC) ✓ TESTED
+├── admin.py (64 LOC) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (534 LOC, 23 tests)
+    ├── test_models.py (202 LOC, 23 tests)
+    └── test_tasks.py (448 LOC, 15 tests) ⚠️ NEEDS +10 TESTS
+
+ACTION: Expand test_tasks.py (+10 tests), Create test_serializers.py
+
+================================================================================
+
+TRANSACTIONS APP (551 LOC) - UTILITIES & FILTERS MISSING
+├── views.py (277 LOC, 16 methods) ✓ TESTED (33 tests)
+├── models.py (95 LOC) ✓ TESTED (13 tests) - could use more
+├── serializers.py (77 LOC, 3 classes) ❌ UNTESTED
+├── urls.py (51 LOC)
+├── admin.py (26 LOC) ❌ UNTESTED
+├── filters.py (19 LOC) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (383 LOC, 33 tests)
+    └── test_models.py (79 LOC, 13 tests)
+
+ACTION: Create test_serializers.py, test_filters.py
+
+================================================================================
+
+AUTHENTICATION APP (487 LOC) - GOOD COVERAGE, TASKS MISSING
+├── views.py (176 LOC, 9 methods) ✓ TESTED (42 tests)
+├── models.py (106 LOC) ✓ TESTED (27 tests)
+├── serializers.py (64 LOC, 4 classes) ❌ UNTESTED
+├── tasks.py (64 LOC) ❌ UNTESTED
+│   - send_email_verification() (24 LOC)
+│   - send_password_reset_email() (24 LOC)
+├── admin.py (48 LOC) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (387 LOC, 42 tests)
+    └── test_models.py (166 LOC, 27 tests)
+
+ACTION: Create test_tasks.py, test_serializers.py
+
+================================================================================
+
+UTILS APP (424 LOC) - ZERO TESTS!!!
+├── monitoring.py (217 LOC) ❌ UNTESTED
+│   - Metrics collection
+│   - Performance tracking
+├── caching.py (171 LOC) ❌ UNTESTED
+│   - Cache decorators
+│   - Cache utilities
+├── __init__.py (36 LOC)
+└── NO TESTS DIRECTORY
+
+ACTION: Create tests/ directory with test_monitoring.py, test_caching.py
+
+================================================================================
+
+DOCUMENTS APP (261 LOC) - INCOMPLETE
+├── views.py (98 LOC, 8 methods) ✓ TESTED (24 tests)
+├── serializers.py (79 LOC, 2 classes) ❌ UNTESTED
+├── models.py (46 LOC) ✓ TESTED (7 tests - WEAK)
+├── urls.py (21 LOC)
+├── admin.py (11 LOC) ❌ UNTESTED
+└── tests/
+    ├── test_api.py (292 LOC, 24 tests)
+    └── test_models.py (46 LOC, 7 tests) ⚠️ WEAK
+
+ACTION: Create test_serializers.py, expand test_models.py
+
+================================================================================
+
+HEALTH APP (225 LOC) - ZERO TESTS!!!
+├── views.py (194 LOC, 12 methods) ❌ UNTESTED
+│   - Database health checks
+│   - Cache health checks
+│   - Service status checks
+├── urls.py (18 LOC)
+├── apps.py (12 LOC)
+├── __init__.py (1 LOC)
+└── NO TESTS AT ALL
+
+ACTION: Create tests/ directory with test_api.py
+
+================================================================================
+
+SUMMARY OF ACTIONS REQUIRED
+================================================================================
+
+Files to CREATE (13 new test files):
+
+CRITICAL (Phase 1):
+  apps/security/tests/
+    ✓ test_authentication.py (NEW)
+    ✓ test_validators.py (NEW)
+    ✓ test_middleware.py (NEW)
+    ✓ test_throttling.py (NEW)
+  
+  apps/activity/tests/
+    ✓ test_signals.py (NEW)
+  
+  apps/utils/tests/
+    ✓ test_monitoring.py (NEW)
+    ✓ test_caching.py (NEW)
+  
+  apps/health/tests/
+    ✓ test_api.py (NEW)
+
+IMPORTANT (Phase 2):
+  apps/authentication/tests/
+    ✓ test_tasks.py (NEW)
+  
+  apps/budgets/tests/
+    ✓ test_serializers.py (NEW)
+  
+  apps/projects/tests/
+    ✓ test_tasks.py (NEW)
+    ✓ test_permissions.py (NEW)
+    ✓ test_serializers.py (NEW)
+  
+  apps/transactions/tests/
+    ✓ test_filters.py (NEW)
+    ✓ test_serializers.py (NEW)
+
+POLISH (Phase 3):
+  apps/reports/tests/
+    ✓ test_serializers.py (NEW)
+  
+  apps/documents/tests/
+    ✓ test_serializers.py (NEW)
+
+Files to EXPAND (2 files):
+  - apps/budgets/tests/test_tasks.py (+10 tests)
+  - apps/documents/tests/test_models.py (+10-15 tests)
+
+TOTAL: 13 NEW FILES + 2 FILES TO EXPAND = ~130-170 NEW TESTS
+

@@ -1,0 +1,142 @@
+================================================================================
+EXPENSE TRACKER - APP COVERAGE SUMMARY
+================================================================================
+
+RANKED BY CODE COMPLEXITY & TEST COVERAGE GAP
+
+App            | LOC  | Files | Tests | Test% | Status             | Priority
+---------------|------|-------|-------|-------|---------------------|----------
+security       | 970  |   6   |  27   | ~10%  | CRITICAL           | P0
+reports        | 686  |   4   |  40   | ~35%  | HIGH               | P1
+activity       | 652  |   9   |  33   | ~20%  | HIGH (signals)     | P0
+projects       | 613  |   8   |  76   | ~60%  | MEDIUM             | P1
+budgets        | 580  |   7   |  61   | ~50%  | MEDIUM-HIGH        | P1
+transactions   | 551  |   6   |  46   | ~45%  | MEDIUM             | P2
+authentication | 487  |   7   |  69   | ~60%  | GOOD (tasks)       | P1
+utils          | 424  |   3   |   0   |  ~0%  | CRITICAL (no test) | P0
+documents      | 261  |   6   |  31   | ~40%  | MEDIUM             | P2
+health         | 225  |   2   |   0   |  ~0%  | LOW (no test)      | P1
+---------------|------|-------|-------|-------|---------------------|----------
+TOTAL          |5,470 |  58   | 394   | ~45%  |                    |
+
+================================================================================
+CRITICAL FILES WITH ZERO TEST COVERAGE
+================================================================================
+
+Activity:
+  - signals.py (274 LOC) - 8+ signal handlers
+  - admin.py (105 LOC)
+
+Security:
+  - authentication.py (236 LOC) - JWT & token validation
+  - validators.py (182 LOC) - Custom validators
+  - middleware.py (130 LOC) - Security headers & IP whitelist
+  - throttling.py (69 LOC) - Rate limiting
+
+Utils:
+  - monitoring.py (217 LOC) - Performance metrics
+  - caching.py (171 LOC) - Cache decorators
+
+Health:
+  - views.py (194 LOC) - 12 health check methods
+
+================================================================================
+MISSING TEST FILES BY PRIORITY
+================================================================================
+
+PHASE 1 - CRITICAL (Must add immediately)
+  security/tests/
+    - test_authentication.py (NEW)
+    - test_validators.py (NEW)
+    - test_middleware.py (NEW)
+    - test_throttling.py (NEW)
+  
+  activity/tests/
+    - test_signals.py (NEW)
+  
+  utils/tests/
+    - test_monitoring.py (NEW)
+    - test_caching.py (NEW)
+  
+  health/tests/
+    - test_api.py (NEW)
+
+  Expected: 60-80 new tests
+
+PHASE 2 - IMPORTANT (High impact)
+  authentication/tests/
+    - test_tasks.py (NEW)
+  
+  budgets/tests/
+    - test_tasks.py (EXPAND by 10+ tests)
+    - test_serializers.py (NEW)
+  
+  projects/tests/
+    - test_tasks.py (NEW)
+    - test_permissions.py (NEW)
+    - test_serializers.py (NEW)
+  
+  transactions/tests/
+    - test_filters.py (NEW)
+    - test_serializers.py (NEW)
+
+  Expected: 40-50 new tests
+
+PHASE 3 - POLISH (Completeness)
+  reports/tests/
+    - test_serializers.py (NEW)
+  
+  documents/tests/
+    - test_serializers.py (NEW)
+  
+  (Admin tests for 6 apps - low priority)
+
+  Expected: 30-40 new tests
+
+================================================================================
+ESTIMATED EFFORT & IMPACT
+================================================================================
+
+Phase | Tests | Days | Estimated Coverage
+------|-------|------|-------------------
+1     | 60-80 | 4-5  | 60-65%
+2     | 40-50 | 4-5  | 70-75%
+3     | 30-40 | 3-4  | 80%+
+TOTAL | 130-170 | 11-14 | Target Met
+
+================================================================================
+TOP 5 COMPONENTS NEEDING TESTS
+================================================================================
+
+1. Activity Signals (274 LOC) - 8 signal handlers
+   - Log creation/update/deletion of: transactions, budgets, documents, projects
+   
+2. Security Module (617 LOC untested) - Authentication & validation
+   - JWT validation, custom validators, middleware, rate limiting
+   
+3. Utils Module (388 LOC) - Performance & caching utilities
+   - Metrics collection, cache decorators, monitoring
+   
+4. Health Checks (194 LOC) - 12 health check endpoints
+   - DB, cache, and service status checks
+   
+5. Celery Tasks (202 LOC) - Email and notification tasks
+   - Email verification, password reset, invitations, budget alerts
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+
+- Security app is largest (970 LOC) but lowest tested (10% coverage)
+- Activity signals are completely untested (274 LOC)
+- Utils module has ZERO tests despite 424 LOC
+- Health checks have ZERO tests
+- Serializer tests missing from 6 apps (468 LOC combined)
+- Task tests weak in 3 apps (only 15 tests for 202 LOC)
+
+REACHING 80% COVERAGE REQUIRES:
+  - 130-170 new test methods
+  - Focus on security, activity, utils, and health apps first
+  - Then fill in serializer and task tests
+  - Estimated 2-3 weeks for complete coverage
+
