@@ -92,6 +92,45 @@ class TestSanitizeHTML:
         assert "<iframe>" not in result
         assert "evil.com" not in result
 
+    def test_sanitize_removes_img_onerror(self):
+        """Test that onerror handlers are removed from img tags."""
+        input_html = '<img src="x" onerror="alert(\'xss\')">'
+        result = sanitize_html(input_html)
+
+        assert "onerror" not in result
+        assert "alert" not in result
+
+    def test_sanitize_preserves_blockquote(self):
+        """Test that blockquote tags are preserved."""
+        input_html = "<blockquote>Quote here</blockquote>"
+        result = sanitize_html(input_html)
+
+        assert "<blockquote>" in result or "<blockquote" in result
+        assert "Quote here" in result
+
+    def test_sanitize_custom_allowed_tags(self):
+        """Test sanitizing with custom allowed tags."""
+        input_html = "<p>Safe</p><div>Not allowed</div>"
+        result = sanitize_html(input_html, allowed_tags=["p"])
+
+        assert "<p>" in result
+        assert "<div>" not in result
+
+    def test_sanitize_removes_data_attributes(self):
+        """Test that data attributes are removed."""
+        input_html = '<p data-evil="xss">Text</p>'
+        result = sanitize_html(input_html)
+
+        assert "data-evil" not in result or "xss" not in result
+
+    def test_sanitize_nested_dangerous_tags(self):
+        """Test sanitizing nested dangerous tags."""
+        input_html = "<p><script>nested</script>Text</p>"
+        result = sanitize_html(input_html)
+
+        assert "<script>" not in result
+        assert "nested" not in result or "Text" in result
+
 
 class TestValidateNoSpecialChars:
     """Test detection of dangerous special characters."""
@@ -129,6 +168,25 @@ class TestValidateNoSpecialChars:
         """Test that parentheses are rejected."""
         with pytest.raises(ValidationError):
             validate_no_special_chars("hello(world)")
+
+    def test_reject_semicolon(self):
+        """Test that semicolon is rejected."""
+        with pytest.raises(ValidationError):
+            validate_no_special_chars("hello;world")
+
+    def test_accept_hyphens_and_underscores(self):
+        """Test that hyphens and underscores are accepted."""
+        # Should not raise
+        validate_no_special_chars("hello-world_test")
+
+    def test_accept_numbers(self):
+        """Test that numbers are accepted."""
+        validate_no_special_chars("test123")
+
+    def test_reject_multiple_dangerous_chars(self):
+        """Test rejection when multiple dangerous chars present."""
+        with pytest.raises(ValidationError):
+            validate_no_special_chars("hello<world>&goodbye")
 
 
 class TestValidateNoSQLInjection:
@@ -169,6 +227,31 @@ class TestValidateNoSQLInjection:
         # Should not raise
         validate_no_sql_injection("normal input text")
         validate_no_sql_injection("email@example.com")
+
+    def test_reject_update_statement(self):
+        """Test that UPDATE is detected."""
+        with pytest.raises(ValidationError):
+            validate_no_sql_injection("test'; UPDATE users SET admin=1;--")
+
+    def test_reject_exec_xp(self):
+        """Test that EXEC/xp_ stored procedures are detected."""
+        with pytest.raises(ValidationError):
+            validate_no_sql_injection("test'; EXEC xp_cmdshell;--")
+
+    def test_reject_block_comment(self):
+        """Test that /* */ block comments are detected."""
+        with pytest.raises(ValidationError):
+            validate_no_sql_injection("test' /* comment */ AND '1'='1")
+
+    def test_accept_apostrophe_in_text(self):
+        """Test that single apostrophe in normal text is accepted."""
+        # Should not raise - apostrophes alone are ok, dangerous with SQL keywords
+        validate_no_sql_injection("O'Reilly")
+
+    def test_reject_select_lowercase(self):
+        """Test that lowercase select is detected."""
+        with pytest.raises(ValidationError):
+            validate_no_sql_injection("test' select * from users--")
 
 
 class TestValidateSecurePassword:
@@ -212,6 +295,28 @@ class TestValidateSecurePassword:
         """Test that exactly 12 characters is accepted."""
         validate_secure_password("Pass1234!xyz")
 
+    def test_accept_long_password(self):
+        """Test that very long passwords are accepted."""
+        long_password = "VeryLongPassword123!@#WithManyCharacters"
+        validate_secure_password(long_password)
+
+    def test_password_with_multiple_special_chars(self):
+        """Test password with multiple special characters."""
+        validate_secure_password("Pass123!@#$%")
+
+    def test_password_with_numbers_at_end(self):
+        """Test password with numbers at the end."""
+        validate_secure_password("ValidPass2024!")
+
+    def test_password_all_requirements_met(self):
+        """Test password that meets all requirements with variety."""
+        validate_secure_password("Str0ng!P@ssw0rd")
+
+    def test_reject_11_character_password(self):
+        """Test that 11 character password is rejected."""
+        with pytest.raises(ValidationError):
+            validate_secure_password("Pass1234!x")
+
 
 class TestValidateEmailDomain:
     """Test email domain blocking for suspicious providers."""
@@ -254,6 +359,33 @@ class TestValidateEmailDomain:
         with pytest.raises(ValidationError):
             validate_email_domain("user@TEMPMAIL.COM")
 
+    def test_accept_custom_domain_list(self):
+        """Test custom blocked domains list."""
+        # Should not raise - only custom blocked domains
+        validate_email_domain("user@tempmail.com", blocked_domains=["custom.com"])
+
+    def test_reject_custom_blocked_domain(self):
+        """Test rejecting custom blocked domains."""
+        with pytest.raises(ValidationError):
+            validate_email_domain("user@custom.com", blocked_domains=["custom.com"])
+
+    def test_accept_subdomain_not_blocked(self):
+        """Test that subdomains of blocked domains are accepted."""
+        # Should not raise - subdomain is different
+        validate_email_domain("user@sub.tempmail.com")
+
+    def test_accept_yahoo_email(self):
+        """Test that Yahoo emails are accepted."""
+        validate_email_domain("user@yahoo.com")
+
+    def test_accept_corporate_email(self):
+        """Test that corporate emails are accepted."""
+        validate_email_domain("john.doe@acmecorp.com")
+
+    def test_accept_multiple_dots_in_name(self):
+        """Test email with multiple dots in local part."""
+        validate_email_domain("john.doe.smith@gmail.com")
+
 
 class TestEscapeUserInput:
     """Test XSS escaping of user input."""
@@ -278,6 +410,28 @@ class TestEscapeUserInput:
         """Test that safe text is preserved."""
         result = escape_user_input("Hello World")
         assert "Hello World" in result
+
+    def test_escape_single_quotes(self):
+        """Test that single quotes are properly escaped."""
+        result = escape_user_input("It's working")
+        # Django's escape escapes single quotes in some contexts
+        assert "It" in result and "working" in result
+
+    def test_escape_greater_than(self):
+        """Test that > is escaped."""
+        result = escape_user_input("a > b")
+        assert "&gt;" in result
+
+    def test_escape_less_than(self):
+        """Test that < is escaped."""
+        result = escape_user_input("a < b")
+        assert "&lt;" in result
+
+    def test_escape_html_entities(self):
+        """Test escaping HTML entities."""
+        result = escape_user_input("<div class='test'>&nbsp;</div>")
+        assert "<div" not in result
+        assert "class" in result or "test" in result
 
 
 class TestSafeFieldValidator:

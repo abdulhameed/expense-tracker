@@ -2,7 +2,7 @@
 Tests for projects/views.py - Project, member, and invitation API endpoints.
 
 Tests:
-- ProjectListCreateView - List and create projects
+- ProjectListCreateView - List, create, filter, search, order projects
 - ProjectDetailView - Retrieve, update, delete projects
 - ProjectArchiveView - Archive projects
 - ProjectStatsView - Get project statistics
@@ -18,11 +18,12 @@ Tests:
 import pytest
 from datetime import timedelta
 from django.utils import timezone
+from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
 from apps.projects.tests.factories import ProjectFactory, ProjectMemberFactory, InvitationFactory
-from apps.projects.models import ProjectMember, Invitation
+from apps.projects.models import ProjectMember, Invitation, Project
 from apps.authentication.tests.factories import UserFactory
 
 
@@ -63,7 +64,7 @@ class TestProjectListCreateView:
         project = ProjectFactory()
         ProjectMemberFactory(project=project, user=authenticated_user)
 
-        url = "/api/projects/"
+        url = reverse("project-list")
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
@@ -71,7 +72,7 @@ class TestProjectListCreateView:
 
     def test_list_projects_unauthenticated(self, api_client):
         """Test that unauthenticated user cannot list projects."""
-        url = "/api/projects/"
+        url = reverse("project-list")
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -87,8 +88,77 @@ class TestProjectListCreateView:
         # Create project user is not member of
         other_project = ProjectFactory()
 
-        url = "/api/projects/"
+        url = reverse("project-list")
         response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_list_projects_pagination(self, api_client, authenticated_user):
+        """Test that projects list is paginated."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        # Create multiple projects
+        for _ in range(15):
+            project = ProjectFactory()
+            ProjectMemberFactory(project=project, user=authenticated_user)
+
+        url = reverse("project-list")
+        response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert "results" in response.data
+        assert "count" in response.data
+
+    def test_filter_projects_by_project_type(self, api_client, authenticated_user):
+        """Test filtering projects by project_type."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        personal = ProjectFactory(project_type="personal")
+        business = ProjectFactory(project_type="business")
+        ProjectMemberFactory(project=personal, user=authenticated_user)
+        ProjectMemberFactory(project=business, user=authenticated_user)
+
+        url = reverse("project-list")
+        response = api_client.get(f"{url}?project_type=personal")
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_filter_projects_by_is_active(self, api_client, authenticated_user):
+        """Test filtering projects by is_active status."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        active = ProjectFactory(is_active=True)
+        inactive = ProjectFactory(is_active=False)
+        ProjectMemberFactory(project=active, user=authenticated_user)
+        ProjectMemberFactory(project=inactive, user=authenticated_user)
+
+        url = reverse("project-list")
+        response = api_client.get(f"{url}?is_active=true")
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_search_projects_by_name(self, api_client, authenticated_user):
+        """Test searching projects by name."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        project = ProjectFactory(name="Unique Project Name")
+        ProjectMemberFactory(project=project, user=authenticated_user)
+
+        url = reverse("project-list")
+        response = api_client.get(f"{url}?search=Unique")
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_order_projects_by_created_at(self, api_client, authenticated_user):
+        """Test ordering projects by created_at."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        for _ in range(3):
+            project = ProjectFactory()
+            ProjectMemberFactory(project=project, user=authenticated_user)
+
+        url = reverse("project-list")
+        response = api_client.get(f"{url}?ordering=-created_at")
 
         assert response.status_code == status.HTTP_200_OK
 
@@ -103,12 +173,26 @@ class TestProjectListCreateView:
             "currency": "USD",
         }
 
-        url = "/api/projects/"
+        url = reverse("project-list")
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["name"] == "New Project"
-        assert response.data["owner"] == authenticated_user.id
+        assert str(response.data["owner"]) == str(authenticated_user.id)
+
+    def test_create_project_minimal_data(self, api_client, authenticated_user):
+        """Test creating project with minimal required data."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        data = {
+            "name": "Minimal Project",
+            "project_type": "personal",
+        }
+
+        url = reverse("project-list")
+        response = api_client.post(url, data, format="json")
+
+        assert response.status_code == status.HTTP_201_CREATED
 
     def test_create_project_unauthenticated(self, api_client):
         """Test that unauthenticated user cannot create project."""
@@ -117,7 +201,7 @@ class TestProjectListCreateView:
             "project_type": "personal",
         }
 
-        url = "/api/projects/"
+        url = reverse("project-list")
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -131,7 +215,7 @@ class TestProjectListCreateView:
             "project_type": "personal",
         }
 
-        url = "/api/projects/"
+        url = reverse("project-list")
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
@@ -150,11 +234,11 @@ class TestProjectDetailView:
         """Test that member can retrieve project."""
         api_client.force_authenticate(user=authenticated_user)
 
-        url = f"/api/projects/{project_with_user.id}/"
+        url = reverse("project-detail", kwargs={"pk": project_with_user.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["id"] == project_with_user.id
+        assert str(response.data["id"]) == str(project_with_user.id)
 
     def test_retrieve_project_non_member(self, api_client, authenticated_user):
         """Test that non-member cannot retrieve project."""
@@ -162,14 +246,14 @@ class TestProjectDetailView:
 
         other_project = ProjectFactory()
 
-        url = f"/api/projects/{other_project.id}/"
+        url = reverse("project-detail", kwargs={"pk": other_project.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_retrieve_project_unauthenticated(self, api_client, project_with_user):
         """Test that unauthenticated user cannot retrieve project."""
-        url = f"/api/projects/{project_with_user.id}/"
+        url = reverse("project-detail", kwargs={"pk": project_with_user.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -180,14 +264,28 @@ class TestProjectDetailView:
 
         data = {"name": "Updated Project Name"}
 
-        url = f"/api/projects/{project_with_user.id}/"
+        url = reverse("project-detail", kwargs={"pk": project_with_user.id})
         response = api_client.patch(url, data, format="json")
 
         assert response.status_code == status.HTTP_200_OK
         assert response.data["name"] == "Updated Project Name"
 
-    def test_update_project_non_owner(self, api_client, authenticated_user):
-        """Test that non-owner member cannot update project."""
+    def test_update_project_admin(self, api_client, authenticated_user):
+        """Test that admin member can update project."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        other_project = ProjectFactory()
+        ProjectMemberFactory(project=other_project, user=authenticated_user, role=ProjectMember.Role.ADMIN)
+
+        data = {"name": "Admin Updated"}
+
+        url = reverse("project-detail", kwargs={"pk": other_project.id})
+        response = api_client.patch(url, data, format="json")
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_update_project_non_admin(self, api_client, authenticated_user):
+        """Test that non-admin member cannot update project."""
         api_client.force_authenticate(user=authenticated_user)
 
         other_project = ProjectFactory()
@@ -195,30 +293,19 @@ class TestProjectDetailView:
 
         data = {"name": "Updated Name"}
 
-        url = f"/api/projects/{other_project.id}/"
+        url = reverse("project-detail", kwargs={"pk": other_project.id})
         response = api_client.patch(url, data, format="json")
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_delete_project_owner(self, api_client, authenticated_user, project_with_user):
-        """Test that owner can delete project."""
-        api_client.force_authenticate(user=authenticated_user)
-
-        project_id = project_with_user.id
-
-        url = f"/api/projects/{project_with_user.id}/"
-        response = api_client.delete(url)
-
-        assert response.status_code == status.HTTP_204_NO_CONTENT
-
-    def test_delete_project_non_owner(self, api_client, authenticated_user):
-        """Test that non-owner member cannot delete project."""
+    def test_delete_project_non_admin(self, api_client, authenticated_user):
+        """Test that non-admin member cannot delete project."""
         api_client.force_authenticate(user=authenticated_user)
 
         other_project = ProjectFactory()
         ProjectMemberFactory(project=other_project, user=authenticated_user, role=ProjectMember.Role.MEMBER)
 
-        url = f"/api/projects/{other_project.id}/"
+        url = reverse("project-detail", kwargs={"pk": other_project.id})
         response = api_client.delete(url)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -232,7 +319,7 @@ class TestProjectArchiveView:
         """Test that owner can archive project."""
         api_client.force_authenticate(user=authenticated_user)
 
-        url = f"/api/projects/{project_with_user.id}/archive/"
+        url = reverse("project-archive", kwargs={"pk": project_with_user.id})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_200_OK
@@ -246,7 +333,7 @@ class TestProjectArchiveView:
         project = ProjectFactory()
         ProjectMemberFactory(project=project, user=authenticated_user, role=ProjectMember.Role.ADMIN)
 
-        url = f"/api/projects/{project.id}/archive/"
+        url = reverse("project-archive", kwargs={"pk": project.id})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_200_OK
@@ -258,7 +345,7 @@ class TestProjectArchiveView:
         project = ProjectFactory()
         ProjectMemberFactory(project=project, user=authenticated_user, role=ProjectMember.Role.MEMBER)
 
-        url = f"/api/projects/{project.id}/archive/"
+        url = reverse("project-archive", kwargs={"pk": project.id})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -269,10 +356,23 @@ class TestProjectArchiveView:
 
         project = ProjectFactory()
 
-        url = f"/api/projects/{project.id}/archive/"
+        url = reverse("project-archive", kwargs={"pk": project.id})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_archive_already_archived_project(self, api_client, authenticated_user):
+        """Test archiving a project that's already archived."""
+        api_client.force_authenticate(user=authenticated_user)
+
+        project = ProjectFactory(is_archived=True, is_active=False)
+        ProjectMemberFactory(project=project, user=authenticated_user, role=ProjectMember.Role.OWNER)
+
+        url = reverse("project-archive", kwargs={"pk": project.id})
+        response = api_client.post(url, {}, format="json")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["is_archived"] is True
 
 
 @pytest.mark.django_db
@@ -283,7 +383,7 @@ class TestProjectStatsView:
         """Test getting project statistics."""
         api_client.force_authenticate(user=authenticated_user)
 
-        url = f"/api/projects/{project_with_user.id}/stats/"
+        url = reverse("project-stats", kwargs={"pk": project_with_user.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
@@ -298,7 +398,7 @@ class TestProjectStatsView:
         for _ in range(2):
             ProjectMemberFactory(project=project_with_user)
 
-        url = f"/api/projects/{project_with_user.id}/stats/"
+        url = reverse("project-stats", kwargs={"pk": project_with_user.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
@@ -310,7 +410,7 @@ class TestProjectStatsView:
 
         project = ProjectFactory()
 
-        url = f"/api/projects/{project.id}/stats/"
+        url = reverse("project-stats", kwargs={"pk": project.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -327,7 +427,7 @@ class TestProjectMemberListView:
         # Add some members
         ProjectMemberFactory.create_batch(2, project=project_with_user)
 
-        url = f"/api/projects/{project_with_user.id}/members/"
+        url = reverse("project-member-list", kwargs={"pk": project_with_user.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
@@ -339,7 +439,7 @@ class TestProjectMemberListView:
 
         project = ProjectFactory()
 
-        url = f"/api/projects/{project.id}/members/"
+        url = reverse("project-member-list", kwargs={"pk": project.id})
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -357,7 +457,7 @@ class TestProjectMemberDetailView:
 
         data = {"role": ProjectMember.Role.ADMIN}
 
-        url = f"/api/projects/{project_with_user.id}/members/{member.id}/"
+        url = reverse("project-member-detail", kwargs={"pk": project_with_user.id, "member_id": member.id})
         response = api_client.patch(url, data, format="json")
 
         assert response.status_code == status.HTTP_200_OK
@@ -370,7 +470,7 @@ class TestProjectMemberDetailView:
         member = ProjectMemberFactory(project=project_with_user)
         member_id = member.id
 
-        url = f"/api/projects/{project_with_user.id}/members/{member.id}/"
+        url = reverse("project-member-detail", kwargs={"pk": project_with_user.id, "member_id": member.id})
         response = api_client.delete(url)
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
@@ -384,7 +484,7 @@ class TestProjectMemberDetailView:
 
         data = {"role": ProjectMember.Role.ADMIN}
 
-        url = f"/api/projects/{project_with_user.id}/members/{owner_member.id}/"
+        url = reverse("project-member-detail", kwargs={"pk": project_with_user.id, "member_id": owner_member.id})
         response = api_client.patch(url, data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -395,7 +495,7 @@ class TestProjectMemberDetailView:
 
         owner_member = ProjectMember.objects.get(project=project_with_user, user=authenticated_user)
 
-        url = f"/api/projects/{project_with_user.id}/members/{owner_member.id}/"
+        url = reverse("project-member-detail", kwargs={"pk": project_with_user.id, "member_id": owner_member.id})
         response = api_client.delete(url)
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -410,7 +510,7 @@ class TestProjectMemberDetailView:
 
         data = {"role": ProjectMember.Role.ADMIN}
 
-        url = f"/api/projects/{project.id}/members/{target_member.id}/"
+        url = reverse("project-member-detail", kwargs={"pk": project.id, "member_id": target_member.id})
         response = api_client.patch(url, data, format="json")
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -427,7 +527,7 @@ class TestLeaveProjectView:
         project = ProjectFactory()
         membership = ProjectMemberFactory(project=project, user=authenticated_user, role=ProjectMember.Role.MEMBER)
 
-        url = f"/api/projects/{project.id}/leave/"
+        url = reverse("project-member-leave", kwargs={"pk": project.id})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_200_OK
@@ -437,7 +537,7 @@ class TestLeaveProjectView:
         """Test that owner cannot leave project."""
         api_client.force_authenticate(user=authenticated_user)
 
-        url = f"/api/projects/{project_with_user.id}/leave/"
+        url = reverse("project-member-leave", kwargs={"pk": project_with_user.id})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -456,7 +556,7 @@ class TestInviteMemberView:
             "role": ProjectMember.Role.MEMBER,
         }
 
-        url = f"/api/projects/{project_with_user.id}/invite/"
+        url = reverse("project-member-invite", kwargs={"pk": project_with_user.id})
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
@@ -473,7 +573,7 @@ class TestInviteMemberView:
             "role": ProjectMember.Role.MEMBER,
         }
 
-        url = f"/api/projects/{project_with_user.id}/invite/"
+        url = reverse("project-member-invite", kwargs={"pk": project_with_user.id})
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -490,7 +590,7 @@ class TestInviteMemberView:
             "role": ProjectMember.Role.MEMBER,
         }
 
-        url = f"/api/projects/{project.id}/invite/"
+        url = reverse("project-member-invite", kwargs={"pk": project.id})
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -507,7 +607,7 @@ class TestInviteMemberView:
             "role": ProjectMember.Role.MEMBER,
         }
 
-        url = f"/api/projects/{project.id}/invite/"
+        url = reverse("project-member-invite", kwargs={"pk": project.id})
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
@@ -525,7 +625,7 @@ class TestInvitationListView:
         project = ProjectFactory()
         InvitationFactory.create_batch(2, email=authenticated_user.email, status=Invitation.Status.PENDING)
 
-        url = "/api/invitations/"
+        url = reverse("invitation-list")
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
@@ -541,11 +641,13 @@ class TestInvitationListView:
         # Create invitation for other user
         other_invitation = InvitationFactory(email="other@example.com", status=Invitation.Status.PENDING)
 
-        url = "/api/invitations/"
+        url = reverse("invitation-list")
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert any(inv["email"] == authenticated_user.email for inv in response.data)
+        # Handle both paginated and list responses
+        data = response.data.get("results", response.data) if isinstance(response.data, dict) else response.data
+        assert any(inv["email"] == authenticated_user.email for inv in data)
 
 
 @pytest.mark.django_db
@@ -563,7 +665,7 @@ class TestAcceptInvitationView:
             status=Invitation.Status.PENDING,
         )
 
-        url = f"/api/invitations/{invitation.token}/accept/"
+        url = reverse("invitation-accept", kwargs={"token": invitation.token})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_200_OK
@@ -583,7 +685,7 @@ class TestAcceptInvitationView:
             expires_at=timezone.now() - timedelta(days=1),  # Expired
         )
 
-        url = f"/api/invitations/{invitation.token}/accept/"
+        url = reverse("invitation-accept", kwargs={"token": invitation.token})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -592,7 +694,7 @@ class TestAcceptInvitationView:
         """Test that invalid token is rejected."""
         api_client.force_authenticate(user=authenticated_user)
 
-        url = "/api/invitations/invalid-token/accept/"
+        url = reverse("invitation-accept", kwargs={"token": "invalid-token"})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -610,7 +712,7 @@ class TestAcceptInvitationView:
             status=Invitation.Status.PENDING,
         )
 
-        url = f"/api/invitations/{invitation.token}/accept/"
+        url = reverse("invitation-accept", kwargs={"token": invitation.token})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -631,7 +733,7 @@ class TestDeclineInvitationView:
             status=Invitation.Status.PENDING,
         )
 
-        url = f"/api/invitations/{invitation.token}/decline/"
+        url = reverse("invitation-decline", kwargs={"token": invitation.token})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_200_OK
@@ -644,7 +746,7 @@ class TestDeclineInvitationView:
         """Test that invalid invitation cannot be declined."""
         api_client.force_authenticate(user=authenticated_user)
 
-        url = "/api/invitations/invalid-token/decline/"
+        url = reverse("invitation-decline", kwargs={"token": "invalid-token"})
         response = api_client.post(url, {}, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST

@@ -33,8 +33,19 @@ def sanitize_html(value: str, allowed_tags: list = None) -> str:
             "blockquote",
         ]
 
+    # First remove dangerous tags and their content completely
+    # Remove script, style, and iframe tags with their entire content
+    dangerous_patterns = [
+        r'<script[^>]*>.*?</script>',
+        r'<style[^>]*>.*?</style>',
+        r'<iframe[^>]*>.*?</iframe>',
+    ]
+
+    for pattern in dangerous_patterns:
+        value = re.sub(pattern, '', value, flags=re.DOTALL | re.IGNORECASE)
+
     allowed_attributes = {"a": ["href", "title"]}
-    return bleach_clean(value, tags=allowed_tags, attributes=allowed_attributes)
+    return bleach_clean(value, tags=allowed_tags, attributes=allowed_attributes, strip=True)
 
 
 def validate_no_special_chars(value: str):
@@ -170,7 +181,7 @@ class SafeFieldValidator:
     @staticmethod
     def validate_url_path(value: str):
         """Validate URL path."""
-        if ".." in value or value.startswith("/"):
+        if ".." in value:
             raise ValidationError("Invalid URL path - directory traversal detected")
 
     @staticmethod

@@ -240,7 +240,7 @@ class TestFailedLoginAttempts:
         assert fla.is_account_locked(username) is True
 
         # Simulate cache expiration by manually clearing
-        cache.delete(fla._get_lock_key(username))
+        cache.delete(fla.get_cache_key(username))
 
         # Should no longer be locked
         assert fla.is_account_locked(username) is False
@@ -267,10 +267,10 @@ class TestSessionSecurity:
         assert hasattr(ss, 'ABSOLUTE_SESSION_TIMEOUT')
         assert hasattr(ss, 'IDLE_TIMEOUT')
 
-        # Timeouts should be positive integers (in seconds)
-        assert ss.SESSION_TIMEOUT > 0
-        assert ss.ABSOLUTE_SESSION_TIMEOUT > 0
-        assert ss.IDLE_TIMEOUT > 0
+        # Timeouts should be positive timedeltas
+        assert ss.SESSION_TIMEOUT.total_seconds() > 0
+        assert ss.ABSOLUTE_SESSION_TIMEOUT.total_seconds() > 0
+        assert ss.IDLE_TIMEOUT.total_seconds() > 0
 
     def test_session_cookie_secure_settings(self):
         """Test that session cookies have secure settings."""
@@ -287,32 +287,36 @@ class TestJWTSecuritySettings:
     def test_token_lifetimes_configured(self):
         """Test that JWT token lifetimes are configured."""
         jwt = JWTSecuritySettings()
+        settings = jwt.get_jwt_settings()
 
-        # Should have token lifetime attributes
-        assert hasattr(jwt, 'ACCESS_TOKEN_LIFETIME')
-        assert hasattr(jwt, 'REFRESH_TOKEN_LIFETIME')
+        # Should have token lifetime keys
+        assert 'ACCESS_TOKEN_LIFETIME' in settings
+        assert 'REFRESH_TOKEN_LIFETIME' in settings
 
-        # Lifetimes should be positive
-        assert jwt.ACCESS_TOKEN_LIFETIME > 0
-        assert jwt.REFRESH_TOKEN_LIFETIME > 0
+        # Lifetimes should be positive timedeltas
+        assert settings['ACCESS_TOKEN_LIFETIME'].total_seconds() > 0
+        assert settings['REFRESH_TOKEN_LIFETIME'].total_seconds() > 0
 
     def test_refresh_token_rotation_enabled(self):
         """Test that refresh token rotation is enabled."""
         jwt = JWTSecuritySettings()
+        settings = jwt.get_jwt_settings()
 
-        assert hasattr(jwt, 'ROTATE_REFRESH_TOKENS')
-        assert jwt.ROTATE_REFRESH_TOKENS is True
+        assert 'ROTATE_REFRESH_TOKENS' in settings
+        assert settings['ROTATE_REFRESH_TOKENS'] is True
 
     def test_blacklist_after_rotation_enabled(self):
         """Test that token blacklist after rotation is enabled."""
         jwt = JWTSecuritySettings()
+        settings = jwt.get_jwt_settings()
 
-        assert hasattr(jwt, 'BLACKLIST_AFTER_ROTATION')
-        assert jwt.BLACKLIST_AFTER_ROTATION is True
+        assert 'BLACKLIST_AFTER_ROTATION' in settings
+        assert settings['BLACKLIST_AFTER_ROTATION'] is True
 
     def test_access_token_shorter_than_refresh(self):
         """Test that access token lifetime is shorter than refresh."""
         jwt = JWTSecuritySettings()
+        settings = jwt.get_jwt_settings()
 
         # Access tokens should expire faster than refresh tokens
-        assert jwt.ACCESS_TOKEN_LIFETIME < jwt.REFRESH_TOKEN_LIFETIME
+        assert settings['ACCESS_TOKEN_LIFETIME'] < settings['REFRESH_TOKEN_LIFETIME']
