@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Projects | Expensify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed": "#2a1700",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed": "#002113",
+            "primary-fixed-dim": "#adc6ff",
+            "primary": "#0058be",
+            "secondary": "#006c49",
+            "surface": "#f8f9fa",
+            "tertiary-fixed-dim": "#ffb95f",
+            "outline-variant": "#c2c6d6",
+            "tertiary-container": "#a36700",
+            "on-surface": "#191c1d",
+            "background": "#f8f9fa",
+            "inverse-surface": "#2e3132",
+            "surface-container-high": "#e7e8e9",
+            "on-secondary-container": "#00714d",
+            "tertiary": "#825100",
+            "on-primary-container": "#fefcff",
+            "on-background": "#191c1d",
+            "surface-container-low": "#f3f4f5",
+            "surface-container-highest": "#e1e3e4",
+            "on-tertiary-fixed-variant": "#653e00",
+            "primary-container": "#2170e4",
+            "on-tertiary-container": "#fffbff",
+            "secondary-fixed-dim": "#4edea3",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed": "#d8e2ff",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#001a42",
+            "surface-variant": "#e1e3e4",
+            "surface-dim": "#d9dadb",
+            "on-primary-fixed-variant": "#004395",
+            "surface-container": "#edeeef",
+            "secondary-container": "#6cf8bb",
+            "secondary-fixed": "#6ffbbe",
+            "on-surface-variant": "#424754",
+            "surface-container-lowest": "#ffffff",
+            "inverse-primary": "#adc6ff",
+            "on-error-container": "#93000a",
+            "outline": "#727785",
+            "inverse-on-surface": "#f0f1f2",
+            "error": "#ba1a1a",
+            "surface-bright": "#f8f9fa",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#ffddb8",
+            "surface-tint": "#005ac2",
+            "on-error": "#ffffff"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f8f9fa]/80 backdrop-blur-xl shadow-sm flex items-center justify-between px-6 h-16 w-full font-['Inter'] antialiased">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-slate-900">Expensify</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-slate-500 hover:bg-slate-100 transition-colors px-3 py-2 rounded-lg" href="#">Dashboard</a>
+<a class="text-blue-600 font-semibold px-3 py-2 rounded-lg" href="#">Projects</a>
+<a class="text-slate-500 hover:bg-slate-100 transition-colors px-3 py-2 rounded-lg" href="#">Reports</a>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-full hover:bg-slate-100 transition-colors active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-100 transition-colors active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden ml-2 bg-surface-container">
+<img alt="User profile avatar" data-alt="professional headshot of a smiling man with glasses in a clean modern office setting with natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmW5VIws7WOTIYPwrw_1dYTbbmIaCnz5K5UccVJHaYlv7FSHNns-XBYvRzF4X-55GIon_d6ovusdaYIzKEk2FooCxgBpxJqke3bi3Es8Axp8jB43XfkWxxZ2WhZ0EcN2NQ8PKo6kWgmwGzjVpnfJkmRPAckatrXTvc0gt-8n6HWND3JPkU0CVqhklzpQOxwRUK3R_tWDiu3Yho-6e6gVB4UqjokzWB9dhaQV8-JH-vEpl1IT5An4QSG-qbsu3hmRkgWR9gOeN1Bb0"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-[#f3f4f5] py-8 gap-2 font-['Inter'] text-sm font-medium z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<span class="text-lg font-black text-slate-900">Financial Architect</span>
+</div>
+<span class="text-xs text-slate-500 uppercase tracking-widest ml-11">Premium Tier</span>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+      </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-600 border-r-2 border-blue-600 bg-white/50 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_open</span> Projects
+      </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">analytics</span> Reports
+      </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">payments</span> Budgets
+      </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+      </a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl font-semibold shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span> New Expense
+      </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-64 pt-16 min-h-screen">
+<div class="max-w-7xl mx-auto p-6 md:p-10 space-y-10">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Projects</h1>
+<p class="text-on-surface-variant max-w-md">Track, manage, and optimize your financial ventures with editorial precision.</p>
+</div>
+<button class="inline-flex items-center justify-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined">create_new_folder</span>
+          New Project
+        </button>
+</div>
+<!-- Overview Stats (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-8 rounded-2xl flex flex-col justify-between min-h-[160px]">
+<span class="text-label-sm font-semibold text-on-surface-variant tracking-widest uppercase">Active Projects</span>
+<div class="text-5xl font-extrabold tracking-tighter text-primary mt-4">12</div>
+<div class="flex items-center gap-1 text-secondary text-sm mt-2">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>2 added this month</span>
+</div>
+</div>
+<div class="bg-gradient-to-br from-primary to-primary-container p-8 rounded-2xl flex flex-col justify-between min-h-[160px] text-white">
+<span class="text-label-sm font-semibold opacity-80 tracking-widest uppercase">Total Budget</span>
+<div class="text-5xl font-extrabold tracking-tighter mono mt-4">$245,000</div>
+<div class="text-sm opacity-90 mt-2">Allocated across all verticals</div>
+</div>
+<div class="bg-surface-container-low p-8 rounded-2xl flex flex-col justify-between min-h-[160px]">
+<span class="text-label-sm font-semibold text-on-surface-variant tracking-widest uppercase">Overall Spending</span>
+<div class="text-5xl font-extrabold tracking-tighter text-on-surface mt-4 mono">$182,430</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full mt-6 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 74%;"></div>
+</div>
+<div class="flex justify-between text-xs mt-2 font-medium text-on-surface-variant">
+<span>74% Exhausted</span>
+<span>$62,570 Remaining</span>
+</div>
+</div>
+</section>
+<!-- Projects Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Project Card 1 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+<span class="material-symbols-outlined">home_work</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Collaborator" class="h-8 w-8 rounded-full border-2 border-white" data-alt="portrait of a young woman with a friendly smile against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCJTW7NoB_-QIgMYhu8fmM4OsxvTHxaWcTRHw1yBHwwU_t7kh8fGWOipaTt2AvSz50bhkSuJUxQlHjODSPN0jA1sctII5mFr_of_AxOhNrGJVYaCzmAmJf_cHZsbtwD1eJOA2JweR955i3VEB9zMXXhESlNNwkZHqRjisaGGIUIjcdhxUYIL_iLCycg-U2icpCDTbtUW2upChaQVuEls8ahZFmqhvTh5ydd4adjTV30NrxOx84dnlwXnSiJnLtZ-hkvpnMLXkM2xk"/>
+<img alt="Collaborator" class="h-8 w-8 rounded-full border-2 border-white" data-alt="portrait of a bearded man wearing a casual shirt with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoAZ4zDaBptA_CUKjRLve8JaSI6VVM_zxZfuG3GvjIfscQ6VEaYzzrxqjdjtZb6bgODQ3xbYa4Myb2bx1OUfJP6gCExzt3S8bcdbNvhDy3-X-7TyIsg1VaNB-oYRJegqQ2RZ4urUjeRfnxLTQlShgXx53HoRtqy8e92tMZY3Y2tCek7mOY44TN5H2JOYDqqUlI36FNNhEoSitY92tb0ZMg_8-hCraSCztqkEgW15pnE8mIFJ59ZyaPj1yob2azDxbyBcbAYzOI998"/>
+<div class="h-8 w-8 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">+2</div>
+</div>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1">Home Renovation</h3>
+<p class="text-sm text-on-surface-variant mb-6">Interior design &amp; structural updates</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+<span>Budget Utilization</span>
+<span class="mono">85%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 85%;"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-sm font-medium text-on-surface-variant">Spent</span>
+<span class="text-lg font-bold mono text-on-surface">$72,400 <span class="text-xs font-normal text-slate-400">/ $85,000</span></span>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-emerald-50 text-secondary rounded-xl">
+<span class="material-symbols-outlined">devices</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Collaborator" class="h-8 w-8 rounded-full border-2 border-white" data-alt="close-up portrait of a man with short hair looking directly at the camera with a calm expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtlXD5pfZ4iG3422XdRF5escSqeQxAMFOrudZwF5S_ulx1EOrorKmYcHZKRfzdb7IKspJCEexSkO3XMv223HQ6vUAuH4x_J_dE05ptTvF6MAzY1BfqGTn0R9RfCt0YmwVUKRxpPbeCBdOfeJ_H1rhvzPXrVYYhQdTC4rJHJFL8W_EZmsO9NS6JdjrsEy0uV_o4Mcxc8WM7siJuX-T3-PqafVnoNS1dUcphO668cuMfa_1VPfj7mltIOa_h9V676tIR5TiKVuslwcc"/>
+<img alt="Collaborator" class="h-8 w-8 rounded-full border-2 border-white" data-alt="headshot of a woman with long hair in a professional studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6ygpmnIrbg8z5LLMm7AafyB51L1ABjM7lH1WsbpPK0AiAgsz85PcTHCghsTqkcXeA5L-E9zruiR86GYUzYseD-O0jO-DHOzMheZ_uMWMx-PMsgVPElyEfOuVkcVeHJYxQEkD5GiugdTWOp-m41Ik3WBIzcWsl3ZP2kijRULwVk_U6nylMI8ZLAohPgPYmuCsKhvsI11FiaBFYgFn9UKAm8i_hI_UQJ2VTYsYw4jMLYzryxlp05AlcMvwT5dF-QUxWeuOmniGgvbo"/>
+</div>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1">Tech Upgrade</h3>
+<p class="text-sm text-on-surface-variant mb-6">DevOps hardware &amp; cloud subscriptions</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+<span>Budget Utilization</span>
+<span class="mono">42%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 42%;"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-sm font-medium text-on-surface-variant">Spent</span>
+<span class="text-lg font-bold mono text-on-surface">$5,250 <span class="text-xs font-normal text-slate-400">/ $12,500</span></span>
+</div>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-amber-50 text-tertiary rounded-xl">
+<span class="material-symbols-outlined">flight_takeoff</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Collaborator" class="h-8 w-8 rounded-full border-2 border-white" data-alt="portrait of a stylish woman wearing glasses and a blazer in a modern environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCW7T5TOsg_vv0IhTanRNYuXLK5ZbtsPpCK5gZdkgO6ANCpokI6zlq-igLK9aHNnZnGTmYNT0cw5aAGAZjXJAk5Obwi4EPwQj_zCYvX4qp7LUcH0fZx-koNZHpsF0PxE6Zv0POI2pyEAWyhMz2Ub_yY1uaG2OIwJTtBwpJXyMm70Z73GZrwzMzy3rxiDY-adquWnag2Bwn_GdGUoWopJcsjqsyYmxF0A6zK7-CHPPorJ_qo5CVvq5cqmCKQDWu17YYONxJx-53BxU"/>
+</div>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1">European Summer Trip</h3>
+<p class="text-sm text-on-surface-variant mb-6">Flights, stay &amp; culinary experiences</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+<span>Budget Utilization</span>
+<span class="mono">12%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 12%;"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-sm font-medium text-on-surface-variant">Spent</span>
+<span class="text-lg font-bold mono text-on-surface">$1,800 <span class="text-xs font-normal text-slate-400">/ $15,000</span></span>
+</div>
+</div>
+</div>
+<!-- Project Card 4 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-purple-50 text-purple-600 rounded-xl">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div class="flex -space-x-2">
+<div class="h-8 w-8 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="h-8 w-8 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">AL</div>
+</div>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1">Brand Identity Launch</h3>
+<p class="text-sm text-on-surface-variant mb-6">Marketing, ads &amp; creative assets</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+<span>Budget Utilization</span>
+<span class="mono">68%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-purple-600 h-full rounded-full" style="width: 68%;"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-sm font-medium text-on-surface-variant">Spent</span>
+<span class="text-lg font-bold mono text-on-surface">$34,000 <span class="text-xs font-normal text-slate-400">/ $50,000</span></span>
+</div>
+</div>
+</div>
+<!-- Project Card 5 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-rose-50 text-rose-600 rounded-xl">
+<span class="material-symbols-outlined">heart_plus</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Collaborator" class="h-8 w-8 rounded-full border-2 border-white" data-alt="vibrant portrait of a young woman with creative lighting and soft focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdkOmeOtc-fJ7XBclafpRkWkpZWC5Vc7mUHYwOsIppGq29ryD5cppgd7fzfSBjUUo0_87Fq1CdMkbvn8hLOHu9Dak8xkoarc81YzhvM2XivmRQVKxrdtin8E4HOGgI6acwwrHGqJpzDBd5ngC8sGNpQFYS7BCs8Nog3Cd1dBYEqWBcY3fqLgrNtXI8ZwzMtpd_fjllb6eMjz3l-3D-9RbxpPH6Cq-7iSr-sVLYkEKrkKPrGuAw5hxBYXDcyuglqV91w8S-oys0UJE"/>
+</div>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1">Wellness Retreat</h3>
+<p class="text-sm text-on-surface-variant mb-6">Yoga training &amp; nutritional planning</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+<span>Budget Utilization</span>
+<span class="mono">94%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-rose-600 h-full rounded-full" style="width: 94%;"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-sm font-medium text-on-surface-variant">Spent</span>
+<span class="text-lg font-bold mono text-on-surface">$4,700 <span class="text-xs font-normal text-slate-400">/ $5,000</span></span>
+</div>
+</div>
+</div>
+<!-- Add New Project Placeholder -->
+<div class="group border-2 border-dashed border-outline-variant p-6 rounded-2xl flex flex-col items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-all cursor-pointer min-h-[250px]">
+<span class="material-symbols-outlined text-4xl mb-4">add_circle</span>
+<p class="font-bold">Add New Project</p>
+<p class="text-xs text-center mt-2 opacity-60">Start a new financial journey</p>
+</div>
+</section>
+<!-- Signature Visual: Spending Horizon -->
+<section class="bg-surface-container-low p-8 rounded-3xl relative overflow-hidden">
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div class="max-w-md">
+<h2 class="text-2xl font-bold text-on-surface mb-2">Spending Horizon</h2>
+<p class="text-on-surface-variant text-sm">Visualize project trajectories against quarterly benchmarks. This signature view uses tonal depth to isolate performance metrics.</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm text-on-surface">Weekly</button>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md">Monthly</button>
+</div>
+</div>
+<!-- Abstract Chart Area -->
+<div class="h-64 mt-8 w-full relative">
+<div class="absolute inset-0 flex items-end justify-between gap-2">
+<div class="w-full bg-primary/10 rounded-t-lg h-[40%]" style="height: 40%;"></div>
+<div class="w-full bg-primary/20 rounded-t-lg h-[60%]" style="height: 60%;"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[50%]" style="height: 50%;"></div>
+<div class="w-full bg-primary/30 rounded-t-lg h-[80%]" style="height: 80%;"></div>
+<div class="w-full bg-secondary-container/40 rounded-t-lg h-[45%]" style="height: 45%;"></div>
+<div class="w-full bg-primary/15 rounded-t-lg h-[30%]" style="height: 30%;"></div>
+<div class="w-full bg-primary/25 rounded-t-lg h-[70%]" style="height: 70%;"></div>
+<div class="w-full bg-secondary-container/40 rounded-t-lg h-[90%]" style="height: 90%;"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[55%]" style="height: 55%;"></div>
+</div>
+<!-- Glassmorphism overlay for signature look -->
+<div class="absolute inset-0 bg-white/10 backdrop-blur-[1px] border border-white/20 rounded-xl flex items-center justify-center">
+<span class="text-xs font-black uppercase tracking-[0.2em] text-on-surface-variant/40">Projection Landscape</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl flex items-center justify-around h-16 z-50 px-4">
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-blue-600" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<span class="text-[10px] font-bold">Projects</span>
+</a>
+<div class="bg-primary h-12 w-12 rounded-full flex items-center justify-center text-white -mt-10 shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-bold">Reports</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</a>
+</nav>
+</body></html>

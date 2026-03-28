@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up | Lumen Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#2170e4",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#653e00",
+              "on-surface-variant": "#424754",
+              "surface-container-lowest": "#ffffff",
+              "secondary": "#006c49",
+              "on-tertiary": "#ffffff",
+              "on-secondary": "#ffffff",
+              "primary-fixed": "#d8e2ff",
+              "primary-fixed-dim": "#adc6ff",
+              "surface-container-low": "#f3f4f5",
+              "on-secondary-fixed": "#002113",
+              "secondary-container": "#6cf8bb",
+              "on-background": "#191c1d",
+              "inverse-on-surface": "#f0f1f2",
+              "surface-container-highest": "#e1e3e4",
+              "tertiary-container": "#a36700",
+              "on-tertiary-container": "#fffbff",
+              "on-surface": "#191c1d",
+              "surface-container-high": "#e7e8e9",
+              "secondary-fixed": "#6ffbbe",
+              "outline-variant": "#c2c6d6",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#fefcff",
+              "inverse-surface": "#2e3132",
+              "secondary-fixed-dim": "#4edea3",
+              "inverse-primary": "#adc6ff",
+              "error": "#ba1a1a",
+              "primary": "#0058be",
+              "background": "#f8f9fa",
+              "surface-tint": "#005ac2",
+              "outline": "#727785",
+              "on-secondary-container": "#00714d",
+              "tertiary-fixed-dim": "#ffb95f",
+              "on-tertiary-fixed": "#2a1700",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-variant": "#e1e3e4",
+              "surface-dim": "#d9dadb",
+              "surface": "#f8f9fa",
+              "surface-container": "#edeeef",
+              "on-secondary-fixed-variant": "#005236",
+              "tertiary": "#825100",
+              "surface-bright": "#f8f9fa",
+              "on-primary-fixed": "#001a42",
+              "tertiary-fixed": "#ffddb8",
+              "on-primary-fixed-variant": "#004395"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #0058be 0%, #2170e4 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .mono-font {
+            font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col">
+<!-- Main Content Area: Split Screen -->
+<main class="flex-grow flex flex-col md:flex-row">
+<!-- Left Side: Editorial Brand Message / High-Fidelity Graphic -->
+<section class="hidden md:flex md:w-1/2 lg:w-3/5 bg-primary relative overflow-hidden flex-col justify-between p-16">
+<!-- Background Image with data-alt -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="abstract high-fidelity digital rendering of financial data flows with glowing blue lines and geometric architectural structures in a dark void" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2k7OF_x0LYQqPZAoUq-vHTlrqfWJtTy-PIM0UksOEXSR7oeXevJfrHhHyPhSOCsqgShmLPLDvzxrDlblh0H0VlXv0d4BeSaqtQdVVxcuniXRydmy2U4pF63duADcL3-H9tmyvLwZMotOZ1v5OatdD-C3MVGXHdazfoW_pctXfx8vmnHb6ACCDzi27LAo6mQ-qaulAADWK4lyQxoGQCFNl8tlhqUcFrwyYpiC2GHkIk9bVvbqwBAzjL9h25xe19E1gbb7hW9LRY_0"/>
+<div class="absolute inset-0 bg-gradient-to-br from-primary via-primary/80 to-transparent"></div>
+</div>
+<!-- Content overlay -->
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-12">
+<div class="w-10 h-10 bg-surface-container-lowest rounded-lg flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<span class="text-2xl font-bold tracking-tighter text-surface-container-lowest">Lumen Ledger</span>
+</div>
+<h1 class="text-5xl lg:text-7xl font-bold text-surface-bright tracking-tight leading-[1.1] mb-8">
+                    The Financial <br/><span class="text-secondary-fixed">Architect.</span>
+</h1>
+<p class="text-xl text-primary-fixed max-w-lg leading-relaxed font-light">
+                    Move beyond the ledger. Create a breathable landscape of your fiscal health with editorial precision and structural clarity.
+                </p>
+</div>
+<div class="relative z-10 flex flex-col gap-8">
+<div class="flex gap-12 items-end">
+<div>
+<div class="text-secondary-fixed text-4xl font-bold mono-font tracking-tighter">99.9%</div>
+<div class="text-primary-fixed text-xs uppercase tracking-widest mt-1">Data Accuracy</div>
+</div>
+<div>
+<div class="text-secondary-fixed text-4xl font-bold mono-font tracking-tighter">$4.2B+</div>
+<div class="text-primary-fixed text-xs uppercase tracking-widest mt-1">Assets Managed</div>
+</div>
+</div>
+<div class="pt-8 border-t border-primary-fixed/20">
+<p class="text-sm text-primary-fixed/60 italic">"Precision is the foundation of trust."</p>
+</div>
+</div>
+</section>
+<!-- Right Side: Sign-up Form -->
+<section class="flex-grow md:w-1/2 lg:w-2/5 bg-surface flex flex-col justify-center px-8 py-16 lg:px-24">
+<div class="max-w-md mx-auto w-full">
+<!-- Mobile Logo -->
+<div class="md:hidden flex items-center gap-2 mb-12">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="text-xl font-bold tracking-tighter text-on-surface">Lumen Ledger</span>
+</div>
+<div class="mb-10">
+<h2 class="text-3xl font-bold text-on-surface tracking-tight mb-2">Start Your Architecture</h2>
+<p class="text-on-surface-variant">Begin your journey towards financial clarity.</p>
+</div>
+<form class="space-y-6">
+<!-- Full Name -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant" for="full_name">Full Name</label>
+<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface placeholder:text-outline/50 transition-all duration-200" id="full_name" placeholder="Alexander Hamilton" type="text"/>
+</div>
+<!-- Work Email -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant" for="email">Work Email</label>
+<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface placeholder:text-outline/50 transition-all duration-200" id="email" placeholder="alexander@treasury.gov" type="email"/>
+</div>
+<!-- Company Name -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant" for="company">Company Name</label>
+<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface placeholder:text-outline/50 transition-all duration-200" id="company" placeholder="The Treasury Inc." type="text"/>
+</div>
+<!-- Password -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant" for="password">Password</label>
+<div class="relative">
+<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface placeholder:text-outline/50 transition-all duration-200" id="password" placeholder="••••••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Terms Checkbox -->
+<div class="flex items-start gap-3 py-2">
+<div class="flex items-center h-5">
+<input class="h-5 w-5 rounded border-none bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-surface" id="terms" name="terms" type="checkbox"/>
+</div>
+<label class="text-sm text-on-surface-variant leading-snug" for="terms">
+                            I agree to the <a class="text-primary font-medium hover:underline" href="#">Terms of Service</a> and <a class="text-primary font-medium hover:underline" href="#">Privacy Policy</a>.
+                        </label>
+</div>
+<!-- Primary Action -->
+<div class="pt-4">
+<button class="w-full editorial-gradient text-on-primary py-4 rounded-xl font-semibold shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2" type="submit">
+                            Create Account
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Footer Link -->
+<div class="mt-10 text-center">
+<p class="text-on-surface-variant text-sm">
+                        Already have an architecture? 
+                        <a class="text-primary font-bold hover:underline ml-1" href="#">Sign in instead</a>
+</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Simplified Footer for Auth Flow -->
+<footer class="bg-surface-container-low py-8 px-8 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant">
+            © 2024 Lumen Ledger. Editorial Precision for Financial Clarity.
+        </div>
+<nav class="flex gap-8">
+<a class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Security</a>
+</nav>
+</footer>
+</body></html>

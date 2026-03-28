@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Features - Lumen Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#fffbff",
+              "secondary-container": "#6cf8bb",
+              "surface-dim": "#d9dadb",
+              "surface-container-low": "#f3f4f5",
+              "inverse-on-surface": "#f0f1f2",
+              "outline": "#727785",
+              "secondary-fixed-dim": "#4edea3",
+              "on-error-container": "#93000a",
+              "primary": "#0058be",
+              "on-primary-container": "#fefcff",
+              "surface-container-lowest": "#ffffff",
+              "on-error": "#ffffff",
+              "secondary-fixed": "#6ffbbe",
+              "on-tertiary": "#ffffff",
+              "surface-container-highest": "#e1e3e4",
+              "on-background": "#191c1d",
+              "surface-tint": "#005ac2",
+              "surface": "#f8f9fa",
+              "primary-fixed-dim": "#adc6ff",
+              "tertiary": "#825100",
+              "surface-container-high": "#e7e8e9",
+              "on-secondary-fixed": "#002113",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f8f9fa",
+              "on-secondary-container": "#00714d",
+              "tertiary-fixed": "#ffddb8",
+              "primary-container": "#2170e4",
+              "surface-variant": "#e1e3e4",
+              "outline-variant": "#c2c6d6",
+              "on-primary-fixed": "#001a42",
+              "tertiary-fixed-dim": "#ffb95f",
+              "inverse-primary": "#adc6ff",
+              "tertiary-container": "#a36700",
+              "primary-fixed": "#d8e2ff",
+              "on-tertiary-fixed": "#2a1700",
+              "background": "#f8f9fa",
+              "on-secondary-fixed-variant": "#005236",
+              "error": "#ba1a1a",
+              "surface-container": "#edeeef",
+              "on-surface": "#191c1d",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#2e3132",
+              "on-tertiary-fixed-variant": "#653e00",
+              "on-secondary": "#ffffff",
+              "secondary": "#006c49",
+              "on-primary-fixed-variant": "#004395",
+              "on-surface-variant": "#424754"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-nav {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .spending-horizon-gradient {
+        background: linear-gradient(135deg, #0058be 0%, #2170e4 100%);
+      }
+      .soft-inset {
+        background-color: #e1e3e4;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8f9fa;
+        color: #191c1d;
+      }
+    </style>
+</head>
+<body class="antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 glass-nav shadow-sm">
+<div class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-bold tracking-tight text-slate-900">Lumen Ledger</div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-blue-600 font-semibold border-b-2 border-blue-600 px-1 py-1 transition-colors duration-200" href="#">Features</a>
+<a class="text-slate-600 hover:text-slate-900 transition-colors duration-200" href="#">Pricing</a>
+<a class="text-slate-600 hover:text-slate-900 transition-colors duration-200" href="#">About</a>
+<a class="text-slate-600 hover:text-slate-900 transition-colors duration-200" href="#">Contact</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="text-slate-600 hover:text-slate-900 font-medium transition-transform scale-95 active:scale-90">Log In</button>
+<button class="bg-primary text-white px-5 py-2 rounded-lg font-medium spending-horizon-gradient transition-transform scale-95 active:scale-90 shadow-sm">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="px-6 py-20 md:py-32 max-w-7xl mx-auto text-center">
+<h1 class="text-5xl md:text-7xl font-bold tracking-tight text-on-background mb-6 leading-tight">
+                Financial Control, Redefined.
+            </h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10 leading-relaxed">
+                Experience a breathable landscape of data. Our platform transforms complex ledgers into structured, actionable architectural insights for modern finance teams.
+            </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="px-8 py-4 rounded-xl spending-horizon-gradient text-white font-semibold text-lg shadow-lg hover:brightness-110 transition-all">Start Your Architecture</button>
+<button class="px-8 py-4 rounded-xl bg-surface-container-high text-on-surface font-semibold text-lg hover:bg-surface-container-highest transition-colors">View Demo</button>
+</div>
+</section>
+<!-- Real-time Insights Section -->
+<section class="bg-surface-container py-24">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<span class="text-primary font-bold tracking-widest text-xs uppercase mb-4 block">Editorial Precision</span>
+<h2 class="text-4xl font-bold mb-6 text-on-background leading-tight">Real-time Insights on the Horizon.</h2>
+<p class="text-on-surface-variant text-lg mb-8 leading-relaxed">
+                        Every transaction is mapped to our signature Architectural Horizon. Witness your financial narrative unfold with breathable whitespace and curated data framing that highlights what truly matters.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span class="text-on-surface">Instant transaction categorization via neural mapping.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span class="text-on-surface">Dynamic forecasting based on seasonal liquidity waves.</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm relative overflow-hidden">
+<div class="flex justify-between items-end mb-8">
+<div>
+<p class="text-on-surface-variant text-sm font-medium mb-1">Total Operating Capital</p>
+<h3 class="font-mono text-3xl font-bold">$1,248,300.00</h3>
+</div>
+<div class="text-right">
+<p class="text-secondary text-sm font-bold">+12.4%</p>
+<p class="text-on-surface-variant text-xs">vs last quarter</p>
+</div>
+</div>
+<div class="h-64 w-full relative">
+<!-- Custom Area Chart Mockup -->
+<div class="absolute inset-0 flex items-end justify-between px-2">
+<div class="w-1/6 h-24 bg-secondary-container opacity-40 rounded-t-lg"></div>
+<div class="w-1/6 h-36 bg-secondary-container opacity-50 rounded-t-lg"></div>
+<div class="w-1/6 h-48 bg-secondary-container opacity-60 rounded-t-lg"></div>
+<div class="w-1/6 h-32 bg-secondary-container opacity-40 rounded-t-lg"></div>
+<div class="w-1/6 h-56 bg-secondary-container opacity-70 rounded-t-lg"></div>
+<div class="w-1/6 h-44 bg-secondary-container opacity-50 rounded-t-lg"></div>
+</div>
+<div class="absolute bottom-0 w-full h-px bg-outline-variant opacity-30"></div>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="text-xs text-on-surface-variant mb-1">Burn Rate</p>
+<p class="font-mono font-bold">$42k/mo</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="text-xs text-on-surface-variant mb-1">Runway</p>
+<p class="font-mono font-bold">18 Months</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Budget Control Section -->
+<section class="py-24 px-6 max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold mb-4">Precision-Engineered Guardrails.</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">
+                    Take command of your spending with granular limits and automated alerts that keep your team aligned with the grand design.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-low p-10 rounded-2xl hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Hard Limits</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                        Set immutable spending thresholds per department or project. Transactions that exceed the architectural plan are automatically flagged.
+                    </p>
+<div class="soft-inset p-3 rounded-lg">
+<div class="flex justify-between text-[10px] text-on-surface-variant mb-1 uppercase tracking-wider">
+<span>Marketing Cap</span>
+<span>85% Used</span>
+</div>
+<div class="w-full bg-outline-variant/20 h-1.5 rounded-full">
+<div class="bg-primary h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low p-10 rounded-2xl hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Automated Alerts</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                        Receive instant notifications via Slack, Email, or SMS when spending patterns deviate from the historical baseline.
+                    </p>
+<div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-xl shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+<span class="text-[11px] font-medium">Alert: SaaS spend +15% over avg</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low p-10 rounded-2xl hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Granular Tracking</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                        Drill down into specific vendors or team members. Every cent is accounted for in our high-contrast, editorial ledger view.
+                    </p>
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm">
+<div class="flex justify-between items-center text-[11px]">
+<span class="font-bold">AWS Cloud Services</span>
+<span class="font-mono">$2,401.12</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Team Collaboration Section (Bento Grid Style) -->
+<section class="bg-surface-container-low py-24 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="mb-12">
+<h2 class="text-4xl font-bold mb-4">The Editorial Environment.</h2>
+<p class="text-on-surface-variant">Multi-user access designed with permissions as precise as your data.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
+<div class="md:col-span-2 md:row-span-2 bg-surface-container-lowest rounded-3xl p-10 flex flex-col justify-between overflow-hidden relative shadow-sm">
+<div>
+<h3 class="text-2xl font-bold mb-4">Permission-Based Control</h3>
+<p class="text-on-surface-variant max-w-md">Assign roles from 'Viewer' to 'Lead Architect'. Each user sees exactly what they need, minimizing cognitive load while maintaining strict auditing.</p>
+</div>
+<div class="mt-8 flex flex-col gap-4">
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-2xl">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-primary">JD</div>
+<div>
+<p class="text-sm font-bold">Jane Doe</p>
+<p class="text-xs text-on-surface-variant">Head of Finance</p>
+</div>
+</div>
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-full uppercase">Admin</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-2xl opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-secondary">MK</div>
+<div>
+<p class="text-sm font-bold">Mike K.</p>
+<p class="text-xs text-on-surface-variant">Operations Lead</p>
+</div>
+</div>
+<span class="bg-on-surface-variant/10 text-on-surface-variant text-[10px] font-bold px-2 py-1 rounded-full uppercase">Editor</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-sm">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-weight="fill">history</span>
+<h4 class="font-bold mb-2">Immutable Audit</h4>
+<p class="text-sm text-on-surface-variant">Every change is logged with millisecond precision for total compliance.</p>
+</div>
+<div class="bg-primary rounded-3xl p-8 flex flex-col justify-center text-white spending-horizon-gradient shadow-lg">
+<h4 class="font-bold mb-2">Shared Horizons</h4>
+<p class="text-sm opacity-90">Collaborate on budget planning in real-time with visual diffing tools.</p>
+<button class="mt-6 text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore Tools <span class="material-symbols-outlined text-xs">arrow_forward</span></button>
+</div>
+</div>
+</div>
+</section>
+<!-- Integration Ecosystem -->
+<section class="py-24 px-6 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div class="order-2 lg:order-1 grid grid-cols-3 gap-6">
+<!-- Integration Logos/Placeholders -->
+<div class="aspect-square bg-surface-container flex items-center justify-center rounded-2xl grayscale hover:grayscale-0 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl">account_balance</span>
+</div>
+<div class="aspect-square bg-surface-container flex items-center justify-center rounded-2xl grayscale hover:grayscale-0 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl">cloud_queue</span>
+</div>
+<div class="aspect-square bg-surface-container flex items-center justify-center rounded-2xl grayscale hover:grayscale-0 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl">payments</span>
+</div>
+<div class="aspect-square bg-surface-container flex items-center justify-center rounded-2xl grayscale hover:grayscale-0 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl">token</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest border-2 border-primary/20 flex items-center justify-center rounded-2xl shadow-md">
+<span class="material-symbols-outlined text-3xl text-primary">add_link</span>
+</div>
+<div class="aspect-square bg-surface-container flex items-center justify-center rounded-2xl grayscale hover:grayscale-0 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl">database</span>
+</div>
+</div>
+<div class="order-1 lg:order-2">
+<h2 class="text-4xl font-bold mb-6">Built for the Stack You Already Use.</h2>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                        Lumen Ledger acts as the connective tissue between your banking institutions, ERP systems, and internal tools. Seamlessly sync data across over 5,000+ global financial institutions.
+                    </p>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-surface-container"></div>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-surface-container-high"></div>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-outline-variant"></div>
+</div>
+<p class="text-xs font-medium text-on-surface-variant">Trusted by the fastest growing modern finance teams.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="max-w-7xl mx-auto px-6 mb-24">
+<div class="spending-horizon-gradient rounded-[2rem] p-12 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
+<!-- Decorative pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<h2 class="text-4xl md:text-5xl font-bold mb-6 relative z-10">Start Your Architecture.</h2>
+<p class="text-lg opacity-90 max-w-xl mx-auto mb-10 relative z-10">
+                    Join forward-thinking companies who treat their financial data with the editorial precision it deserves.
+                </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+<button class="bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:bg-opacity-90 transition-all">Get Started Free</button>
+<button class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all">Schedule a Consult</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 border-t border-slate-200">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 py-12 max-w-7xl mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="font-mono font-bold text-slate-900 text-lg mb-2">Lumen Ledger</div>
+<p class="text-sm font-['Inter'] text-slate-500 max-w-xs text-center md:text-left">
+                    © 2024 Lumen Ledger. Editorial Precision for Financial Clarity.
+                </p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-slate-500 hover:text-blue-600 transition-colors text-sm font-['Inter']" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-blue-600 transition-colors text-sm font-['Inter']" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-blue-600 transition-colors text-sm font-['Inter']" href="#">Security</a>
+<a class="text-slate-500 hover:text-blue-600 transition-colors text-sm font-['Inter']" href="#">Status</a>
+</div>
+</div>
+</footer>
+</body></html>

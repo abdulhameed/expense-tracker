@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign In | Lumen Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#2170e4",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#653e00",
+              "on-surface-variant": "#424754",
+              "surface-container-lowest": "#ffffff",
+              "secondary": "#006c49",
+              "on-tertiary": "#ffffff",
+              "on-secondary": "#ffffff",
+              "primary-fixed": "#d8e2ff",
+              "primary-fixed-dim": "#adc6ff",
+              "surface-container-low": "#f3f4f5",
+              "on-secondary-fixed": "#002113",
+              "secondary-container": "#6cf8bb",
+              "on-background": "#191c1d",
+              "inverse-on-surface": "#f0f1f2",
+              "surface-container-highest": "#e1e3e4",
+              "tertiary-container": "#a36700",
+              "on-tertiary-container": "#fffbff",
+              "on-surface": "#191c1d",
+              "surface-container-high": "#e7e8e9",
+              "secondary-fixed": "#6ffbbe",
+              "outline-variant": "#c2c6d6",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#fefcff",
+              "inverse-surface": "#2e3132",
+              "secondary-fixed-dim": "#4edea3",
+              "inverse-primary": "#adc6ff",
+              "error": "#ba1a1a",
+              "primary": "#0058be",
+              "background": "#f8f9fa",
+              "surface-tint": "#005ac2",
+              "outline": "#727785",
+              "on-secondary-container": "#00714d",
+              "tertiary-fixed-dim": "#ffb95f",
+              "on-tertiary-fixed": "#2a1700",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-variant": "#e1e3e4",
+              "surface-dim": "#d9dadb",
+              "surface": "#f8f9fa",
+              "surface-container": "#edeeef",
+              "on-secondary-fixed-variant": "#005236",
+              "tertiary": "#825100",
+              "surface-bright": "#f8f9fa",
+              "on-primary-fixed": "#001a42",
+              "tertiary-fixed": "#ffddb8",
+              "on-primary-fixed-variant": "#004395"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 10px 30px rgba(25, 28, 29, 0.04);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col">
+<main class="flex-grow flex items-center justify-center px-6 py-12">
+<div class="w-full max-w-md">
+<div class="mb-12 text-center">
+<div class="inline-flex items-center justify-center w-12 h-12 bg-primary-container/10 text-primary mb-6 rounded-lg">
+<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+</div>
+<h1 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface mb-3">
+                    Welcome Back
+                </h1>
+<p class="text-on-surface-variant font-medium tracking-tight">
+                    Editorial Precision for Financial Clarity.
+                </p>
+</div>
+<div class="bg-surface-container-lowest p-8 md:p-10 rounded-xl editorial-shadow">
+<form class="space-y-6">
+<div>
+<label class="block text-[0.6875rem] font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1" for="email">
+                            Email Address
+                        </label>
+<input class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 rounded-lg py-3 px-4 text-on-surface placeholder:text-outline/50 transition-all duration-200" id="email" placeholder="architect@lumenledger.com" type="email"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2 ml-1">
+<label class="block text-[0.6875rem] font-bold uppercase tracking-widest text-on-surface-variant" for="password">
+                                Password
+                            </label>
+<a class="text-[0.6875rem] font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors" href="#">
+                                Forgot Password?
+                            </a>
+</div>
+<input class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 rounded-lg py-3 px-4 text-on-surface placeholder:text-outline/50 transition-all duration-200" id="password" placeholder="••••••••" type="password"/>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold py-4 rounded-lg shadow-lg hover:shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2" type="submit">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</form>
+<div class="relative my-10">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-surface-container-highest"></div>
+</div>
+<div class="relative flex justify-center text-[0.6875rem] font-bold uppercase tracking-widest">
+<span class="bg-surface-container-lowest px-4 text-on-surface-variant">Or continue with</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 py-3 px-4 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors duration-200 group">
+<img alt="Google" class="w-5 h-5 grayscale group-hover:grayscale-0 transition-all" data-alt="The official colorful Google G logo icon on a white background with a clean vector aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6FR-0hCAN5klsaByOjV7NOH7hPO7tsYTZ_EmQBVKR2459AiK85TXFEuVf8y2uVbUg1ufbzWTN48VJU_GDTdMYy4QjdzzmAVSMDx7cFKWjOYP6LMZoQBcLak0_jPbGQ9KYYvCvpw1agmrOGnwp3R4DxaMXsf2Hgt7-FmbNSjGm_TkSbrAlsWQWdiWlqwXtP6o6UuDmIqLXRltx0Gr8rVaXXalGhHYeWJ-AQaonM0h27aX5iHGCOmMvVA9_matRmO3NAagtJtRPEA8"/>
+<span class="text-sm font-semibold text-on-surface-variant group-hover:text-on-surface transition-colors">Google</span>
+</button>
+<button class="flex items-center justify-center gap-3 py-3 px-4 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors duration-200 group">
+<span class="material-symbols-outlined text-xl text-on-surface-variant group-hover:text-[#0077b5] transition-colors">work</span>
+<span class="text-sm font-semibold text-on-surface-variant group-hover:text-on-surface transition-colors">LinkedIn</span>
+</button>
+</div>
+</div>
+<div class="mt-8 text-center">
+<p class="text-sm text-on-surface-variant">
+                    Don't have an account? 
+                    <a class="text-primary font-bold hover:underline underline-offset-4 ml-1" href="#">Create an account</a>
+</p>
+</div>
+</div>
+</main>
+<footer class="flex justify-between items-center px-12 py-8 w-full bg-surface dark:bg-slate-950">
+<span class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant dark:text-slate-500">
+            © 2024 Lumen Ledger. Editorial Precision for Financial Clarity.
+        </span>
+<div class="flex gap-8">
+<a class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant dark:text-slate-500 hover:text-primary transition-colors duration-300" href="#">Privacy</a>
+<a class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant dark:text-slate-500 hover:text-primary transition-colors duration-300" href="#">Terms</a>
+<a class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest text-on-surface-variant dark:text-slate-500 hover:text-primary transition-colors duration-300" href="#">Security</a>
+</div>
+</footer>
+</body></html>

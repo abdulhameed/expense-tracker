@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Equinox Finance - Create Transaction</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .mono-numbers { font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace; }
+        .glass-header {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline-variant": "#c2c6d6",
+                        "secondary-fixed": "#6ffbbe",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#fefcff",
+                        "on-tertiary-container": "#fffbff",
+                        "tertiary-container": "#a36700",
+                        "on-surface": "#191c1d",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-container": "#6cf8bb",
+                        "on-background": "#191c1d",
+                        "primary-fixed": "#d8e2ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-secondary-fixed": "#002113",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#006c49",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-container": "#2170e4",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-surface-variant": "#424754",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary": "#825100",
+                        "on-primary-fixed": "#001a42",
+                        "on-primary-fixed-variant": "#004395",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-variant": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "surface": "#f8f9fa",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#00714d",
+                        "surface-tint": "#005ac2",
+                        "outline": "#727785",
+                        "error": "#ba1a1a",
+                        "primary": "#0058be",
+                        "background": "#f8f9fa",
+                        "inverse-surface": "#2e3132",
+                        "secondary-fixed-dim": "#4edea3",
+                        "inverse-primary": "#adc6ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "1rem", "xl": "1.25rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface antialiased overflow-hidden">
+<!-- Dashboard Background (Underlay) -->
+<div class="fixed inset-0 z-0 flex overflow-hidden">
+<!-- SideNavBar Anchor -->
+<aside class="hidden md:flex flex-col py-8 px-4 gap-2 h-screen w-64 fixed left-0 top-0 border-r-0 bg-[#f3f4f5] dark:bg-slate-950 z-10 transition-all ease-in-out duration-300">
+<div class="px-4 mb-8">
+<h1 class="text-lg font-black text-slate-900 dark:text-white">Finance Architect</h1>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Premium Editorial</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-blue-700 dark:text-blue-400 bg-white dark:bg-slate-900 rounded-lg shadow-sm text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                    Transactions
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="topic">topic</span>
+                    Projects
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                    Reports
+                </a>
+</nav>
+</aside>
+<!-- Main Content Area (Blurred) -->
+<main class="flex-1 md:ml-64 p-8 filter blur-sm">
+<header class="mb-12">
+<p class="text-label-sm text-on-surface-variant font-medium tracking-wider mb-2">OVERVIEW</p>
+<h2 class="text-4xl font-extrabold tracking-tight text-on-surface">Financial Health</h2>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-surface-container-lowest p-8 rounded-lg">
+<p class="text-sm text-on-surface-variant mb-1">Total Balance</p>
+<p class="text-3xl font-bold mono-numbers">$142,550.00</p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg">
+<p class="text-sm text-on-surface-variant mb-1">Monthly Income</p>
+<p class="text-3xl font-bold text-secondary mono-numbers">+$12,400.00</p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg">
+<p class="text-sm text-on-surface-variant mb-1">Monthly Expenses</p>
+<p class="text-3xl font-bold text-error mono-numbers">-$4,210.00</p>
+</div>
+</div>
+<div class="bg-surface-container p-8 rounded-xl h-96 flex items-center justify-center">
+<div class="text-center opacity-20">
+<span class="material-symbols-outlined text-6xl" data-icon="query_stats">query_stats</span>
+<p class="mt-4 font-medium">Activity Chart Visualization</p>
+</div>
+</div>
+</main>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-on-surface/40 backdrop-blur-md">
+<div class="bg-surface-container-lowest w-full max-w-2xl max-h-[921px] rounded-xl shadow-[0_20px_50px_rgba(25,28,29,0.15)] flex flex-col overflow-hidden">
+<!-- Modal Header -->
+<div class="flex items-center justify-between px-8 py-6 border-b border-transparent">
+<div>
+<h3 class="text-xl font-bold text-on-surface">Create Transaction</h3>
+<p class="text-xs text-on-surface-variant font-medium uppercase tracking-widest mt-0.5">Entry Details</p>
+</div>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="close">close</span>
+</button>
+</div>
+<!-- Modal Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-8 py-4">
+<form class="space-y-8">
+<!-- Transaction Type Toggle -->
+<div class="space-y-3">
+<label class="text-sm font-bold text-on-surface-variant">Transaction Type</label>
+<div class="flex gap-1 p-1 bg-surface-container rounded-lg max-w-xs">
+<label class="flex-1 relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="tx_type" type="radio"/>
+<div class="py-2.5 text-center text-sm font-semibold rounded-md transition-all peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-primary text-on-surface-variant group-hover:text-on-surface">
+                                    Expense
+                                </div>
+</label>
+<label class="flex-1 relative cursor-pointer group">
+<input class="peer sr-only" name="tx_type" type="radio"/>
+<div class="py-2.5 text-center text-sm font-semibold rounded-md transition-all peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-secondary text-on-surface-variant group-hover:text-on-surface">
+                                    Income
+                                </div>
+</label>
+</div>
+</div>
+<!-- Title & Amount Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Title</label>
+<input class="w-full bg-surface-container-highest border-0 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-on-surface-variant/50" placeholder="e.g. Monthly Rent" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Amount</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 text-on-surface-variant font-medium">$</span>
+<input class="w-full bg-surface-container-highest border-0 rounded-lg pl-8 pr-4 py-3 mono-numbers text-lg font-bold focus:ring-2 focus:ring-primary/20 transition-all" placeholder="0.00" type="text"/>
+</div>
+</div>
+</div>
+<!-- Category & Date Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Category</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border-0 rounded-lg px-4 py-3 appearance-none focus:ring-2 focus:ring-primary/20 transition-all">
+<option>Select Category</option>
+<option>Housing</option>
+<option>Transportation</option>
+<option>Entertainment</option>
+<option>Groceries</option>
+<option>Investment</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Date</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-0 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 transition-all" type="date"/>
+</div>
+</div>
+</div>
+<!-- Payment Method -->
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Payment Method</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border-0 rounded-lg px-4 py-3 appearance-none focus:ring-2 focus:ring-primary/20 transition-all">
+<option>Chase Bank (**** 4212)</option>
+<option>Apple Pay</option>
+<option>Corporate Credit (**** 0019)</option>
+<option>Cash</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" data-icon="credit_card">credit_card</span>
+</div>
+</div>
+<!-- Description -->
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Description (Optional)</label>
+<textarea class="w-full bg-surface-container-highest border-0 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Add additional details about this transaction..." rows="3"></textarea>
+</div>
+<!-- File Upload -->
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant">Attach Receipt</label>
+<div class="border-2 border-dashed border-surface-container-highest rounded-xl p-8 transition-colors hover:bg-surface-container/50 flex flex-col items-center justify-center cursor-pointer group">
+<div class="bg-surface-container-high p-3 rounded-full mb-3 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="upload_file">upload_file</span>
+</div>
+<p class="text-sm font-medium">Click to upload or drag and drop</p>
+<p class="text-[11px] text-on-surface-variant mt-1">PDF, PNG, JPG (max. 10MB)</p>
+</div>
+</div>
+</form>
+</div>
+<!-- Modal Footer -->
+<div class="px-8 py-6 bg-surface-container-low flex items-center justify-end gap-4">
+<button class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors active:scale-95">
+                    Cancel
+                </button>
+<button class="px-8 py-2.5 text-sm font-bold text-white bg-gradient-to-br from-primary to-primary-container rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all">
+                    Save Transaction
+                </button>
+</div>
+</div>
+</div>
+<!-- Hidden Image Data Anchors (for system context) -->
+<div class="hidden">
+<img data-alt="close-up of a high-end metal credit card on a marble surface with soft professional lighting and shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhyZEY8-CfFBYWV-zM4Blr34_oIB2NbNI_xR2ymlboBlZykYOM8xqxQf5vsSAskeIxCwuAGJgYMrcwHQjz9je7IZkLF8-M31DGAU7f8vqswbGHkHt850h_Osera8xhagVr_bZ_yxC6ocg1wj-LHKJpTeQibi696RRKvImzZYFYFh0x341wkTBbowmqBMRNRosqkFdpMDTc432j2FuR7R8W-DLJhH_RfW2XQiTnWFTqW6xAEtmJiVA0qF0-TQrrkHV2T4xe_mxWWaA"/>
+<img data-alt="clean minimal workplace with apple hardware and coffee cup in a brightly lit studio apartment morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBje8-Te644plzYxYuLcPpk4eoARwLc2_G3sksZ6DKeTaqkvi7SGoZft4YMt96Sm1ZOlFBdH5OEbLC3xM7YcEAUVhsLINSpI9E5_ZEZn-6SgPk3WEm4gmWThs05mjc8fHQWAGP37tnCxu6YML00-1kX9T_Y_LwMtl7n6c5iaUkh-BNgONk7lRFQLhcZFWF8GAvYwrtexj3v-ZhDrl7nz6SsEwIKnfFDQaDSJjOx7Ik_n2V7foaioWUr4a76_n-5zDZCgnqj92r_OkI"/>
+</div>
+</body></html>
