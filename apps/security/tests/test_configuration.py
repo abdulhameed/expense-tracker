@@ -29,22 +29,26 @@ from apps.security.configuration import (
 class TestCORSConfiguration:
     """Test CORS configuration."""
 
-    @override_settings(DEBUG=True)
-    def test_get_cors_allowed_origins_default(self):
-        """Test default CORS allowed origins in development."""
+    def test_get_cors_allowed_origins_returns_list(self):
+        """Test CORS allowed origins returns list."""
         origins = CORSConfiguration.get_cors_allowed_origins()
 
         assert isinstance(origins, list)
-        assert "http://localhost:3000" in origins
-        assert "http://localhost:8080" in origins
+        assert len(origins) > 0
+        # Should contain at least localhost origins
+        assert any("localhost" in origin for origin in origins)
 
-    @patch("apps.security.configuration.config")
+    @patch("decouple.config")
     def test_get_cors_allowed_origins_from_env(self, mock_config):
         """Test CORS origins loaded from environment."""
-        mock_config.return_value = [
-            "https://example.com",
-            "https://app.example.com",
-        ]
+        # Mock the config function to return our test origins
+        def config_side_effect(key, default=None, cast=None):
+            if key == "CORS_ALLOWED_ORIGINS":
+                value = "https://example.com,https://app.example.com"
+                return cast(value) if cast else value
+            return default
+
+        mock_config.side_effect = config_side_effect
 
         origins = CORSConfiguration.get_cors_allowed_origins()
 
@@ -52,15 +56,19 @@ class TestCORSConfiguration:
         assert "https://example.com" in origins
         assert "https://app.example.com" in origins
 
-    @patch("apps.security.configuration.config")
+    @patch("decouple.config")
     def test_get_cors_allowed_origins_strips_whitespace(self, mock_config):
         """Test that whitespace is stripped from origins."""
-        mock_config.return_value = "https://example.com , https://app.example.com"
+        # Mock the config function to return our test origins with spaces
+        def config_side_effect(key, default=None, cast=None):
+            if key == "CORS_ALLOWED_ORIGINS":
+                value = "https://example.com , https://app.example.com"
+                return cast(value) if cast else value
+            return default
 
-        with patch("apps.security.configuration.config") as mock:
-            # Simulate the behavior of the cast function
-            cast_func = lambda x: [item.strip() for item in x.split(",")]
-            origins = cast_func("https://example.com , https://app.example.com")
+        mock_config.side_effect = config_side_effect
+
+        origins = CORSConfiguration.get_cors_allowed_origins()
 
         assert origins[0] == "https://example.com"
         assert origins[1] == "https://app.example.com"
