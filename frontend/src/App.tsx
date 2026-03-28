@@ -1,20 +1,36 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuthStore } from '@/store/authStore';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { Login } from '@/pages/Login';
+import { Register } from '@/pages/Register';
+import { Dashboard } from '@/pages/Dashboard';
+
 export default function App() {
+  const { isAuthenticated, getCurrentUser } = useAuthStore();
+
+  useEffect(() => {
+    // Try to restore auth state on app load
+    if (!isAuthenticated) {
+      getCurrentUser();
+    }
+  }, [isAuthenticated, getCurrentUser]);
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary-50 to-primary-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-primary-900 mb-4">Expense Tracker</h1>
-        <p className="text-lg text-primary-700 mb-8">Frontend development environment is ready!</p>
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-semibold text-neutral-900 mb-4">Setup Complete ✓</h2>
-          <ul className="text-left text-neutral-700 space-y-2">
-            <li>✓ Vite + React + TypeScript configured</li>
-            <li>✓ Tailwind CSS with custom theme</li>
-            <li>✓ Testing framework (Vitest) ready</li>
-            <li>✓ ESLint & Prettier configured</li>
-            <li>✓ Project structure created</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
