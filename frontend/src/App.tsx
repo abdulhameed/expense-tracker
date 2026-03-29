@@ -15,6 +15,8 @@ import { Analytics } from '@/pages/Analytics';
 import { Budgets } from '@/pages/Budgets';
 import { Export } from '@/pages/Export';
 import { RecurringTransactions } from '@/pages/RecurringTransactions';
+import { Settings } from '@/pages/Settings';
+import { DataImport } from '@/pages/DataImport';
 import { VerifyEmail } from '@/pages/VerifyEmail';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { ResetPassword } from '@/pages/ResetPassword';
@@ -137,6 +139,26 @@ export default function App() {
           element={
             <ProtectedRoute>
               <RecurringTransactions />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Settings Page */}
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Data Import Page */}
+        <Route
+          path="/import"
+          element={
+            <ProtectedRoute>
+              <DataImport />
             </ProtectedRoute>
           }
         />
