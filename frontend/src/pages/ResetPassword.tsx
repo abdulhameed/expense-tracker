@@ -189,7 +189,7 @@ export function ResetPassword() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5 mt-6">
+          <form onSubmit={handleSubmit} className="space-y-5 mt-6" autoComplete="on">
             {/* Password Field */}
             <Input
               id="password"
@@ -199,6 +199,7 @@ export function ResetPassword() {
               value={formData.password}
               onChange={handleChange}
               placeholder="At least 8 characters"
+              autoComplete="new-password"
               disabled={isLoading}
               error={validationErrors.password}
               variant="password"
@@ -215,6 +216,7 @@ export function ResetPassword() {
               value={formData.password_confirm}
               onChange={handleChange}
               placeholder="Re-enter your password"
+              autoComplete="new-password"
               disabled={isLoading}
               error={validationErrors.password_confirm}
               variant="password"

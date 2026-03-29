@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
+import { useThemeStore } from '@/store/themeStore';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { ToastContainer } from '@/components/ToastContainer';
 import { Login } from '@/pages/Login';
@@ -22,9 +23,19 @@ import { NotificationCenter } from '@/pages/NotificationCenter';
 import { VerifyEmail } from '@/pages/VerifyEmail';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { ResetPassword } from '@/pages/ResetPassword';
+import { TeamMembers } from '@/pages/TeamMembers';
+import { Invitations } from '@/pages/Invitations';
+import { Documents } from '@/pages/Documents';
+import { ActivityLog } from '@/pages/ActivityLog';
 
 export default function App() {
   const { isAuthenticated, getCurrentUser } = useAuthStore();
+  const { initializeTheme } = useThemeStore();
+
+  useEffect(() => {
+    // Initialize theme on app load
+    initializeTheme();
+  }, [initializeTheme]);
 
   useEffect(() => {
     // Try to restore auth state on app load
@@ -172,6 +183,45 @@ export default function App() {
           element={
             <ProtectedRoute>
               <NotificationCenter />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Document Management Page */}
+        <Route
+          path="/documents"
+          element={
+            <ProtectedRoute>
+              <Documents />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Activity Log Page */}
+        <Route
+          path="/activity-log"
+          element={
+            <ProtectedRoute>
+              <ActivityLog />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Team Collaboration Pages */}
+        <Route
+          path="/projects/:projectId/team"
+          element={
+            <ProtectedRoute>
+              <TeamMembers />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/invitations"
+          element={
+            <ProtectedRoute>
+              <Invitations />
             </ProtectedRoute>
           }
         />

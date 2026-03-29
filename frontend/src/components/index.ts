@@ -31,6 +31,12 @@ export { PieChart } from './charts/PieChart';
 // Form Components
 export { TransactionModal } from './TransactionModal';
 export { FilterModal } from './FilterModal';
+export { ActivityLog, type ActivityLogEntry } from './ActivityLog';
+
+// Document Management Components
+export { DocumentUploadModal } from './DocumentUploadModal';
+export { DocumentList } from './DocumentList';
+export { DocumentPreview } from './DocumentPreview';
 
 // Route Components
 export { ProtectedRoute } from './ProtectedRoute';

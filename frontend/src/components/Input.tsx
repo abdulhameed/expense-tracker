@@ -17,6 +17,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       helperText,
       required = false,
       icon,
+      type,
       variant = 'text',
       className,
       id,
@@ -32,7 +33,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const helperId = `${inputId}-helper`;
 
     const isPassword = variant === 'password';
-    const inputType = isPassword ? (showPassword ? 'text' : 'password') : variant;
+    const resolvedType = type ?? variant;
+    const inputType = isPassword ? (showPassword ? 'text' : 'password') : resolvedType;
 
     const baseInputStyles =
       'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:bg-neutral-100 disabled:cursor-not-allowed';
@@ -54,6 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           {icon && <div className="absolute left-3 top-1/2 transform -translate-y-1/2">{icon}</div>}
           <input
+            {...props}
             ref={ref}
             id={inputId}
             type={inputType}
@@ -63,15 +66,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={`${combinedInputClassName} ${icon ? 'pl-10' : ''} ${
               isPassword ? 'pr-10' : ''
             }`}
-            {...props}
           />
           {isPassword && (
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-pressed={showPassword}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-600 hover:text-neutral-900 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
-              tabIndex={-1}
             >
               {showPassword ? (
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

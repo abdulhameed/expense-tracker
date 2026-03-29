@@ -111,7 +111,7 @@ export function Register() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5 mt-6">
+          <form onSubmit={handleSubmit} className="space-y-5 mt-6" autoComplete="on">
             {/* Email Field */}
             <Input
               id="email"
@@ -121,6 +121,7 @@ export function Register() {
               value={formData.email}
               onChange={handleChange}
               placeholder="you@example.com"
+              autoComplete="username"
               disabled={isLoading}
               error={validationErrors.email}
               required
@@ -136,6 +137,7 @@ export function Register() {
                 value={formData.first_name}
                 onChange={handleChange}
                 placeholder="John"
+                autoComplete="given-name"
                 disabled={isLoading}
                 error={validationErrors.first_name}
                 required
@@ -148,6 +150,7 @@ export function Register() {
                 value={formData.last_name}
                 onChange={handleChange}
                 placeholder="Doe"
+                autoComplete="family-name"
                 disabled={isLoading}
                 error={validationErrors.last_name}
                 required
@@ -163,6 +166,7 @@ export function Register() {
               value={formData.password}
               onChange={handleChange}
               placeholder="At least 8 characters"
+              autoComplete="new-password"
               disabled={isLoading}
               error={validationErrors.password}
               variant="password"
@@ -178,6 +182,7 @@ export function Register() {
               value={formData.password_confirm}
               onChange={handleChange}
               placeholder="Re-enter your password"
+              autoComplete="new-password"
               disabled={isLoading}
               error={validationErrors.password_confirm}
               variant="password"

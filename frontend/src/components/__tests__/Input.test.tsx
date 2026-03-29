@@ -91,6 +91,20 @@ describe('Input Component', () => {
     expect(input.type).toBe('password');
   });
 
+  it('toggles password visibility when type password is also passed explicitly', async () => {
+    const user = userEvent.setup();
+    render(<Input id="test-input" type="password" variant="password" />);
+
+    const input = document.querySelector('#test-input') as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /show password/i });
+
+    expect(input.type).toBe('password');
+
+    await user.click(button);
+    expect(input.type).toBe('text');
+    expect(button).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('renders email type input', () => {
     render(<Input id="test-input" type="email" />);
     expect(screen.getByRole('textbox')).toHaveAttribute('type', 'email');

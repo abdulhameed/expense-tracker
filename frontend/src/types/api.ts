@@ -343,3 +343,126 @@ export interface RecurringTransactionFull extends Transaction {
   next_auto_occurrence: string;
   total_occurrences: number;
 }
+
+// Project and Team Collaboration types
+export type ProjectType = 'personal' | 'business' | 'team';
+export type MemberRole = 'owner' | 'admin' | 'member' | 'viewer';
+export type InvitationStatus = 'pending' | 'accepted' | 'declined' | 'expired';
+
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  project_type: ProjectType;
+  owner: string;
+  currency: string;
+  budget?: number;
+  start_date?: string;
+  end_date?: string;
+  is_active: boolean;
+  is_archived: boolean;
+  member_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProjectMember {
+  id: string;
+  user: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: MemberRole;
+  can_create_transactions: boolean;
+  can_edit_transactions: boolean;
+  can_delete_transactions: boolean;
+  can_view_reports: boolean;
+  can_invite_members: boolean;
+  joined_at: string;
+}
+
+export interface CreateProjectMemberRequest {
+  email: string;
+  role: MemberRole;
+}
+
+export interface UpdateProjectMemberRequest {
+  role?: MemberRole;
+  can_create_transactions?: boolean;
+  can_edit_transactions?: boolean;
+  can_delete_transactions?: boolean;
+  can_view_reports?: boolean;
+  can_invite_members?: boolean;
+}
+
+export interface Invitation {
+  id: string;
+  project: string;
+  project_name: string;
+  email: string;
+  role: MemberRole;
+  invited_by: string;
+  invited_by_email: string;
+  status: InvitationStatus;
+  created_at: string;
+  expires_at: string;
+}
+
+export interface ProjectListResponse {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: Project[];
+}
+
+export interface MemberListResponse {
+  items: ProjectMember[];
+  total: number;
+}
+
+// Document Management types
+export interface Document {
+  id: number;
+  user_id: number;
+  transaction_id?: number;
+  file_name: string;
+  file_path: string;
+  file_size: number; // in bytes
+  file_type: string; // MIME type
+  file_extension: string;
+  uploaded_by: string;
+  description?: string;
+  tags?: string[];
+  is_public: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UploadDocumentRequest {
+  file: File;
+  transaction_id?: number;
+  description?: string;
+  tags?: string[];
+  is_public?: boolean;
+}
+
+export interface DocumentListResponse {
+  items: Document[];
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}
+
+export interface DocumentFilter {
+  transaction_id?: number;
+  file_type?: string;
+  search?: string;
+  start_date?: string;
+  end_date?: string;
+  tags?: string[];
+  page?: number;
+  limit?: number;
+  sort_by?: 'date' | 'name' | 'size';
+  sort_order?: 'asc' | 'desc';
+}

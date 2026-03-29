@@ -84,7 +84,7 @@ export function Login() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5 mt-6">
+          <form onSubmit={handleSubmit} className="space-y-5 mt-6" autoComplete="on">
             {/* Email Field */}
             <Input
               id="email"
@@ -94,6 +94,7 @@ export function Login() {
               value={formData.email}
               onChange={handleChange}
               placeholder="you@example.com"
+              autoComplete="username"
               disabled={isLoading}
               error={validationErrors.email}
               required
@@ -108,6 +109,7 @@ export function Login() {
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              autoComplete="current-password"
               disabled={isLoading}
               error={validationErrors.password}
               variant="password"

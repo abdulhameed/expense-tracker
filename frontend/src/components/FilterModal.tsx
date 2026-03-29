@@ -77,7 +77,7 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
       <div className="space-y-6">
         {/* Search Query */}
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-2">Search</label>
+          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Search</label>
           <Input
             placeholder="Search by description..."
             value={filters.searchQuery || ''}
@@ -88,7 +88,7 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
         {/* Date Range */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-2">Start Date</label>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Start Date</label>
             <input
               type="date"
               value={filters.dateRange?.start_date || ''}
@@ -98,11 +98,11 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
                   dateRange: { ...prev.dateRange, start_date: e.target.value },
                 }))
               }
-              className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-2">End Date</label>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">End Date</label>
             <input
               type="date"
               value={filters.dateRange?.end_date || ''}
@@ -112,7 +112,7 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
                   dateRange: { ...prev.dateRange, end_date: e.target.value },
                 }))
               }
-              className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
         </div>
@@ -136,7 +136,7 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
 
         {/* Categories */}
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-3">Categories</label>
+          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Categories</label>
           <div className="space-y-2 max-h-40 overflow-y-auto">
             {categories.map((category) => (
               <div key={category.id} className="flex items-center">
@@ -152,7 +152,7 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
 
         {/* Amount Range */}
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-3">Amount Range</label>
+          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Amount Range</label>
           <div className="grid grid-cols-2 gap-4">
             <Input
               type="number"
@@ -187,7 +187,7 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
 
         {/* Payment Methods */}
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-3">Payment Methods</label>
+          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Payment Methods</label>
           <div className="space-y-2">
             {paymentMethods.map((method) => (
               <div key={method} className="flex items-center">
@@ -202,18 +202,18 @@ export function FilterModal({ isOpen, onClose, onApply, categories }: FilterModa
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3 justify-end pt-4 border-t border-neutral-200">
+        <div className="flex gap-3 justify-end pt-4 border-t border-neutral-200 dark:border-neutral-700">
           <Button
             type="button"
             onClick={handleReset}
-            className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            className="px-4 py-2 text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg"
           >
             Reset
           </Button>
           <Button
             type="button"
             onClick={() => onClose()}
-            className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            className="px-4 py-2 text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg"
           >
             Cancel
           </Button>
