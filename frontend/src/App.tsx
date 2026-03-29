@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { ToastContainer } from '@/components/ToastContainer';
 import { Login } from '@/pages/Login';
 import { Register } from '@/pages/Register';
 import { Dashboard } from '@/pages/Dashboard';
@@ -17,6 +18,7 @@ import { Export } from '@/pages/Export';
 import { RecurringTransactions } from '@/pages/RecurringTransactions';
 import { Settings } from '@/pages/Settings';
 import { DataImport } from '@/pages/DataImport';
+import { NotificationCenter } from '@/pages/NotificationCenter';
 import { VerifyEmail } from '@/pages/VerifyEmail';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { ResetPassword } from '@/pages/ResetPassword';
@@ -33,6 +35,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         {/* Auth Pages */}
         <Route path="/login" element={<Login />} />
@@ -159,6 +162,16 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DataImport />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Notification Center Page */}
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <NotificationCenter />
             </ProtectedRoute>
           }
         />

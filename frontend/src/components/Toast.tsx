@@ -1,19 +1,12 @@
-import { ReactNode, useEffect, useState } from 'react';
-
-type ToastVariant = 'success' | 'warning' | 'error' | 'info';
+import { useEffect, useState } from 'react';
+import { Notification, NotificationType } from '@/utils/notifications';
 
 interface ToastProps {
-  variant?: ToastVariant;
-  message: string;
-  duration?: number;
-  onClose?: () => void;
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
+  notification: Notification;
+  onClose: (id: string) => void;
 }
 
-const variantStyles: Record<ToastVariant, { bg: string; text: string; icon: string }> = {
+const variantStyles: Record<NotificationType, { bg: string; text: string; icon: string }> = {
   success: {
     bg: 'bg-success-600',
     text: 'text-white',
@@ -36,69 +29,62 @@ const variantStyles: Record<ToastVariant, { bg: string; text: string; icon: stri
   },
 };
 
-export function Toast({
-  variant = 'info',
-  message,
-  duration = 4000,
-  onClose,
-  action,
-}: ToastProps) {
+export function Toast({ notification, onClose }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    if (duration <= 0) return;
+    if (!notification.duration || notification.duration <= 0) return;
 
     const timer = setTimeout(() => {
       setIsVisible(false);
-      onClose?.();
-    }, duration);
+      onClose(notification.id);
+    }, notification.duration);
 
     return () => clearTimeout(timer);
-  }, [duration, onClose]);
+  }, [notification.duration, notification.id, onClose]);
 
   const handleClose = () => {
     setIsVisible(false);
-    onClose?.();
+    onClose(notification.id);
   };
 
   if (!isVisible) return null;
 
-  const styles = variantStyles[variant];
+  const styles = variantStyles[notification.type];
 
   return (
     <div
-      className={`${styles.bg} ${styles.text} rounded-lg shadow-lg p-4 flex items-center gap-3 max-w-md`}
+      className={`${styles.bg} ${styles.text} rounded-lg shadow-lg p-4 flex flex-col gap-2 max-w-md animate-in fade-in slide-in-from-right-2 duration-300`}
       role="alert"
     >
-      <svg
-        className="w-5 h-5 flex-shrink-0"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path fillRule="evenodd" d={styles.icon} clipRule="evenodd" />
-      </svg>
-      <p className="flex-1 text-sm font-medium">{message}</p>
-      {action && (
-        <button
-          onClick={action.onClick}
-          className="ml-2 font-medium hover:opacity-80 focus:outline-none"
+      <div className="flex items-start gap-3">
+        <svg
+          className="w-5 h-5 flex-shrink-0 mt-0.5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
         >
-          {action.label}
-        </button>
-      )}
-      <button
-        onClick={handleClose}
-        className="ml-3 hover:opacity-80 focus:outline-none"
-        aria-label="Close notification"
-      >
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fillRule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
+          <path fillRule="evenodd" d={styles.icon} clipRule="evenodd" />
         </svg>
-      </button>
+        <div className="flex-1">
+          {notification.title && (
+            <p className="font-semibold text-sm">{notification.title}</p>
+          )}
+          <p className="text-sm opacity-95">{notification.message}</p>
+        </div>
+        <button
+          onClick={handleClose}
+          className="flex-shrink-0 hover:opacity-70 focus:outline-none transition-opacity"
+          aria-label="Close notification"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fillRule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

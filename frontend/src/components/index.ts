@@ -11,6 +11,7 @@ export { Spinner } from './Spinner';
 export { Badge } from './Badge';
 export { Alert } from './Alert';
 export { Toast } from './Toast';
+export { ToastContainer } from './ToastContainer';
 export { Avatar } from './Avatar';
 
 // Navigation Components

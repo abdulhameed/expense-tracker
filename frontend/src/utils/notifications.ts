@@ -20,7 +20,9 @@ export const notificationService = {
    */
   subscribe(listener: (notifications: Notification[]) => void) {
     listeners.add(listener);
-    return () => listeners.delete(listener);
+    return () => {
+      listeners.delete(listener);
+    };
   },
 
   /**
