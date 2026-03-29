@@ -73,6 +73,15 @@ const navLinks: NavLink[] = [
     ),
   },
   {
+    href: '/recurring',
+    label: 'Recurring',
+    icon: (
+      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 5.199V4a1 1 0 01-1-1zm.008 9a1 1 0 011.892.110A5.002 5.002 0 0014.001 14.899V16a1 1 0 102 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 11-1.885-.666z" clipRule="evenodd" />
+      </svg>
+    ),
+  },
+  {
     href: '/settings',
     label: 'Settings',
     icon: (
