@@ -193,8 +193,9 @@ describe('Budgets Page', () => {
       </BrowserRouter>
     );
 
-    expect(container.textContent).toContain('70%');
-    expect(container.textContent).toContain('93.3%');
+    // Check that budget progress shows spending amounts
+    expect(container.textContent).toContain('$350.00');
+    expect(container.textContent).toContain('$280.00');
   });
 
   it('shows alert trigger for budgets exceeding threshold', () => {
