@@ -3,6 +3,7 @@ type SpinnerSize = 'small' | 'medium' | 'large';
 interface SpinnerProps {
   size?: SpinnerSize;
   color?: string;
+  label?: string;
 }
 
 const sizeStyles: Record<SpinnerSize, string> = {
@@ -11,7 +12,7 @@ const sizeStyles: Record<SpinnerSize, string> = {
   large: 'w-12 h-12',
 };
 
-export function Spinner({ size = 'medium', color = 'text-primary-600' }: SpinnerProps) {
+export function Spinner({ size = 'medium', color = 'text-primary-600', label = 'Loading' }: SpinnerProps) {
   return (
     <svg
       className={`${sizeStyles[size]} animate-spin ${color}`}
@@ -19,6 +20,8 @@ export function Spinner({ size = 'medium', color = 'text-primary-600' }: Spinner
       fill="none"
       viewBox="0 0 24 24"
       role="status"
+      aria-label={label}
+      aria-live="polite"
     >
       <circle
         className="opacity-25"

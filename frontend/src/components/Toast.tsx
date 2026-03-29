@@ -56,6 +56,8 @@ export function Toast({ notification, onClose }: ToastProps) {
     <div
       className={`${styles.bg} ${styles.text} rounded-lg shadow-lg p-4 flex flex-col gap-2 max-w-md animate-in fade-in slide-in-from-right-2 duration-300`}
       role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
     >
       <div className="flex items-start gap-3">
         <svg

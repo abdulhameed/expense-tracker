@@ -1,4 +1,4 @@
-import { forwardRef, SelectHTMLAttributes } from 'react';
+import { forwardRef, SelectHTMLAttributes, useId } from 'react';
 
 interface SelectOption {
   value: string | number;
@@ -30,7 +30,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     },
     ref
   ) => {
-    const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
+    const generatedId = useId();
+    const selectId = id || `select-${generatedId}`;
+    const errorId = `${selectId}-error`;
+    const helperId = `${selectId}-helper`;
 
     const baseSelectStyles =
       'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:bg-neutral-100 disabled:cursor-not-allowed bg-white';
@@ -53,6 +56,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           disabled={disabled}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : helperText ? helperId : undefined}
           className={combinedSelectClassName}
           {...props}
         >
@@ -68,9 +73,22 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ))}
         </select>
 
-        {error && <p className="mt-1 text-sm text-error-600">{error}</p>}
+        {error && (
+          <p
+            id={errorId}
+            className="mt-1 text-sm text-error-600"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
         {!error && helperText && (
-          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
+          <p
+            id={helperId}
+            className="mt-1 text-sm text-neutral-500"
+          >
+            {helperText}
+          </p>
         )}
       </div>
     );

@@ -192,6 +192,28 @@ export function Analytics() {
                 ]}
                 height={300}
               />
+              {/* Hidden Data Table for Screen Readers */}
+              <table className="sr-only">
+                <caption>Period Comparison Chart Data</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Period</th>
+                    <th scope="col">Income</th>
+                    <th scope="col">Expenses</th>
+                    <th scope="col">Net</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparisonChartData.map((item) => (
+                    <tr key={item.name}>
+                      <td>{item.name}</td>
+                      <td>{formatCurrency(item.income)}</td>
+                      <td>{formatCurrency(item.expenses)}</td>
+                      <td>{formatCurrency(item.net)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </Card>
 
@@ -217,8 +239,12 @@ export function Analytics() {
                       className={`text-lg ${
                         analyticsData.comparison.change_percentage.income >= 0 ? 'text-success-600' : 'text-error-600'
                       }`}
+                      aria-hidden="true"
                     >
                       {analyticsData.comparison.change_percentage.income >= 0 ? '↑' : '↓'}
+                    </span>
+                    <span className="sr-only">
+                      {analyticsData.comparison.change_percentage.income >= 0 ? 'increase' : 'decrease'}
                     </span>
                   </div>
                 </div>
@@ -240,8 +266,12 @@ export function Analytics() {
                       className={`text-lg ${
                         analyticsData.comparison.change_percentage.expenses <= 0 ? 'text-success-600' : 'text-error-600'
                       }`}
+                      aria-hidden="true"
                     >
                       {analyticsData.comparison.change_percentage.expenses >= 0 ? '↑' : '↓'}
+                    </span>
+                    <span className="sr-only">
+                      {analyticsData.comparison.change_percentage.expenses >= 0 ? 'increase' : 'decrease'}
                     </span>
                   </div>
                 </div>
@@ -261,8 +291,12 @@ export function Analytics() {
                       className={`text-lg ${
                         analyticsData.comparison.change_percentage.net >= 0 ? 'text-success-600' : 'text-error-600'
                       }`}
+                      aria-hidden="true"
                     >
                       {analyticsData.comparison.change_percentage.net >= 0 ? '↑' : '↓'}
+                    </span>
+                    <span className="sr-only">
+                      {analyticsData.comparison.change_percentage.net >= 0 ? 'increase' : 'decrease'}
                     </span>
                   </div>
                 </div>

@@ -21,6 +21,10 @@ export function RecurringTransactions() {
   // UI State
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<any>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    transactionId?: number;
+  }>({ isOpen: false });
   const [formData, setFormData] = useState<Partial<RecurrencePattern>>({
     frequency: 'monthly',
     interval: 1,
@@ -69,14 +73,15 @@ export function RecurringTransactions() {
     }
   };
 
-  const handleDeleteRecurring = async (id: number) => {
-    if (confirm('Are you sure you want to delete this recurring transaction?')) {
-      try {
-        await deleteTransaction(id);
-        await loadRecurringData();
-      } catch (err) {
-        console.error('Failed to delete recurring transaction:', err);
-      }
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirmation.transactionId) return;
+
+    try {
+      await deleteTransaction(deleteConfirmation.transactionId);
+      await loadRecurringData();
+      setDeleteConfirmation({ isOpen: false });
+    } catch (err) {
+      console.error('Failed to delete recurring transaction:', err);
     }
   };
 
@@ -133,14 +138,19 @@ export function RecurringTransactions() {
                       <p className="font-bold text-neutral-900">{prediction.transaction_id}</p>
                       <p className="text-sm text-neutral-600">{prediction.frequency}</p>
                     </div>
-                    <span
-                      className={`text-lg font-bold ${
-                        prediction.estimated_amount > 0 ? 'text-success-600' : 'text-error-600'
-                      }`}
-                    >
-                      {prediction.estimated_amount > 0 ? '+' : '-'}
-                      {formatCurrency(Math.abs(prediction.estimated_amount))}
-                    </span>
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className={`text-lg font-bold ${
+                          prediction.estimated_amount > 0 ? 'text-success-600' : 'text-error-600'
+                        }`}
+                      >
+                        {prediction.estimated_amount > 0 ? '+' : '-'}
+                        {formatCurrency(Math.abs(prediction.estimated_amount))}
+                      </span>
+                      <span className="text-xs text-neutral-600">
+                        {prediction.estimated_amount > 0 ? '(Income)' : '(Expense)'}
+                      </span>
+                    </div>
                   </div>
                   <div className="pt-2 border-t border-neutral-200 text-xs text-neutral-500">
                     <p>Next: {formatDate(prediction.next_occurrence_date)}</p>
@@ -183,13 +193,19 @@ export function RecurringTransactions() {
                       className="border-b border-neutral-200 hover:bg-neutral-50 transition-colors"
                     >
                       <td className="py-3 px-4 font-medium text-neutral-900">{transaction.title}</td>
-                      <td
-                        className={`py-3 px-4 font-bold ${
-                          transaction.type === 'income' ? 'text-success-600' : 'text-error-600'
-                        }`}
-                      >
-                        {transaction.type === 'income' ? '+' : '-'}
-                        {formatCurrency(transaction.amount)}
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2">
+                          <span className={`font-bold ${
+                            transaction.type === 'income' ? 'text-success-600' : 'text-error-600'
+                          }`}
+                          >
+                            {transaction.type === 'income' ? '+' : '-'}
+                            {formatCurrency(transaction.amount)}
+                          </span>
+                          <span className="sr-only">
+                            {transaction.type === 'income' ? 'income' : 'expense'}
+                          </span>
+                        </div>
                       </td>
                       <td className="py-3 px-4 text-neutral-600">
                         <span className="inline-block px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 rounded">
@@ -206,7 +222,7 @@ export function RecurringTransactions() {
                             Edit
                           </Button>
                           <Button
-                            onClick={() => handleDeleteRecurring(transaction.id)}
+                            onClick={() => setDeleteConfirmation({ isOpen: true, transactionId: transaction.id })}
                             className="px-3 py-2 text-sm font-medium text-error-600 hover:bg-error-50 rounded"
                           >
                             Delete
@@ -339,6 +355,34 @@ export function RecurringTransactions() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Delete Recurring Transaction Confirmation Modal */}
+      <Modal
+        isOpen={deleteConfirmation.isOpen}
+        onClose={() => setDeleteConfirmation({ isOpen: false })}
+        title="Delete Recurring Transaction"
+        size="small"
+      >
+        <div className="space-y-4">
+          <p className="text-neutral-700">
+            Are you sure you want to delete this recurring transaction? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button
+              onClick={() => setDeleteConfirmation({ isOpen: false })}
+              className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteConfirm}
+              className="px-4 py-2 bg-error-600 text-white hover:bg-error-700 rounded-lg"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
       </Modal>
     </MainLayout>
   );

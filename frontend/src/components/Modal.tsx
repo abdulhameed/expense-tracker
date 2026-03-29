@@ -9,6 +9,7 @@ interface ModalProps {
   footer?: ReactNode;
   size?: 'small' | 'medium' | 'large';
   closeButton?: boolean;
+  initialFocus?: React.RefObject<HTMLElement>;
 }
 
 const sizeStyles = {
@@ -25,11 +26,26 @@ export function Modal({
   footer,
   size = 'medium',
   closeButton = true,
+  initialFocus,
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
+
+    // Store the previously focused element
+    previouslyFocusedElement.current = document.activeElement as HTMLElement;
+
+    // Focus the modal or specified element
+    if (initialFocus?.current) {
+      initialFocus.current.focus();
+    } else if (closeButton) {
+      const closeBtn = modalRef.current?.querySelector('[aria-label="Close modal"]');
+      if (closeBtn instanceof HTMLElement) {
+        closeBtn.focus();
+      }
+    }
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -43,8 +59,38 @@ export function Modal({
       }
     };
 
+    // Trap focus inside modal
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !modalRef.current) return;
+
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+      const activeElement = document.activeElement as HTMLElement;
+
+      // Shift + Tab
+      if (event.shiftKey) {
+        if (activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab
+        if (activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
     document.addEventListener('keydown', handleEscape);
     document.addEventListener('mousedown', handleBackdropClick);
+    document.addEventListener('keydown', handleTabKey);
 
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
@@ -52,9 +98,13 @@ export function Modal({
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.removeEventListener('mousedown', handleBackdropClick);
+      document.removeEventListener('keydown', handleTabKey);
       document.body.style.overflow = 'unset';
+
+      // Return focus to previously focused element
+      previouslyFocusedElement.current?.focus();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, closeButton, initialFocus]);
 
   if (!isOpen) return null;
 

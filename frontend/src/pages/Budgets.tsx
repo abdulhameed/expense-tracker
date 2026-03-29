@@ -21,6 +21,10 @@ export function Budgets() {
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    budgetId?: number;
+  }>({ isOpen: false });
   const [formData, setFormData] = useState({
     category_id: '',
     limit_amount: '',
@@ -83,15 +87,16 @@ export function Budgets() {
     }
   };
 
-  const handleDeleteBudget = async (id: number) => {
-    if (confirm('Are you sure you want to delete this budget?')) {
-      try {
-        await deleteBudget(id);
-        await fetchBudgets();
-        await fetchBudgetProgress();
-      } catch (err) {
-        console.error('Failed to delete budget:', err);
-      }
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirmation.budgetId) return;
+
+    try {
+      await deleteBudget(deleteConfirmation.budgetId);
+      await fetchBudgets();
+      await fetchBudgetProgress();
+      setDeleteConfirmation({ isOpen: false });
+    } catch (err) {
+      console.error('Failed to delete budget:', err);
     }
   };
 
@@ -177,9 +182,14 @@ export function Budgets() {
                     </div>
                     <div>
                       <p className="text-neutral-600">Remaining</p>
-                      <p className={`font-bold ${progress.remaining_amount >= 0 ? 'text-success-600' : 'text-error-600'}`}>
-                        {formatCurrency(Math.abs(progress.remaining_amount))}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className={`font-bold ${progress.remaining_amount >= 0 ? 'text-success-600' : 'text-error-600'}`}>
+                          {formatCurrency(Math.abs(progress.remaining_amount))}
+                        </p>
+                        <span className="sr-only">
+                          {progress.remaining_amount >= 0 ? 'remaining' : 'over budget'}
+                        </span>
+                      </div>
                     </div>
                     <div>
                       <p className="text-neutral-600">Status</p>
@@ -239,7 +249,7 @@ export function Budgets() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDeleteBudget(budget.id)}
+                      onClick={() => setDeleteConfirmation({ isOpen: true, budgetId: budget.id })}
                       className="flex-1 px-3 py-2 text-sm font-medium text-error-600 hover:bg-error-50 rounded transition-colors"
                     >
                       Delete
@@ -326,6 +336,34 @@ export function Budgets() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Delete Budget Confirmation Modal */}
+      <Modal
+        isOpen={deleteConfirmation.isOpen}
+        onClose={() => setDeleteConfirmation({ isOpen: false })}
+        title="Delete Budget"
+        size="small"
+      >
+        <div className="space-y-4">
+          <p className="text-neutral-700">
+            Are you sure you want to delete this budget? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button
+              onClick={() => setDeleteConfirmation({ isOpen: false })}
+              className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteConfirm}
+              className="px-4 py-2 bg-error-600 text-white hover:bg-error-700 rounded-lg"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
       </Modal>
     </MainLayout>
   );

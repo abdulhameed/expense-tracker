@@ -1,30 +1,50 @@
+import { useId } from 'react';
+
 interface ToggleProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
   label?: string;
+  description?: string;
 }
 
-export function Toggle({ checked, onChange, disabled = false, label }: ToggleProps) {
+export function Toggle({ checked, onChange, disabled = false, label, description }: ToggleProps) {
+  const id = useId();
+  const descriptionId = description ? `${id}-description` : undefined;
+
   return (
-    <label className="flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-        disabled={disabled}
-        className="sr-only"
-      />
-      <div className={`relative w-10 h-6 rounded-full transition-colors ${
-        checked ? 'bg-primary-600' : 'bg-neutral-300'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
-        <div
-          className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-            checked ? 'translate-x-4' : ''
-          }`}
-        />
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        <button
+          id={id}
+          role="switch"
+          aria-checked={checked}
+          aria-label={label}
+          aria-describedby={descriptionId}
+          disabled={disabled}
+          onClick={() => onChange(!checked)}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full
+            transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+            ${checked ? 'bg-primary-600' : 'bg-neutral-300'}
+            ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white
+              transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`}
+            aria-hidden="true"
+          />
+        </button>
+        {label && (
+          <label htmlFor={id} className="text-sm font-medium text-neutral-700">
+            {label}
+          </label>
+        )}
       </div>
-      {label && <span className="ml-3 text-sm font-medium text-neutral-900">{label}</span>}
-    </label>
+      {description && (
+        <p id={descriptionId} className="text-xs text-neutral-500">
+          {description}
+        </p>
+      )}
+    </div>
   );
 }

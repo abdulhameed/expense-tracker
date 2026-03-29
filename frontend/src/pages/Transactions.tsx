@@ -33,6 +33,10 @@ export function Transactions() {
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [presetName, setPresetName] = useState('');
   const [showPresetModal, setShowPresetModal] = useState(false);
+  const [deletePresetConfirmation, setDeletePresetConfirmation] = useState<{
+    isOpen: boolean;
+    presetId?: string;
+  }>({ isOpen: false });
 
   // UI State
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -135,16 +139,17 @@ export function Transactions() {
     }
   };
 
-  const handleDeletePreset = async (presetId: string) => {
-    if (confirm('Are you sure you want to delete this preset?')) {
-      try {
-        await deleteFilterPreset(parseInt(presetId));
-        if (selectedPreset === presetId) {
-          setSelectedPreset('');
-        }
-      } catch (err) {
-        console.error('Failed to delete preset:', err);
+  const handleDeletePresetConfirm = async () => {
+    if (!deletePresetConfirmation.presetId) return;
+
+    try {
+      await deleteFilterPreset(parseInt(deletePresetConfirmation.presetId));
+      if (selectedPreset === deletePresetConfirmation.presetId) {
+        setSelectedPreset('');
       }
+      setDeletePresetConfirmation({ isOpen: false });
+    } catch (err) {
+      console.error('Failed to delete preset:', err);
     }
   };
 
@@ -201,7 +206,7 @@ export function Transactions() {
             />
             {selectedPreset && (
               <Button
-                onClick={() => handleDeletePreset(selectedPreset)}
+                onClick={() => setDeletePresetConfirmation({ isOpen: true, presetId: selectedPreset })}
                 className="px-3 py-2 bg-error-100 text-error-600 hover:bg-error-200 text-sm"
               >
                 Delete
@@ -327,21 +332,26 @@ export function Transactions() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead>
-                <tr className="border-b border-neutral-200">
-                  <th className="text-left py-3 px-4 font-semibold text-neutral-700">
+              <thead className="bg-neutral-50 border-b border-neutral-200">
+                <tr>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 font-semibold text-neutral-700"
+                  >
+                    <span className="sr-only">Select</span>
                     <input
                       type="checkbox"
                       checked={selectedIds.size === transactions.length && transactions.length > 0}
                       onChange={handleSelectAll}
+                      aria-label="Select all transactions"
                       className="w-4 h-4 text-primary-600 rounded border-neutral-300"
                     />
                   </th>
-                  <th className="text-left py-3 px-4 font-semibold text-neutral-700">Date</th>
-                  <th className="text-left py-3 px-4 font-semibold text-neutral-700">Title</th>
-                  <th className="text-left py-3 px-4 font-semibold text-neutral-700">Category</th>
-                  <th className="text-right py-3 px-4 font-semibold text-neutral-700">Amount</th>
-                  <th className="text-center py-3 px-4 font-semibold text-neutral-700">Actions</th>
+                  <th scope="col" className="text-left py-3 px-4 font-semibold text-neutral-700">Date</th>
+                  <th scope="col" className="text-left py-3 px-4 font-semibold text-neutral-700">Title</th>
+                  <th scope="col" className="text-left py-3 px-4 font-semibold text-neutral-700">Category</th>
+                  <th scope="col" className="text-right py-3 px-4 font-semibold text-neutral-700">Amount</th>
+                  <th scope="col" className="text-center py-3 px-4 font-semibold text-neutral-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -369,15 +379,21 @@ export function Transactions() {
                     <td className="py-3 px-4 text-neutral-600">
                       {categoryMap[transaction.category_id] || 'Uncategorized'}
                     </td>
-                    <td
-                      className={`py-3 px-4 text-right font-bold ${
-                        transaction.type === 'income'
-                          ? 'text-success-600'
-                          : 'text-error-600'
-                      }`}
-                    >
-                      {transaction.type === 'income' ? '+' : '-'}
-                      {formatCurrency(transaction.amount)}
+                    <td className="py-3 px-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <span className={`font-bold ${
+                          transaction.type === 'income'
+                            ? 'text-success-600'
+                            : 'text-error-600'
+                        }`}
+                        >
+                          {transaction.type === 'income' ? '+' : '-'}
+                          {formatCurrency(Math.abs(transaction.amount))}
+                        </span>
+                        <span className="sr-only">
+                          {transaction.type === 'income' ? 'income' : 'expense'}
+                        </span>
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-center">
                       <div className="flex gap-2 justify-center">
@@ -466,6 +482,34 @@ export function Transactions() {
               className="px-4 py-2 bg-primary-600 text-white hover:bg-primary-700 rounded-lg"
             >
               Save Preset
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delete Preset Confirmation Modal */}
+      <Modal
+        isOpen={deletePresetConfirmation.isOpen}
+        onClose={() => setDeletePresetConfirmation({ isOpen: false })}
+        title="Delete Filter Preset"
+        size="small"
+      >
+        <div className="space-y-4">
+          <p className="text-neutral-700">
+            Are you sure you want to delete this filter preset? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button
+              onClick={() => setDeletePresetConfirmation({ isOpen: false })}
+              className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeletePresetConfirm}
+              className="px-4 py-2 bg-error-600 text-white hover:bg-error-700 rounded-lg"
+            >
+              Delete
             </Button>
           </div>
         </div>

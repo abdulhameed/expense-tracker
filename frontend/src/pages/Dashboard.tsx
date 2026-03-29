@@ -162,6 +162,28 @@ export function Dashboard() {
               ]}
               height={300}
             />
+            {/* Hidden Data Table for Screen Readers */}
+            <table className="sr-only">
+              <caption>Income vs Expenses Chart Data</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Day</th>
+                  <th scope="col">Income</th>
+                  <th scope="col">Expenses</th>
+                  <th scope="col">Net</th>
+                </tr>
+              </thead>
+              <tbody>
+                {chartData.map((item) => (
+                  <tr key={item.name}>
+                    <td>{item.name}</td>
+                    <td>{formatCurrency(item.income)}</td>
+                    <td>{formatCurrency(item.expenses)}</td>
+                    <td>{formatCurrency(item.net)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Card>
 
@@ -170,6 +192,24 @@ export function Dashboard() {
           <div>
             <h2 className="text-lg font-bold text-neutral-900 mb-6">Spending by Category</h2>
             <PieChart data={categoryData} height={300} showLegend={true} />
+            {/* Hidden Data Table for Screen Readers */}
+            <table className="sr-only">
+              <caption>Spending by Category Chart Data</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Category</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categoryData.map((item) => (
+                  <tr key={item.name}>
+                    <td>{item.name}</td>
+                    <td>{formatCurrency(item.value)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Card>
       </div>
@@ -201,16 +241,20 @@ export function Dashboard() {
                       {formatDate(transaction.date)} • {transaction.category?.name}
                     </p>
                   </div>
-                  <p
-                    className={`text-lg font-bold ${
+                  <div className="flex items-baseline gap-2">
+                    <span className={`text-lg font-bold ${
                       transaction.type === 'income'
                         ? 'text-success-600'
                         : 'text-error-600'
                     }`}
-                  >
-                    {transaction.type === 'income' ? '+' : '-'}
-                    {formatCurrency(transaction.amount)}
-                  </p>
+                    >
+                      {transaction.type === 'income' ? '+' : '-'}
+                      {formatCurrency(transaction.amount)}
+                    </span>
+                    <span className="text-xs text-neutral-600">
+                      {transaction.type === 'income' ? '(Income)' : '(Expense)'}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>

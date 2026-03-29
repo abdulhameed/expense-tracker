@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTransactionStore } from '@/store/transactionStore';
-import { MainLayout, Card, Breadcrumb, Spinner, Alert, Button, Select } from '@/components';
+import { MainLayout, Card, Breadcrumb, Spinner, Alert, Button, Select, Modal } from '@/components';
 import { formatCurrency } from '@/utils/formatters';
 import { ExportResponse } from '@/types/api';
 
@@ -19,6 +19,10 @@ export function Export() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [exporting, setExporting] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    fileUrl?: string;
+  }>({ isOpen: false });
 
   useEffect(() => {
     fetchExportHistory();
@@ -45,14 +49,15 @@ export function Export() {
     document.body.removeChild(link);
   };
 
-  const handleDeleteExport = async (fileUrl: string) => {
-    if (confirm('Are you sure you want to delete this export?')) {
-      try {
-        await deleteExport(fileUrl);
-        await fetchExportHistory();
-      } catch (err) {
-        console.error('Delete failed:', err);
-      }
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirmation.fileUrl) return;
+
+    try {
+      await deleteExport(deleteConfirmation.fileUrl);
+      await fetchExportHistory();
+      setDeleteConfirmation({ isOpen: false });
+    } catch (err) {
+      console.error('Delete failed:', err);
     }
   };
 
@@ -226,7 +231,7 @@ export function Export() {
                       Download
                     </Button>
                     <Button
-                      onClick={() => handleDeleteExport(exp.file_url)}
+                      onClick={() => setDeleteConfirmation({ isOpen: true, fileUrl: exp.file_url })}
                       className="px-4 py-2 bg-error-100 text-error-600 hover:bg-error-200 text-sm"
                     >
                       Delete
@@ -238,6 +243,34 @@ export function Export() {
           )}
         </div>
       </Card>
+
+      {/* Delete Export Confirmation Modal */}
+      <Modal
+        isOpen={deleteConfirmation.isOpen}
+        onClose={() => setDeleteConfirmation({ isOpen: false })}
+        title="Delete Export"
+        size="small"
+      >
+        <div className="space-y-4">
+          <p className="text-neutral-700">
+            Are you sure you want to delete this export? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button
+              onClick={() => setDeleteConfirmation({ isOpen: false })}
+              className="px-4 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteConfirm}
+              className="px-4 py-2 bg-error-600 text-white hover:bg-error-700 rounded-lg"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </MainLayout>
   );
 }

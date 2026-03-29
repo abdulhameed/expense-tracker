@@ -321,10 +321,17 @@ python manage.py migrate
 python manage.py seed_database --clear --volume light
 ```
 
-### Issue: Duplicate entries when running without --clear
-**Solution**: The script skips duplicates, but for a clean state, always use:
+### Issue: Want completely fresh data
+**Solution**: The system intelligently reuses existing users, so running multiple times will accumulate data. To reset:
 ```bash
-python manage.py seed_database --clear
+python manage.py seed_database --clear --volume medium
+# This clears everything and creates fresh data
+```
+
+### Issue: Existing user emails (legacy)
+**Solution**: The system now automatically handles existing users by reusing them. You no longer need to worry about duplicate user emails - just run the command!
+```bash
+python manage.py seed_database --volume heavy  # Safe to run anytime
 ```
 
 ## Performance Notes

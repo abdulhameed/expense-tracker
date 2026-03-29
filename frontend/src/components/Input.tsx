@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useState, ReactNode } from 'react';
+import { forwardRef, InputHTMLAttributes, useState, ReactNode, useId } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -26,7 +26,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const [showPassword, setShowPassword] = useState(false);
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const generatedId = useId();
+    const inputId = id || `input-${generatedId}`;
+    const errorId = `${inputId}-error`;
+    const helperId = `${inputId}-helper`;
 
     const isPassword = variant === 'password';
     const inputType = isPassword ? (showPassword ? 'text' : 'password') : variant;
@@ -55,6 +58,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             type={inputType}
             disabled={disabled}
+            aria-invalid={!!error}
+            aria-describedby={error ? errorId : helperText ? helperId : undefined}
             className={`${combinedInputClassName} ${icon ? 'pl-10' : ''} ${
               isPassword ? 'pr-10' : ''
             }`}
@@ -64,7 +69,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-600 hover:text-neutral-900 disabled:opacity-50"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-600 hover:text-neutral-900 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
               tabIndex={-1}
             >
               {showPassword ? (
@@ -85,9 +91,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
 
-        {error && <p className="mt-1 text-sm text-error-600">{error}</p>}
+        {error && (
+          <p
+            id={errorId}
+            className="mt-1 text-sm text-error-600"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
         {!error && helperText && (
-          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
+          <p
+            id={helperId}
+            className="mt-1 text-sm text-neutral-500"
+          >
+            {helperText}
+          </p>
         )}
       </div>
     );
