@@ -6,8 +6,11 @@ from rest_framework.exceptions import NotFound, PermissionDenied, ValidationErro
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.projects.models import ProjectMember
+from apps.projects.models import ProjectMember, Project
 from apps.projects.permissions import get_project_and_membership
+from apps.transactions.models import Transaction
+from django.db.models import Sum, Q
+from decimal import Decimal
 from .serializers import (
     ReportSummarySerializer,
     TrendsReportSerializer,
@@ -33,6 +36,139 @@ class ReportBaseView(APIView):
             return datetime.strptime(date_str, "%Y-%m-%d").date()
         except (ValueError, TypeError):
             raise ValidationError(f"Invalid date format: {date_str}. Use YYYY-MM-DD")
+
+
+class DashboardStatsView(APIView):
+    """Get aggregated financial stats across all user's projects."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def _parse_date(self, date_str):
+        """Parse date string in YYYY-MM-DD format."""
+        try:
+            return datetime.strptime(date_str, "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            raise ValidationError(f"Invalid date format: {date_str}. Use YYYY-MM-DD")
+
+    def get(self, request):
+        """
+        Get aggregated dashboard stats for all user's projects.
+
+        Query parameters:
+            - start_date: Start date (YYYY-MM-DD), defaults to 30 days ago
+            - end_date: End date (YYYY-MM-DD), defaults to today
+        """
+        # Parse dates
+        start_date = request.query_params.get("start_date")
+        end_date = request.query_params.get("end_date")
+
+        if start_date:
+            start_date = self._parse_date(start_date)
+        else:
+            start_date = timezone.now().date() - timedelta(days=30)
+
+        if end_date:
+            end_date = self._parse_date(end_date)
+        else:
+            end_date = timezone.now().date()
+
+        # Get all projects the user has access to
+        user_projects = Project.objects.filter(
+            Q(owner=request.user) | Q(members__user=request.user)
+        ).distinct()
+
+        # Get transactions across all user's projects
+        transactions = Transaction.objects.filter(
+            project__in=user_projects,
+            date__gte=start_date,
+            date__lte=end_date,
+        )
+
+        # Calculate totals
+        income = (
+            transactions.filter(transaction_type="income").aggregate(
+                total=Sum("amount")
+            )["total"]
+            or Decimal("0.00")
+        )
+
+        expenses = (
+            transactions.filter(transaction_type="expense").aggregate(
+                total=Sum("amount")
+            )["total"]
+            or Decimal("0.00")
+        )
+
+        net = income - expenses
+
+        return Response(
+            {
+                "total_income": float(income),
+                "total_expenses": float(expenses),
+                "net_balance": float(net),
+                "transactions_count": transactions.count(),
+                "categories_count": transactions.values("category").distinct().count(),
+                "period": {
+                    "start_date": start_date.isoformat(),
+                    "end_date": end_date.isoformat(),
+                },
+            }
+        )
+
+
+class TransactionListView(APIView):
+    """Get transactions across all user's projects."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        """
+        Get transactions across all user's projects.
+
+        Query parameters:
+            - type: Filter by type (income/expense)
+            - limit: Number of items to return (default: 20)
+            - offset: Offset for pagination (default: 0)
+            - sort_by: Sort field (date, amount) (default: date)
+            - sort_order: Sort order (asc, desc) (default: desc)
+        """
+        # Get all projects the user has access to
+        user_projects = Project.objects.filter(
+            Q(owner=request.user) | Q(members__user=request.user)
+        ).distinct()
+
+        # Get transactions
+        transactions = Transaction.objects.filter(
+            project__in=user_projects
+        ).select_related("category").order_by("-date")
+
+        # Filter by type if provided
+        transaction_type = request.query_params.get("type")
+        if transaction_type in ["income", "expense"]:
+            transactions = transactions.filter(transaction_type=transaction_type)
+
+        # Pagination
+        limit = int(request.query_params.get("limit", 20))
+        offset = int(request.query_params.get("offset", 0))
+
+        # Count total before pagination
+        total_count = transactions.count()
+
+        # Apply pagination
+        paginated = transactions[offset : offset + limit]
+
+        # Serialize transactions
+        from apps.transactions.serializers import TransactionSerializer
+        serializer = TransactionSerializer(paginated, many=True)
+
+        return Response(
+            {
+                "items": serializer.data,
+                "total": total_count,
+                "limit": limit,
+                "offset": offset,
+            }
+        )
 
 
 class SummaryReportView(ReportBaseView):

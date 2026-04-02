@@ -1,6 +1,8 @@
 from django.urls import path
 
 from .views import (
+    DashboardStatsView,
+    TransactionListView,
     SummaryReportView,
     CategoryBreakdownView,
     TrendsReportView,
@@ -10,6 +12,9 @@ from .views import (
 )
 
 urlpatterns = [
+    # Dashboard (aggregated across all user's projects)
+    path("dashboard/stats/", DashboardStatsView.as_view(), name="dashboard-stats"),
+    path("transactions/", TransactionListView.as_view(), name="transaction-list"),
     # Reports
     path("projects/<uuid:project_id>/reports/summary/", SummaryReportView.as_view(), name="report-summary"),
     path("projects/<uuid:project_id>/reports/category-breakdown/", CategoryBreakdownView.as_view(), name="report-category-breakdown"),
